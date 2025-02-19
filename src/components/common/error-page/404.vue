@@ -10,15 +10,12 @@
         <p class="not-found-desc">
           抱歉！您访问的页面<em>失联</em>啦 ...
         </p>
-        <el-button>
-          返回上一页
-        </el-button>
-
         <el-button
             class="not-found-btn-gohome"
             type="primary"
+            @click="$emit('close')"
         >
-          进入首页
+          滚回去
         </el-button>
       </div>
     </div>
@@ -28,3 +25,6 @@
 <script setup>
 import './404.scss'
 </script>
+
+<style lang="scss" scoped>
+</style>

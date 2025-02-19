@@ -4,7 +4,7 @@ import ElementPlus from 'element-plus'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import App from './App.vue'
 import moment from 'moment'
-
+import 'element-plus/dist/index.css'
 
 const pinia = createPinia() // 用于 defineStore 页面存储
 

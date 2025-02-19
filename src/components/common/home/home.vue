@@ -9,9 +9,13 @@
         </p>
       </div>
     </div>
+    <button @click="$emit('close')">关闭</button>
   </div>
 </template>
 
 <script setup>
 import './home.scss'
 </script>
+
+<style lang="scss" scoped>
+</style>

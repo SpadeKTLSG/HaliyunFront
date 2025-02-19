@@ -4,38 +4,38 @@
       <div class="mid">
         <!--登录表单-->
         <el-form
-          ref="dataFormRef"
-          :model="dataForm"
-          :rules="dataRule"
-          status-icon
+            ref="dataFormRef"
+            :model="dataForm"
+            :rules="dataRule"
+            status-icon
         >
           <el-form-item prop="account">
             <el-input
-              v-model="dataForm.account"
-              class="info"
-              placeholder="请输入帐号"
+                v-model="dataForm.account"
+                class="info"
+                placeholder="请输入帐号"
             />
           </el-form-item>
           <el-form-item prop="password">
             <el-input
-              v-model="dataForm.password"
-              class="info"
-              placeholder="请输入密码"
-              type="password"
+                v-model="dataForm.password"
+                class="info"
+                placeholder="请输入密码"
+                type="password"
             />
           </el-form-item>
           <el-form-item prop="account">
             <el-input
-              v-model="dataForm.code"
-              class="info"
-              placeholder="请输入验证码"
+                v-model="dataForm.code"
+                class="info"
+                placeholder="请输入验证码"
             />
           </el-form-item>
           <el-form-item>
             <el-button
-              type="primary"
-              class="login-btn"
-              @click="login"
+                class="login-btn"
+                type="primary"
+                @click="login"
             >
               登录
             </el-button>
@@ -46,15 +46,16 @@
         Copyright © 2025 睡眠促进委员会 Sleep Promotion Committee
       </div>
     </div>
+    <button @click="$emit('close')">关闭</button>
   </div>
 </template>
 
 <script setup>
-import './index.scss'
-import cookie from 'vue-cookies'
-import {ElMessage} from "element-plus";
+//需要抽取的通用依赖
+import
 
-const router = useRouter()
+//自己样式
+import './login.scss'
 
 /**
  * 表单引用
@@ -98,10 +99,6 @@ const dataRule = {
 }
 
 
-onMounted(() => {
-})
-
-
 const login = () => {
   http({
     url: http.adornUrl('/Guest/users/login'),
@@ -124,7 +121,6 @@ const login = () => {
     });
     cookie.set('Authorization', data)
     cookie.set('account', dataForm.value.account)
-    router.replace({name: 'home'})
   }).catch(() => {
     ElMessage({
       message: "登录失败",
@@ -136,4 +132,10 @@ const login = () => {
 
 
 </script>
+
+
+<style lang="scss" scoped>
+
+
+</style>
 

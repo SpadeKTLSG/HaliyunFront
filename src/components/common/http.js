@@ -125,6 +125,12 @@ http.adornData = (data = {}) => {
     return JSON.stringify(data);
 }
 
+/**
+ * 校验是否URL地址
+ */
+http.isURL = s => {
+    return /^https?:\/\/.*/.test(s)
+}
 
 /**
  * 防止表单重复提交
@@ -148,11 +154,5 @@ export const Debounce = (fn, t) => {
     }
 }
 
-/**
- * 校验是否URL地址
- */
-export function isURL(s) {
-    return /^https?:\/\/.*/.test(s)
-}
 
 export default http
