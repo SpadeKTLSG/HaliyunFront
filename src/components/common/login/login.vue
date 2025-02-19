@@ -51,11 +51,21 @@
 </template>
 
 <script setup>
-//需要抽取的通用依赖
-import
-
-//自己样式
 import './login.scss'
+import * as Maven from '@/components/common/maven.js'
+
+let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
+    ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
+    onBeforeMount, nextTick, computed, cookie, http, Debounce, encrypt;
+({
+  ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
+  ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber,
+  ElMenu, ElMenuItem, ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow,
+  ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip,
+  ElMessage, ref, watch, reactive, onMounted, onBeforeMount, nextTick, computed,
+  cookie, http, Debounce, encrypt
+} = Maven);
+
 
 /**
  * 表单引用
