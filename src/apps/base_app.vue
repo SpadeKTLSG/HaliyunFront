@@ -7,7 +7,6 @@
 </template>
 
 <script setup>
-import {defineEmits, defineProps} from 'vue';
 
 defineProps();
 defineEmits(['close']);

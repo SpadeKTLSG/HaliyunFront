@@ -10,19 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "element-plus": "2.3.6",
-    "element-resize-detector": "1.2.4",
-    "vue": "3.2.47",
-    "vue-cookies": "1.8.3",
     "axios": "1.7.4",
     "crypto-js": "4.2.0",
+    "element-plus": "2.3.6",
+    "element-resize-detector": "1.2.4",
+    "moment": "2.29.4",
     "pinia": "2.0.33",
-    "moment": "2.29.4"
+    "unplugin-element-plus": "^0.9.1",
+    "vue": "3.2.47",
+    "vue-cookies": "1.8.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
-    "vite": "^4.3.9",
-    "sass": "^1.83.4"
+    "sass": "^1.83.4",
+    "vite": "^4.3.9"
   },
   "repository": {
     "type": "git",
