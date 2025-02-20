@@ -4,7 +4,7 @@
     <div class="background">
 
       <!-- 1 头部区域 (持久化) -->
-      <header class="header">
+      <el-header class="header">
         <!-- 1.1 头部左侧 通知 -->
         <div class="header-left">
           <el-icon class="notification-icon"></el-icon>
@@ -18,10 +18,10 @@
           <div class="capacity">80%</div>
           <div class="time">{{ currentTime }}</div>
         </div>
-      </header>
+      </el-header>
 
       <!-- 2 ///// 主体区域 (切换区域) /////-->
-      <main class="main-content">
+      <el-main class="main-content">
         <div v-if="onlyApp">
 
           <!-- 2.0 应用名称 + LOGO-->
@@ -57,10 +57,10 @@
         </div>
         <!-- B 对应应用组件页面 -->
         <component :is="currentApp" v-if="currentApp" @close="closeApp"/>
-      </main>
+      </el-main>
 
       <!-- 3 底部操作栏 (持久化 | 动态设置操作按钮) -->
-      <footer class="footer">
+      <el-footer class="footer">
         <!--todo, 这三个按钮是在一个 圆角的矩形里面, 这个矩形紧贴下方正中位置-->
         <!-- 3.1 应用功能列表按钮-->
         <el-button class="footer-button" @click="showAllApps">
@@ -74,7 +74,7 @@
         <el-button class="footer-button" @click="goBack">
           <el-icon class="back-icon"></el-icon>
         </el-button>
-      </footer>
+      </el-footer>
 
     </div>
 
@@ -88,7 +88,10 @@
 
       <!--  A2 进入按钮 (倒计时10s自动进入) -->
 
-      <el-button class="enter-button" @click="enterApp">进入</el-button>
+      <el-button class="enter-button"
+                 @click="enterApp">
+        Hello World
+      </el-button>
 
     </div>
   </div>

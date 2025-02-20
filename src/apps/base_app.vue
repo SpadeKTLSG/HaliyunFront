@@ -12,7 +12,3 @@ defineProps();
 defineEmits(['close']);
 
 </script>
-
-<style lang="scss" scoped>
-
-</style>
