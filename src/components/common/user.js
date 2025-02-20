@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia'
+import cookie from "vue-cookies";
 
 /**
  * 用户信息  -> TL TODO
@@ -9,7 +10,6 @@ export const useUserStore = defineStore('user', {
             id: 0,
             name: '',
             userId: '',
-            shopId: '',
             mobile: ''
         }
     },
@@ -23,9 +23,6 @@ export const useUserStore = defineStore('user', {
         updateMobile(mobile) {
             this.mobile = mobile
         },
-        updateShopId(shopId) {
-            this.shopId = shopId
-        },
         updateUserId(userId) {
             this.userId = userId
         }
@@ -34,10 +31,9 @@ export const useUserStore = defineStore('user', {
 
 
 /**
- * 清除登录信息
+ * 清除登录信息 TODO
  */
 export function clearLoginInfo() {
     cookie.remove('Authorization')
-    router.options.isAddDynamicMenuRoutes = false
 }
 

@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <el-text class="temp">
-      轴心框架 - 页面模板
-    </el-text>
-  </div>
-  <Home v-if="currentPage === 'home'" @close="indexBack()"/>
-  <Login v-if="currentPage === 'login'" @close="indexBack()"/>
 
+  <BaseApp>
+    <el-button @click="currentPage = 'login'">登录</el-button>
+    <el-button @click="currentPage = 'home'">首页</el-button>
+
+    <Home v-if="currentPage === 'home'" @close="backAppHome"/>
+    <Login v-if="currentPage === 'login'" @close="backAppHome"/>
+  </BaseApp>
 
   <!--  先登录, 之后展示主页-->
 </template>
@@ -15,8 +15,9 @@
 import './login_app.scss'
 import * as Maven from '@/components/common/maven.js'
 //引入组件
-import Home from '../../components/Pub/fronts/home/home.vue'
-import Login from '../../components/Guest/users/login/login.vue'
+import BaseApp from '@/apps/base_app.vue';
+import Home from '@/components/Pub/fronts/home/home.vue'
+import Login from '@/components/Guest/users/login/login.vue'
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -30,17 +31,12 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
   cookie, http, Debounce, encrypt
 } = Maven);
 
+// 应用内跳页器
+const currentPage = ref('login');
 
-//App pid
-const app_pid = 'login_app';
-
-
-let showingSth = false
-const currentPage = ref('')
-
-const indexBack = () => {
-  currentPage.value = ''
-  showingSth = !showingSth
-}
+// 回退应用主页
+const backAppHome = () => {
+  currentPage.value = '';
+};
 
 </script>

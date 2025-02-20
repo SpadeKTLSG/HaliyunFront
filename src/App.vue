@@ -10,17 +10,15 @@
 
   <!--  2.2App列表区域 页面宽度动态排列, 超过了滚动 -->
 
-  <div>
-    <el-text v-if="!showingSth" class="test">这是首页</el-text>
-    <el-button v-if="!showingSth" @click="showPage('home')">Home</el-button>
-    <el-button v-if="!showingSth" @click="showPage('login')">Login</el-button>
-    <el-button v-if="!showingSth" @click="showPage('404')">404</el-button>
+  <!--  <div v-if="onlyApp">-->
+  <!--    <el-text class="test">这是首页</el-text>-->
+  <!--    <el-button @click="openApp('LoginApp')">应用</el-button>-->
 
 
-  </div>
+  <!--  </div>-->
 
 
-  <!--  3底部操作栏 (持久化) -->
+  <!--  3底部操作栏 (持久化, 动态设置操作按钮) -->
 
 
   <!--  A 遮罩欢迎页面 -->
@@ -29,11 +27,20 @@
 
   <!--  A2 跳过区域-->
 
+
+  <!--  B 对应应用组件页面-->
+
+  <!--  <component :is="currentApp" v-if="currentApp" @close="closeApp"/>-->
+
+
 </template>
 
 <script setup>
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
+//! 应用/组件编排逻辑
+// 应用集
+import LoginApp from "@/apps/login-app/login_app.vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -46,12 +53,6 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
   ElMessage, ref, watch, reactive, onMounted, onBeforeMount, nextTick, computed,
   cookie, http, Debounce, encrypt
 } = Maven);
-
-//! 应用/组件编排逻辑
-// 引入应用
-
-//
-
 
 // !页面初始化逻辑
 // bootstrap处理
@@ -68,24 +69,41 @@ onMounted = () => {
 
 
 // ? 页面展示栈组件
-// note: 需要一个栈组件, 当用户在App里面打开应用之后, 将对应的应用页面pid压入栈中, 当用户点击返回按钮时, 从栈中弹出pid, 并且关闭对应的应用页面, 取出栈顶的pid, 并且打开对应的应用页面
-// 当栈空的时候, 说明返回App
-
-//栈
 const pageStack = ref([])
+const currentApp = ref(null); // 当前页面App
 
-let showingSth = false
-const currentPage = ref('')
+//是否只有当前App主页
+let onlyApp = computed(() => {
+  return pageStack.value.length === 0;
+});
 
-const showPage = (page) => {
-  currentPage.value = page
-  showingSth = !showingSth
+/**
+ * 显示页面: 将对应的应用压入栈中, 并且打开对应的应用页面
+ */
+const openApp = (page) => {
+  let component;
+  // 根据页面名称选择对应的应用
+  switch (page) {
+    case 'LoginApp':
+      component = LoginApp;
+      break;
+    default:
+      component = null;
+  }
+  // 如果存在则压入栈中
+  if (component) {
+    pageStack.value.push(component);
+    currentApp.value = component;
+  }
 }
 
-const indexBack = () => {
-  currentPage.value = ''
-  showingSth = !showingSth
-}
+/**
+ * 关闭页面: 从栈中弹出页面, 如果非空则打开栈顶页面
+ */
+const closeApp = () => {
+  pageStack.value.pop();
+  currentApp.value = pageStack.value.length ? pageStack.value[pageStack.value.length - 1] : null;
+};
 
 
 </script>
