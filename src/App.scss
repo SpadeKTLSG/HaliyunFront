@@ -3,53 +3,76 @@
 // 定义应用容器的样式
 .app-container {
   display: flex;
-  flex-direction: column; // 主轴方向为纵向
+  flex-direction: column;
   height: 100vh; // 高度占满视口
-  background-color: variables.$background-color; // 背景色为浅灰色
 
   // 背景区域样式
   .background {
     display: flex;
-    flex-direction: column; // 主轴方向为纵向
-    height: 100%; // 高度占满父容器
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: variables.$background-color;
 
+    // 主页容器样式
     .home-container {
+
       // 头部区域样式
       .header {
         display: flex;
+        justify-content: space-between;
+        align-items: center;
         height: 4%;
-        background-color: #17b9e0; // 背景色为蓝色
-        color: #f91313; // 字体颜色为红色
-        padding: 0 1rem; // 左右内边距为1rem
+        background-color: variables.$primary-color;
+        padding: 0 1rem; // 左右内边距
 
         // 头部左侧区域样式
         .header-left {
           display: flex;
-          align-items: center; // 子元素垂直居中
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem; // 子元素间隔为0.5rem
+          margin-right: 0.5rem; // 右外边距为0.5rem
 
           .notification-icon {
-            margin-right: 0.5rem; // 右外边距为0.5rem
+            color: #ee0b1a;
           }
 
           .app-icon {
-            margin-right: 0.5rem; // 右外边距为0.5rem
+            color: #66e90e;
           }
 
           .notification-count {
-            margin-left: 0.5rem; // 左外边距为0.5rem
+            color: #82786e;
           }
         }
 
         // 头部中间区域样式
         .header-center {
-          font-size: 1.5rem; // 字体大小为1.5rem
-          font-weight: bold; // 字体加粗
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem; // 子元素间隔为0.5rem
+          margin-right: 0.5rem; // 右外边距为0.5rem
+
+          .title {
+            font-size: 1.5rem;
+            color: #f7dc58;
+          }
         }
 
         // 头部右侧区域样式
         .header-right {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem; // 子元素间隔为0.5rem
+          margin-right: -0.5rem; // 右外边距为0.5rem
+
           .capacity {
-            // 容量样式
+            margin-bottom: 15px;
+            max-width: 600px;
+            height: 5px;
           }
 
           .time {
@@ -62,7 +85,7 @@
       .main-content {
         flex: 1; // 占据剩余空间
         display: flex;
-        flex-direction: column; // 主轴方向为纵向
+        flex-direction: column;
         align-items: center; // 子元素水平居中
         justify-content: center; // 子元素垂直居中
         padding: 1rem; // 内边距为1rem
@@ -142,7 +165,7 @@
     width: 100%; // 宽度占满父容器
     height: 100%; // 高度占满父容器
     display: flex;
-    flex-direction: column; // 主轴方向为纵向
+    flex-direction: column;
     align-items: center; // 子元素水平居中
     justify-content: center; // 子元素垂直居中
     background-color: rgba(0, 0, 0, 0.8); // 背景色为半透明黑色

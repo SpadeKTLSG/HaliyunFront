@@ -7,13 +7,26 @@
         <el-header class="header">
           <!-- 1.1 头部左侧 通知 -->
           <div class="header-left">
-            <el-icon class="el-icon"></el-icon>
-            <el-icon class="app-icon"></el-icon>
+
+            <el-icon class="notification-icon">
+              <ChatDotRound/>
+            </el-icon>
+
+            <el-icon class="app-icon">
+              <Suitcase/>
+            </el-icon>
+
             <span class="notification-count">99+</span>
           </div>
+
           <!-- 1.2 头部中间 标题 -->
-          <div class="header-center">haliyun</div>
-          <!-- 1.3 头部右侧 容量, 时间 -->
+          <div class="header-center">
+
+            <div class="title">欢迎来到Haliyun网盘</div>
+
+          </div>
+
+          <!-- 1.3 头部右侧 容量, 时间等组件 -->
           <div class="header-right">
             <div class="capacity">80%</div>
             <div class="time">{{ currentTime }}</div>
@@ -103,6 +116,7 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
+import {ChatDotRound, Suitcase} from "@element-plus/icons-vue";
 
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
