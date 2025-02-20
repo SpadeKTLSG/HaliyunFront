@@ -1,0 +1,145 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.background {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5%;
+  background-color: #17b9e0;
+  color: #f91313;
+  padding: 0 1rem;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-center {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.notification-icon, .app-icon, .search-icon, .settings-icon, .all-apps-icon, .current-app-icon, .back-icon {
+  margin-right: 0.5rem;
+}
+
+.notification-count {
+  margin-left: 0.5rem;
+}
+
+.capacity, .time {
+  margin-left: 1rem;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.app-name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.search-box {
+  width: 50%;
+  margin-bottom: 1rem;
+}
+
+.app-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.settings-button {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5%;
+  background-color: #04eae0;
+  color: #eb0c0c;
+  padding: 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.footer:hover {
+  opacity: 1;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 200px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
+.footer-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.welcome-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+
+.scrolling-images {
+  width: 80%;
+  height: 50%;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  /* Add your scrolling image styles here */
+}
+
+.enter-button {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}

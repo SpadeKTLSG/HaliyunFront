@@ -24,15 +24,15 @@
       <main class="main-content">
         <div v-if="onlyApp">
 
-          <!-- 2.0 应用名称 + LOGO todo-->
+          <!-- 2.0 应用名称 + LOGO-->
           <div class="app-name">Haliyun网盘</div>
           <div class="app-logo"/>
 
-          <!-- 2.1 搜索框 (随处搜索) -->
+          <!-- 2.1 搜索框 -->
           <el-input
               v-model="searchQuery"
               class="search-box"
-              placeholder="搜索"
+              placeholder="随处搜索"
               @keyup.enter="search"
           >
             <el-icon slot="suffix" class="search-icon"></el-icon>
@@ -50,7 +50,7 @@
           <div class="spacer"></div>
 
           <!-- 2.4 右下角设置按钮 -->
-          <el-button class="settings-button" @click="openApp('Settings')">
+          <el-button class="settings-button" @click="openApp('SettingApp')">
             <el-icon class="settings-icon"></el-icon>
           </el-button>
 
@@ -79,23 +79,26 @@
     </div>
 
     <!-- A 宣传主页 - 背景 -->
+    <div v-if="!enterWorld" class="welcome-screen">
+      <!--  A1 滚动图片框 (2s滚动一次)-->
 
-    <!--  A0 遮罩欢迎页面 -->
-    <!--todo-->
-    <!--  A1 广告-滚动个人介绍 -->
-    <!--todo-->
-    <!--  A2 跳过区域-->
-    <!--todo-->
+      <div class="scrolling-images">
+        <!-- Add your images here todo-->
+      </div>
 
+      <!--  A2 进入按钮 (倒计时10s自动进入) -->
+
+      <el-button class="enter-button" @click="enterApp">进入</el-button>
+
+    </div>
   </div>
 </template>
 
 <script setup>
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
-//! 应用/组件编排逻辑
-// 应用集
 import LoginApp from "@/apps/login-app/login_app.vue";
+
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -109,22 +112,34 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
   cookie, http, Debounce, encrypt
 } = Maven);
 
+
+//! 应用/组件编排逻辑
+// 应用集
+const apps = [
+  {name: 'LoginApp', icon: 'login-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  // Add more apps here
+];
+
+
 // !页面初始化逻辑
 // bootstrap处理
-onBeforeMount = () => {
+onBeforeMount(() => {
 
-}
+});
 
 // 页面初始化
-onMounted = () => {
-
-}
+onMounted(() => {
+  setInterval(() => {
+    currentTime.value = new Date().toLocaleString();
+  }, 1000);
+});
 
 // !页面应用逻辑
 
 
 // ? 页面展示栈组件
-const pageStack = ref([])
+const pageStack = ref([]);
 const currentApp = ref(null); // 当前页面App
 
 //是否只有当前App主页
@@ -135,12 +150,16 @@ let onlyApp = computed(() => {
 /**
  * 显示页面: 将对应的应用压入栈中, 并且打开对应的应用页面
  */
-const openApp = (page) => {
+const openApp = (appName) => {
   let component;
   // 根据页面名称选择对应的应用
-  switch (page) {
+  switch (appName) {
     case 'LoginApp':
       component = LoginApp;
+      break;
+    case 'Settings':
+      //todo
+      // Add Settings component import here
       break;
     default:
       component = null;
@@ -160,6 +179,39 @@ const closeApp = () => {
   currentApp.value = pageStack.value.length ? pageStack.value[pageStack.value.length - 1] : null;
 };
 
+
+//! 首页支撑逻辑
+// 时间
+const currentTime = ref(new Date().toLocaleString());
+
+// 搜索
+const searchQuery = ref('');
+
+const search = () => {
+  console.log('Searching for:', searchQuery.value);
+};
+
+// 进入App
+let enterWorld = false;
+
+
+//! 操作栏功能
+const showAllApps = () => {
+  console.log('Showing all apps');
+};
+
+const showCurrentApp = () => {
+  console.log('Showing current app');
+};
+
+const goBack = () => {
+  closeApp();
+};
+
+
+const enterApp = () => {
+  enterWorld = !enterWorld;
+};
 
 </script>
 
