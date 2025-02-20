@@ -22,7 +22,7 @@
 
       <!-- 2 ///// 主体区域 (切换区域) /////-->
       <el-main class="main-content">
-        <div v-if="onlyApp">
+        <div v-if="onlyApp" class="only-app">
 
           <!-- 2.0 应用名称 + LOGO-->
           <div class="app-name">Haliyun网盘</div>

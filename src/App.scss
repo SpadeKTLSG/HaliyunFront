@@ -24,9 +24,18 @@
         display: flex;
         align-items: center;
 
-        .notification-icon, .app-icon, .search-icon, .settings-icon, .all-apps-icon, .current-app-icon, .back-icon {
+        .notification-icon {
           margin-right: 0.5rem;
         }
+
+        .app-icon {
+          margin-right: 0.5rem;
+        }
+
+        .notification-count {
+          margin-left: 0.5rem;
+        }
+
       }
 
       .header-center {
@@ -38,11 +47,11 @@
       .header-right {
 
 
-        .notification-count {
-          margin-left: 0.5rem;
+        .capacity {
+
         }
 
-        .capacity, .time {
+        .time {
           margin-left: 1rem;
         }
       }
