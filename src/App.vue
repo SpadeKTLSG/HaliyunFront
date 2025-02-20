@@ -2,82 +2,82 @@
   <div class="app-container">
     <!-- 0 主页本身 - 背景 -->
     <div class="background">
-
-      <!-- 1 头部区域 (持久化) -->
-      <el-header class="header">
-        <!-- 1.1 头部左侧 通知 -->
-        <div class="header-left">
-          <el-icon class="el-icon"></el-icon>
-          <el-icon class="app-icon"></el-icon>
-          <span class="notification-count">99+</span>
-        </div>
-        <!-- 1.2 头部中间 标题 -->
-        <div class="header-center">haliyun</div>
-        <!-- 1.3 头部右侧 容量, 时间 -->
-        <div class="header-right">
-          <div class="capacity">80%</div>
-          <div class="time">{{ currentTime }}</div>
-        </div>
-      </el-header>
-
-      <!-- 2 ///// 主体区域 (切换区域) /////-->
-      <el-main class="main-content">
-        <div v-if="onlyApp" class="only-app">
-
-          <!-- 2.0 应用名称 + LOGO-->
-          <div class="app-name">Haliyun网盘</div>
-          <div class="app-logo"/>
-
-          <!-- 2.1 搜索框 -->
-          <el-input
-              v-model="searchQuery"
-              class="search-box"
-              placeholder="随处搜索"
-              @keyup.enter="search"
-          >
-            <el-icon slot="suffix" class="search-icon"></el-icon>
-          </el-input>
-
-          <!-- 2.2 App列表区域 页面宽度动态排列, 超过了滚动 -->
-          <div class="app-list">
-            <el-button v-for="app in apps" :key="app.name" @click="openApp(app.name)">
-              <el-icon :class="app.icon"></el-icon>
-              <span>{{ app.name }}</span>
-            </el-button>
+      <el-container class="home-container">
+        <!-- 1 头部区域 (持久化) -->
+        <el-header class="header">
+          <!-- 1.1 头部左侧 通知 -->
+          <div class="header-left">
+            <el-icon class="el-icon"></el-icon>
+            <el-icon class="app-icon"></el-icon>
+            <span class="notification-count">99+</span>
           </div>
+          <!-- 1.2 头部中间 标题 -->
+          <div class="header-center">haliyun</div>
+          <!-- 1.3 头部右侧 容量, 时间 -->
+          <div class="header-right">
+            <div class="capacity">80%</div>
+            <div class="time">{{ currentTime }}</div>
+          </div>
+        </el-header>
 
-          <!-- 2.3 填充应用区域到下方的空白 -->
-          <div class="spacer"></div>
+        <!-- 2 ///// 主体区域 (切换区域) /////-->
+        <el-main class="main-content">
+          <div v-if="onlyApp" class="only-app">
 
-          <!-- 2.4 右下角设置按钮 -->
-          <el-button class="settings-button" @click="openApp('SettingApp')">
-            <el-icon class="settings-icon"></el-icon>
+            <!-- 2.0 应用名称 + LOGO-->
+            <div class="app-name">Haliyun网盘</div>
+            <div class="app-logo"/>
+
+            <!-- 2.1 搜索框 -->
+            <el-input
+                v-model="searchQuery"
+                class="search-box"
+                placeholder="随处搜索"
+                @keyup.enter="search"
+            >
+              <el-icon slot="suffix" class="search-icon"></el-icon>
+            </el-input>
+
+            <!-- 2.2 App列表区域 页面宽度动态排列, 超过了滚动 -->
+            <div class="app-list">
+              <el-button v-for="app in apps" :key="app.name" @click="openApp(app.name)">
+                <el-icon :class="app.icon"></el-icon>
+                <span>{{ app.name }}</span>
+              </el-button>
+            </div>
+
+            <!-- 2.3 填充应用区域到下方的空白 -->
+            <div class="spacer"></div>
+
+            <!-- 2.4 右下角设置按钮 -->
+            <el-button class="settings-button" @click="openApp('SettingApp')">
+              <el-icon class="settings-icon"></el-icon>
+            </el-button>
+
+          </div>
+          <!-- B 对应应用组件页面 -->
+          <transition name="fade">
+            <component :is="currentApp" v-if="currentApp" @close="closeApp"/>
+          </transition>
+        </el-main>
+
+        <!-- 3 底部操作栏 (持久化 | 动态设置操作按钮) -->
+        <el-footer class="footer">
+          <!--todo, 这三个按钮是在一个 圆角的矩形里面, 这个矩形紧贴下方正中位置-->
+          <!-- 3.1 应用功能列表按钮-->
+          <el-button class="footer-button" @click="showAllApps">
+            <el-icon class="all-apps-icon"></el-icon>
           </el-button>
-
-        </div>
-        <!-- B 对应应用组件页面 -->
-        <transition name="fade">
-          <component :is="currentApp" v-if="currentApp" @close="closeApp"/>
-        </transition>
-      </el-main>
-
-      <!-- 3 底部操作栏 (持久化 | 动态设置操作按钮) -->
-      <el-footer class="footer">
-        <!--todo, 这三个按钮是在一个 圆角的矩形里面, 这个矩形紧贴下方正中位置-->
-        <!-- 3.1 应用功能列表按钮-->
-        <el-button class="footer-button" @click="showAllApps">
-          <el-icon class="all-apps-icon"></el-icon>
-        </el-button>
-        <!-- 3.2 回退到这个App.vue主页(清空栈)按钮-->
-        <el-button class="footer-button" @click="showCurrentApp">
-          <el-icon class="current-app-icon"></el-icon>
-        </el-button>
-        <!-- 3.3 回退App按钮(出栈)-->
-        <el-button class="footer-button" @click="goBack">
-          <el-icon class="back-icon"></el-icon>
-        </el-button>
-      </el-footer>
-
+          <!-- 3.2 回退到这个App.vue主页(清空栈)按钮-->
+          <el-button class="footer-button" @click="showCurrentApp">
+            <el-icon class="current-app-icon"></el-icon>
+          </el-button>
+          <!-- 3.3 回退App按钮(出栈)-->
+          <el-button class="footer-button" @click="goBack">
+            <el-icon class="back-icon"></el-icon>
+          </el-button>
+        </el-footer>
+      </el-container>
     </div>
 
     <!-- A 宣传主页 - 背景 -->

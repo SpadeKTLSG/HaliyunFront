@@ -10,7 +10,7 @@ export default defineConfig({
             scss: {
                 // api: 'modern-compiler',
                 // quietDeps: true, // 静默依赖
-                silenceDeprecations: ['legacy-js-api']// 静默所有过时警告 + Deprecation Warning 信息
+                silenceDeprecations: ['legacy-js-api'],// 静默所有过时警告 + Deprecation Warning 信息
             }
         }
     }, plugins: [vue(), ElementPlus({
