@@ -1,160 +1,156 @@
+// 定义应用容器的样式
 .app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: #f0f0f0;
+  display: flex; // 使用弹性布局
+  flex-direction: column; // 主轴方向为纵向
+  height: 100vh; // 高度占满视口
+  background-color: #f0f0f0; // 背景色为浅灰色
 
-
+  // 背景区域样式
   .background {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    display: flex; // 使用弹性布局
+    flex-direction: column; // 主轴方向为纵向
+    height: 100%; // 高度占满父容器
 
+    // 头部区域样式
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 5%;
-      background-color: #17b9e0;
-      color: #f91313;
-      padding: 0 1rem;
+      display: flex; // 使用弹性布局
+      justify-content: space-between; // 子元素均匀分布
+      align-items: center; // 子元素垂直居中
+      height: 5%; // 高度占父容器的5%
+      background-color: #17b9e0; // 背景色为蓝色
+      color: #f91313; // 字体颜色为红色
+      padding: 0 1rem; // 左右内边距为1rem
 
-
+      // 头部左侧区域样式
       .header-left {
-        display: flex;
-        align-items: center;
+        display: flex; // 使用弹性布局
+        align-items: center; // 子元素垂直居中
 
         .notification-icon {
-          margin-right: 0.5rem;
+          margin-right: 0.5rem; // 右外边距为0.5rem
         }
 
         .app-icon {
-          margin-right: 0.5rem;
+          margin-right: 0.5rem; // 右外边距为0.5rem
         }
 
         .notification-count {
-          margin-left: 0.5rem;
+          margin-left: 0.5rem; // 左外边距为0.5rem
         }
-
       }
 
+      // 头部中间区域样式
       .header-center {
-        font-size: 1.5rem;
-        font-weight: bold;
+        font-size: 1.5rem; // 字体大小为1.5rem
+        font-weight: bold; // 字体加粗
       }
 
-
+      // 头部右侧区域样式
       .header-right {
-
-
         .capacity {
-
+          // 容量样式
         }
 
         .time {
-          margin-left: 1rem;
+          margin-left: 1rem; // 左外边距为1rem
         }
       }
-
     }
 
-
+    // 主体内容区域样式
     .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-
+      flex: 1; // 占据剩余空间
+      display: flex; // 使用弹性布局
+      flex-direction: column; // 主轴方向为纵向
+      align-items: center; // 子元素水平居中
+      justify-content: center; // 子元素垂直居中
+      padding: 1rem; // 内边距为1rem
 
       .app-name {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
+        font-size: 2rem; // 字体大小为2rem
+        font-weight: bold; // 字体加粗
+        margin-bottom: 1rem; // 下外边距为1rem
       }
 
       .search-box {
-        width: 50%;
-        margin-bottom: 1rem;
+        width: 50%; // 宽度为父容器的50%
+        margin-bottom: 1rem; // 下外边距为1rem
       }
 
       .app-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
+        display: flex; // 使用弹性布局
+        flex-wrap: wrap; // 子元素换行
+        justify-content: center; // 子元素水平居中
+        gap: 1rem; // 子元素间隔为1rem
+        margin-bottom: 1rem; // 下外边距为1rem
       }
 
       .spacer {
-        flex: 1;
+        flex: 1; // 占据剩余空间
       }
 
       .settings-button {
-        position: absolute;
-        bottom: 1rem;
-        right: 1rem;
+        position: absolute; // 绝对定位
+        bottom: 1rem; // 下外边距为1rem
+        right: 1rem; // 右外边距为1rem
       }
     }
 
-
+    // 底部操作栏样式
     .footer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 5%;
-      width: 15%;
-      background-color: #04eae0;
-      color: #eb0c0c;
-      padding: 0.5rem;
-      opacity: 0.7;
-      transition: opacity 0.3s;
+      display: flex; // 使用弹性布局
+      justify-content: center; // 子元素水平居中
+      align-items: center; // 子元素垂直居中
+      height: 5%; // 高度占父容器的5%
+      width: 15%; // 宽度占父容器的15%
+      background-color: #04eae0; // 背景色为绿色
+      color: #eb0c0c; // 字体颜色为红色
+      padding: 0.5rem; // 内边距为0.5rem
+      opacity: 0.7; // 透明度为0.7
+      transition: opacity 0.3s; // 透明度过渡时间为0.3秒
 
-
-      .footer:hover {
-        opacity: 1;
+      &:hover {
+        opacity: 1; // 悬停时透明度为1
       }
 
       .footer-buttons {
-        display: flex;
-        justify-content: space-around;
-        width: 200px;
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 10px;
-        padding: 0.5rem;
+        display: flex; // 使用弹性布局
+        justify-content: space-around; // 子元素均匀分布
+        width: 200px; // 宽度为200px
+        background-color: rgba(0, 0, 0, 0.5); // 背景色为半透明黑色
+        border-radius: 10px; // 边框圆角为10px
+        padding: 0.5rem; // 内边距为0.5rem
       }
 
       .footer-button {
-        background-color: transparent;
-        border: none;
-        color: #fff;
-        cursor: pointer;
+        background-color: transparent; // 背景色透明
+        border: none; // 无边框
+        color: #fff; // 字体颜色为白色
+        cursor: pointer; // 鼠标悬停时显示为指针
       }
-
     }
   }
 
-
+  // 欢迎页面样式
   .welcome-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    position: absolute; // 绝对定位
+    top: 0; // 顶部外边距为0
+    left: 0; // 左外边距为0
+    width: 100%; // 宽度占满父容器
+    height: 100%; // 高度占满父容器
+    display: flex; // 使用弹性布局
+    flex-direction: column; // 主轴方向为纵向
+    align-items: center; // 子元素水平居中
+    justify-content: center; // 子元素垂直居中
+    background-color: rgba(0, 0, 0, 0.8); // 背景色为半透明黑色
+    color: #fff; // 字体颜色为白色
   }
 
   .scrolling-images {
-    width: 80%;
-    height: 50%;
-    overflow: hidden;
-    margin-bottom: 1rem;
+    width: 80%; // 宽度为父容器的80%
+    height: 50%; // 高度为父容器的50%
+    overflow: hidden; // 超出部分隐藏
+    margin-bottom: 1rem; // 下外边距为1
     /* Add your scrolling image styles here */
   }
 

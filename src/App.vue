@@ -56,7 +56,9 @@
 
         </div>
         <!-- B 对应应用组件页面 -->
-        <component :is="currentApp" v-if="currentApp" @close="closeApp"/>
+        <transition name="fade">
+          <component :is="currentApp" v-if="currentApp" @close="closeApp"/>
+        </transition>
       </el-main>
 
       <!-- 3 底部操作栏 (持久化 | 动态设置操作按钮) -->
