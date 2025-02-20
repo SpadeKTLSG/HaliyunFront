@@ -195,7 +195,10 @@ const search = () => {
 };
 
 // 进入App
-let enterWorld = false;
+const enterWorld = ref(false);
+const enterApp = () => {
+  enterWorld.value = true;
+};
 
 
 //! 操作栏功能
@@ -211,10 +214,6 @@ const goBack = () => {
   closeApp();
 };
 
-
-const enterApp = () => {
-  enterWorld = !enterWorld;
-};
 
 </script>
 

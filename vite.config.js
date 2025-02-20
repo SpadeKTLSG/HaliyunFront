@@ -4,11 +4,13 @@ import path from 'path'
 import ElementPlus from 'unplugin-element-plus/vite'
 
 export default defineConfig({
-    // 设置scss的api类型为modern-compiler
+    // 设置scss的api类型为modern-compiler`
     css: {
         preprocessorOptions: {
             scss: {
-                api: 'modern-compiler'
+                api: 'modern-compiler',
+                quietDeps: true, // 静默依赖
+                silenceDeprecations: ['legacy-js-api']// 静默所有过时警告 + Deprecation Warning 信息
             }
         }
     },
