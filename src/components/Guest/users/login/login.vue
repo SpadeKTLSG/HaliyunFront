@@ -53,8 +53,6 @@
 <script setup>
 import './login.scss'
 import * as Maven from '@/components/common/maven.js'
-//! 跳页
-import currentPage from '@/apps/login-app/login_app.vue'
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -138,7 +136,6 @@ const login = () => {
       type: 'error',
       duration: 1000
     });
-    currentPage = null;
   })
 }
 

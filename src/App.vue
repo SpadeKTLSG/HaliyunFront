@@ -7,7 +7,7 @@
       <el-header class="header">
         <!-- 1.1 头部左侧 通知 -->
         <div class="header-left">
-          <el-icon class="notification-icon"></el-icon>
+          <el-icon class="el-icon"></el-icon>
           <el-icon class="app-icon"></el-icon>
           <span class="notification-count">99+</span>
         </div>

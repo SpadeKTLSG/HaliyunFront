@@ -8,19 +8,16 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
-                api: 'modern-compiler',
-                quietDeps: true, // 静默依赖
+                // api: 'modern-compiler',
+                // quietDeps: true, // 静默依赖
                 silenceDeprecations: ['legacy-js-api']// 静默所有过时警告 + Deprecation Warning 信息
             }
         }
-    },
-    plugins: [vue(),
-        ElementPlus({
-            useSource: true // Enable source for better tree-shaking
-        })
-    ], // 服务配置
+    }, plugins: [vue(), ElementPlus({
+        useSource: true
+    })], // 服务配置
     server: {
-        host: true, port: 9876, open: true
+        host: true, port: 9876, open: false //别开了哥们
     }, // 解析配置
     resolve: {
         alias: {
