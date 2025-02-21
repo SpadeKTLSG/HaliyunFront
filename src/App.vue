@@ -35,6 +35,7 @@
 
         <!-- 2 ///// 主体区域 (切换区域) /////-->
         <el-main class="main-content">
+
           <div v-if="onlyApp" class="only-app">
 
             <!-- 2.0 应用名称 + LOGO-->
@@ -68,10 +69,12 @@
             </el-button>
 
           </div>
+
           <!-- B 对应应用组件页面 -->
           <transition name="fade">
             <component :is="currentApp" v-if="currentApp" @close="closeApp"/>
           </transition>
+
         </el-main>
 
         <!-- 3 底部操作栏 (持久化 | 动态设置操作按钮) -->
@@ -113,6 +116,7 @@
 </template>
 
 <script setup>
+import {shallowRef} from 'vue';
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
@@ -158,8 +162,8 @@ onMounted(() => {
 
 
 // ? 页面展示栈组件
-const pageStack = ref([]);
-const currentApp = ref(null); // 当前页面App
+const pageStack = shallowRef([]);
+const currentApp = shallowRef(null); // 当前页面App
 
 //是否只有当前App主页
 let onlyApp = computed(() => {
@@ -186,7 +190,6 @@ const openApp = (appName) => {
   // 如果存在则压入栈中
   if (component) {
     pageStack.value.push(component);
-    currentApp.value = component;
   }
 }
 
@@ -195,7 +198,6 @@ const openApp = (appName) => {
  */
 const closeApp = () => {
   pageStack.value.pop();
-  currentApp.value = pageStack.value.length ? pageStack.value[pageStack.value.length - 1] : null;
 };
 
 
