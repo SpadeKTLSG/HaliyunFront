@@ -146,7 +146,14 @@
 
       <div class="scrolling-images">
         <!-- Add your images here todo-->
+        <el-image
+            class="scrolling-image"
+            fit="contain"
+            src="../static/img/首页轮播图集合 (2).png">
+        </el-image>
       </div>
+
+      <span class="enter-tip">点击进入</span>
 
       <!--  A2 进入按钮 (倒计时10s自动进入) -->
 
@@ -261,7 +268,7 @@ const search = () => {
 };
 
 // 进入App
-const enterWorld = ref(true); //todo 太麻烦了
+const enterWorld = ref(false); //todo 太麻烦了
 const enterApp = () => {
   enterWorld.value = true;
 };

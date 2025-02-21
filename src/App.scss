@@ -229,7 +229,7 @@ html, body {
 
   }
 
-  // 欢迎页面样式
+  //  宣传主页样式
   .welcome-screen {
     position: absolute; // 绝对定位
     top: 0; // 顶部外边距为0
@@ -243,20 +243,30 @@ html, body {
     background-color: rgba(0, 0, 0, 0.8); // 背景色为半透明黑色
     color: #fff; // 字体颜色为白色
 
+
     .scrolling-images {
-      width: 80%; // 宽度为父容器的80%
-      height: 50%; // 高度为父容器的50%
+      width: 40%;
+      margin-top: 40px;
       overflow: hidden; // 超出部分隐藏
       margin-bottom: 1rem; // 下外边距为1
-      /* Add your scrolling image styles here */
+    }
+
+    .enter-tip {
+      color: #eb0c0c;
+      font-size: 2rem;
     }
 
     .enter-button {
-      background-color: #fff;
-      color: #000;
+      background-color: #e5f1d9;
+      color: #15d41b;
       border: none;
+      margin-top: 10px;
       padding: 0.5rem 1rem;
+      border-radius: 10px;
       cursor: pointer;
+      width: 500px;
+      height: 80px;
+      font-size: 2rem;
     }
 
   }
