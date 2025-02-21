@@ -1,0 +1,44 @@
+
+.login {
+  width: 1650px;
+  height: 810px;
+  border-radius: 10px;
+  background: url('/static/bg/login-bg.jpg') no-repeat;
+  background-size: cover;
+  justify-content: center;
+
+
+  .login-box {
+    padding-left: 25px;
+    padding-top: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .mid {
+      font-size: 14px;
+
+      .info {
+        width: 410px;
+      }
+
+      .login-btn {
+        width: 100%;
+      }
+
+    }
+
+
+    .bottom-sign {
+      color: #999;
+      font-size: 12px;
+      text-align: center;
+      margin-top: auto; /* Push to the bottom */
+      padding-top: 27%;
+      padding-bottom: 5%; /* Add padding at the bottom */
+
+    }
+
+  }
+}

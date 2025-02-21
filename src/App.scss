@@ -1,0 +1,311 @@
+@use "@/components/common/variables.scss";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; // Prevent scrollbars
+}
+
+// 定义应用容器的样式
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+
+  // 背景区域样式
+  .background {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: variables.$background-color;
+
+    // 主页容器样式
+    .home-container {
+
+      // 头部区域样式
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 4%;
+        background-color: variables.$primary-color;
+        padding: 0 1rem; // 左右内边距
+
+        // 头部左侧区域样式
+        .header-left {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem; // 子元素间隔为0.5rem
+          margin-right: 0.5rem; // 右外边距为0.5rem
+
+          .notification-icon {
+            color: #ee0000;
+          }
+
+          .app-icon {
+            color: #66e90e;
+          }
+
+          .notification-count {
+            color: #82786e;
+          }
+        }
+
+        // 头部中间区域样式
+        .header-center {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem; // 子元素间隔为0.5rem
+          margin-right: 0.5rem; // 右外边距为0.5rem
+
+          .title {
+            font-size: 1.5rem;
+            color: #f7dc58;
+          }
+        }
+
+        // 头部右侧区域样式
+        .header-right {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem; // 子元素间隔为0.5rem
+          margin-right: -0.5rem; // 右外边距为0.5rem
+
+          .capacity {
+            margin-bottom: 15px;
+            max-width: 600px;
+            height: 5px;
+          }
+
+          .time {
+            margin-left: 1rem; // 左外边距为1rem
+          }
+        }
+      }
+
+      // 主体内容区域样式
+      .main-content {
+        display: flex;
+        flex: 1; // 占据页面剩余空间
+        flex-direction: column;
+        align-items: center; // 子元素水平居中
+  
+
+        // 主体内容区域样式: 只有首页内容
+        .only-app-content {
+
+          .app-name {
+            margin-left: 30%;
+            font-size: 6rem; // 字体大小为6rem
+            font-weight: bold; // 字体加粗
+            margin-bottom: 4rem; // 下外边距
+            background: linear-gradient(90deg, #66ccff, #ee0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #66ccff;
+            display: inline-block;
+            animation: gradient-animation, blink-animation 3s infinite;
+            //旋转:  rotate-animation 200s linear infinite;
+
+          }
+
+
+          .search-box {
+            //横向居中
+            display: flex;
+            width: 80%;
+            height: 40px;
+            margin: 0 auto 3rem auto;
+
+            .search-icon {
+              cursor: pointer;
+            }
+          }
+
+          //应用列表样式
+          .app-list {
+            display: flex;
+            flex-wrap: wrap; // 子元素换行
+            justify-content: center; // 子元素水平居中
+            gap: 3rem; // 子元素间隔
+            margin-bottom: 1rem; // 下外边距为1rem
+            width: 80%;
+            margin-left: 10%;
+
+            .app-target {
+              display: flex;
+              flex-direction: column; // 子元素垂直
+              align-items: center; // 子元素水平居中
+
+
+              .square-button {
+                width: 60px;
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .full-size-image {
+                  width: 60px; // Full
+                }
+              }
+
+              .app-show-text {
+                font-size: 2rem;
+                color: #0c82eb;
+              }
+            }
+
+          }
+
+
+          .spacer { // 占据剩余空间
+            flex: 1;
+          }
+
+
+          .settings-button {
+            position: absolute; // 绝对定位
+            bottom: 1rem; // 下外边距为1rem
+            right: 1rem; // 右外边距为1rem
+          }
+        }
+
+        // 主体内容区域样式: 有应用内容
+        .app-content {
+
+        }
+
+      }
+
+      // 底部操作栏样式
+      .myfooter {
+        display: flex;
+        justify-content: center; // 子元素水平居中
+        align-items: center; // 子元素垂直居中
+        height: 5%; // 高度占父容器的5%
+        width: 15%; // 宽度占父容器的15%
+        background-color: #869898; // 背景色为绿色
+        padding: 0.5rem; // 内边距为0.5rem
+        opacity: 0.7; // 透明度为0.7
+        transition: opacity 0.3s; // 透明度过渡时间为0.3秒
+        margin-left: 42%; // 左外边距为42%
+        position: absolute; // 绝对定位
+        bottom: 0; // 紧贴底部
+        border: 1px solid var(--el-border-color);
+        border-radius: 20px;
+        margin-top: 20px;
+
+        &:hover {
+          opacity: 1; // 悬停时透明度为1
+        }
+
+        .footer-buttons {
+          display: flex;
+          justify-content: space-around; // 子元素均匀分布
+          width: 200px; // 宽度为200px
+          border-radius: 10px; // 边框圆角为10px
+          padding: 0.5rem; // 内边距为0.5rem
+
+
+          .footer-button {
+            background-color: transparent; // 背景色透明
+            border: none; // 无边框
+            color: #fff; // 字体颜色为白色
+            cursor: pointer; // 鼠标悬停时显示为指针
+            width: 60px
+          }
+        }
+
+
+      }
+    }
+
+  }
+
+  //  宣传主页样式
+  .welcome-screen {
+    position: absolute; // 绝对定位
+    top: 0; // 顶部外边距为0
+    left: 0; // 左外边距为0
+    width: 100%; // 宽度占满父容器
+    height: 100%; // 高度占满父容器
+    display: flex;
+    flex-direction: column;
+    align-items: center; // 子元素水平居中
+    justify-content: center; // 子元素垂直居中
+    background-color: rgba(0, 0, 0, 0.8); // 背景色为半透明黑色
+    color: #fff; // 字体颜色为白色
+
+
+    .scrolling-images {
+      width: 40%;
+      margin-top: 40px;
+      overflow: hidden; // 超出部分隐藏
+      margin-bottom: 1rem; // 下外边距为1
+    }
+
+    .enter-tip {
+      color: #eb0c0c;
+      font-size: 2rem;
+    }
+
+    .enter-button {
+      background-color: #e5f1d9;
+      color: #15d41b;
+      border: none;
+      margin-top: 10px;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 500px;
+      height: 80px;
+      font-size: 2rem;
+    }
+
+  }
+
+
+}
+
+//todo
+
+
+//! Animation 动画
+
+
+@keyframes gradient-animation { //渐变动画
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes blink-animation { //闪烁动画
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes rotate-animation { //旋转动画
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,29 @@
+
+.login_app {
+  display: flex;
+  margin-top: -10px;
+  flex-direction: column;
+  height: 5vh;
+
+
+  .base_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f91313;
+    background-color: #15d41b;
+    line-height: 35px;
+    font-size: 25px;
+    width: 1400px;
+    border-radius: 20px;
+    opacity: 0.4;
+
+  }
+
+
+}
+
+//对应页面组件, 需要占满剩下的全部页面.
+.login_compo {
+  flex: 1; /* 使 login_compo 占满剩余空间 */
+}
