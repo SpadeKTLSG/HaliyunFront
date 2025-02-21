@@ -105,22 +105,39 @@
         </el-main>
 
         <!-- 3 底部操作栏 (持久化 | 动态设置操作按钮) -->
-        <el-footer class="footer">
-          <!--todo, 这三个按钮是在一个 圆角的矩形里面, 这个矩形紧贴下方正中位置-->
-          <!-- 3.1 应用功能列表按钮-->
-          <el-button class="footer-button" @click="showAllApps">
-            <el-icon class="all-apps-icon"></el-icon>
-          </el-button>
-          <!-- 3.2 回退到这个App.vue主页(清空栈)按钮-->
-          <el-button class="footer-button" @click="showCurrentApp">
-            <el-icon class="current-app-icon"></el-icon>
-          </el-button>
-          <!-- 3.3 回退App按钮(出栈)-->
-          <el-button class="footer-button" @click="goBack">
-            <el-icon class="back-icon"></el-icon>
-          </el-button>
-        </el-footer>
+
+        <!--todo, 这三个按钮是在一个 圆角的矩形里面, 这个矩形紧贴下方正中位置-->
+
+        <el-col class="myfooter">
+          <el-col class="footer-buttons">
+
+            <!-- 3.1 应用功能列表按钮-->
+            <el-button class="footer-button" @click="showAllApps">
+              <el-icon>
+                <Expand/>
+              </el-icon>
+            </el-button>
+
+            <!-- 3.2 回退到这个App.vue主页(清空栈)按钮-->
+            <el-button class="footer-button" @click="backAppHome">
+              <el-icon>
+                <HelpFilled/>
+              </el-icon>
+            </el-button>
+
+            <!-- 3.3 回退App按钮(出栈)-->
+            <el-button class="footer-button" @click="goBack">
+              <el-icon>
+                <ArrowLeft/>
+              </el-icon>
+            </el-button>
+
+          </el-col>
+        </el-col>
+
+
       </el-container>
+
     </div>
 
     <!-- A 宣传主页 - 背景 -->
@@ -146,7 +163,7 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
-import {ChatDotRound, Cloudy, Search, Setting, Suitcase} from "@element-plus/icons-vue";
+import {ArrowLeft, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -253,14 +270,15 @@ const enterApp = () => {
 //? 操作栏功能
 const showAllApps = () => {
   ElMessage({
-    message: 'Showing all apps',
+    message: '系统应用列表: ' + apps.map(app => app.show).join('\n'),
     type: 'success'
   });
 };
 
-const showCurrentApp = () => {
+const backAppHome = () => {
+  closeApp();
   ElMessage({
-    message: 'Showing current app',
+    message: '回到首页!',
     type: 'success'
   });
 };

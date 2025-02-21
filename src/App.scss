@@ -1,10 +1,18 @@
 @use "@/components/common/variables.scss";
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; // Prevent scrollbars
+}
+
 // 定义应用容器的样式
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; // 高度占满视口
+  height: 100vh;
+  width: 100vw;
 
   // 背景区域样式
   .background {
@@ -114,6 +122,10 @@
             width: 80%;
             height: 40px;
             margin: 0 auto 3rem auto;
+
+            .search-icon {
+              cursor: pointer;
+            }
           }
 
           //应用列表样式
@@ -173,17 +185,22 @@
       }
 
       // 底部操作栏样式
-      .footer {
+      .myfooter {
         display: flex;
         justify-content: center; // 子元素水平居中
         align-items: center; // 子元素垂直居中
         height: 5%; // 高度占父容器的5%
         width: 15%; // 宽度占父容器的15%
-        background-color: #04eae0; // 背景色为绿色
-        color: #eb0c0c; // 字体颜色为红色
+        background-color: #869898; // 背景色为绿色
         padding: 0.5rem; // 内边距为0.5rem
         opacity: 0.7; // 透明度为0.7
         transition: opacity 0.3s; // 透明度过渡时间为0.3秒
+        margin-left: 42%; // 左外边距为42%
+        position: absolute; // 绝对定位
+        bottom: 0; // 紧贴底部
+        border: 1px solid var(--el-border-color);
+        border-radius: 20px;
+        margin-top: 20px;
 
         &:hover {
           opacity: 1; // 悬停时透明度为1
@@ -193,17 +210,20 @@
           display: flex;
           justify-content: space-around; // 子元素均匀分布
           width: 200px; // 宽度为200px
-          background-color: rgba(0, 0, 0, 0.5); // 背景色为半透明黑色
           border-radius: 10px; // 边框圆角为10px
           padding: 0.5rem; // 内边距为0.5rem
+
+
+          .footer-button {
+            background-color: transparent; // 背景色透明
+            border: none; // 无边框
+            color: #fff; // 字体颜色为白色
+            cursor: pointer; // 鼠标悬停时显示为指针
+            width: 60px
+          }
         }
 
-        .footer-button {
-          background-color: transparent; // 背景色透明
-          border: none; // 无边框
-          color: #fff; // 字体颜色为白色
-          cursor: pointer; // 鼠标悬停时显示为指针
-        }
+
       }
     }
 
@@ -245,10 +265,7 @@
 }
 
 //todo
-.search-icon, .settings-icon, .all-apps-icon, .current-app-icon, .back-icon {
-  font-size: 1.5rem;
-  cursor: pointer;
-}
+
 
 //! Animation 动画
 
