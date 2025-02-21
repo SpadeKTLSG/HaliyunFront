@@ -83,17 +83,17 @@
 
       // 主体内容区域样式
       .main-content {
-        flex: 1; // 占据剩余空间
         display: flex;
+        flex: 1; // 占据页面剩余空间
         flex-direction: column;
         align-items: center; // 子元素水平居中
-        justify-content: center; // 子元素垂直居中
-        padding: 1rem; // 内边距为1rem
+        padding: 3rem;
 
         .app-name {
-          font-size: 2rem; // 字体大小为2rem
+          font-size: 6rem; // 字体大小为2rem
+
           font-weight: bold; // 字体加粗
-          margin-bottom: 1rem; // 下外边距为1rem
+          margin-bottom: 10rem; // 下外边距
         }
 
         .search-box {

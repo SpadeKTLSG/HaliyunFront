@@ -36,7 +36,7 @@
         <!-- 2 ///// 主体区域 (切换区域) /////-->
         <el-main class="main-content">
 
-          <div v-if="onlyApp" class="only-app">
+          <div v-if="currentApp === 'App'" class="only-app">
 
             <!-- 2.0 应用名称 + LOGO-->
             <div class="app-name">Haliyun网盘</div>
@@ -70,9 +70,9 @@
 
           </div>
 
-          <!-- B 对应应用组件页面 -->
+          <!-- B 对应应用组件页面 :  -->
           <transition name="fade">
-            <component :is="currentApp" v-if="currentApp" @close="closeApp"/>
+            <component :is="currentComponent" v-if="currentComponent" @close="closeApp"/>
           </transition>
 
         </el-main>
@@ -116,12 +116,10 @@
 </template>
 
 <script setup>
-import {shallowRef} from 'vue';
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
 import {ChatDotRound, Suitcase} from "@element-plus/icons-vue";
-
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -136,7 +134,10 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 } = Maven);
 
 
-//! 应用/组件编排逻辑
+// ! 应用/组件编排逻辑
+// 当前页面App标识字段
+const currentApp = ref('App');
+
 // 应用集
 const apps = [
   {name: 'LoginApp', icon: 'login-icon'},
@@ -144,8 +145,33 @@ const apps = [
   // Add more apps here
 ];
 
+// 计算属性来获取当前显示的组件
+const currentComponent = computed(() => {
+  switch (currentApp.value) {
+    case 'LoginApp':
+      return LoginApp;
+      // Add more cases for other apps
+    default:
+      return null;
+  }
+});
 
-// !页面初始化逻辑
+/**
+ * 显示页面
+ */
+const openApp = (appName) => {
+  currentApp.value = appName;
+}
+
+/**
+ * 关闭页面
+ */
+const closeApp = () => {
+  currentApp.value = 'App';
+};
+
+
+// ?初始化逻辑
 // bootstrap处理
 onBeforeMount(() => {
 
@@ -158,50 +184,13 @@ onMounted(() => {
   }, 1000);
 });
 
-// !页面应用逻辑
+// ! 页面应用逻辑
 
 
-// ? 页面展示栈组件
-const pageStack = shallowRef([]);
-const currentApp = shallowRef(null); // 当前页面App
-
-//是否只有当前App主页
-let onlyApp = computed(() => {
-  return pageStack.value.length === 0;
-});
-
-/**
- * 显示页面: 将对应的应用压入栈中, 并且打开对应的应用页面
- */
-const openApp = (appName) => {
-  let component;
-  // 根据页面名称选择对应的应用
-  switch (appName) {
-    case 'LoginApp':
-      component = LoginApp;
-      break;
-    case 'Settings':
-      //todo
-      // Add Settings component import here
-      break;
-    default:
-      component = null;
-  }
-  // 如果存在则压入栈中
-  if (component) {
-    pageStack.value.push(component);
-  }
-}
-
-/**
- * 关闭页面: 从栈中弹出页面, 如果非空则打开栈顶页面
- */
-const closeApp = () => {
-  pageStack.value.pop();
-};
+// ! 页面展示组件
 
 
-//! 首页支撑逻辑
+//? 首页支撑逻辑
 // 时间
 const currentTime = ref(new Date().toLocaleString());
 
@@ -219,13 +208,19 @@ const enterApp = () => {
 };
 
 
-//! 操作栏功能
+//? 操作栏功能
 const showAllApps = () => {
-  console.log('Showing all apps');
+  ElMessage({
+    message: 'Showing all apps',
+    type: 'success'
+  });
 };
 
 const showCurrentApp = () => {
-  console.log('Showing current app');
+  ElMessage({
+    message: 'Showing current app',
+    type: 'success'
+  });
 };
 
 const goBack = () => {
