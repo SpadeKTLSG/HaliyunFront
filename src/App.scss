@@ -35,7 +35,7 @@
           margin-right: 0.5rem; // 右外边距为0.5rem
 
           .notification-icon {
-            color: #ee0b1a;
+            color: #ee0000;
           }
 
           .app-icon {
@@ -93,14 +93,14 @@
         .only-app-content {
 
           .app-name {
-
+            margin-left: 30%;
             font-size: 6rem; // 字体大小为6rem
             font-weight: bold; // 字体加粗
             margin-bottom: 4rem; // 下外边距
-            background: linear-gradient(90deg, #66ccff, #f91313);
+            background: linear-gradient(90deg, #66ccff, #ee0000);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            color: #17b9e0;
+            color: #66ccff;
             display: inline-block;
             animation: gradient-animation, blink-animation 3s infinite;
             //旋转:  rotate-animation 200s linear infinite;
@@ -111,20 +111,25 @@
           .search-box {
             //横向居中
             display: flex;
-            width: 150%; // 宽度为父容器的%
-            margin-bottom: 1rem; // 下外边距为1rem
+            width: 80%;
+            height: 40px;
+            margin: 0 auto 3rem auto;
           }
 
+          //应用列表样式
           .app-list {
             display: flex;
             flex-wrap: wrap; // 子元素换行
             justify-content: center; // 子元素水平居中
             gap: 1rem; // 子元素间隔为1rem
             margin-bottom: 1rem; // 下外边距为1rem
+            width: 80%;
+            margin-left: 10%;
           }
 
-          .spacer {
-            flex: 1; // 占据剩余空间
+
+          .spacer { // 占据剩余空间
+            flex: 1;
           }
 
           .settings-button {

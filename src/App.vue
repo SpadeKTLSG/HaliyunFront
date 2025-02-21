@@ -60,10 +60,16 @@
 
             <!-- 2.2 App列表区域 页面宽度动态排列, 超过了滚动 -->
             <div class="app-list">
-              <el-button v-for="app in apps" :key="app.name" @click="openApp(app.name)">
+              <el-button v-for="app in apps"
+                         :key="app.name"
+                         :icon="Edit"
+                         @click="openApp(app.name)"
+              >
                 <el-icon :class="app.icon"></el-icon>
                 <span>{{ app.name }}</span>
+
               </el-button>
+
             </div>
 
             <!-- 2.3 填充应用区域到下方的空白 -->
@@ -126,7 +132,7 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
-import {ChatDotRound, Cloudy, Search, Suitcase} from "@element-plus/icons-vue";
+import {ChatDotRound, Cloudy, Edit, Search, Suitcase} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -148,6 +154,25 @@ const currentApp = ref('App');
 // 应用集
 const apps = [
   {name: 'LoginApp', icon: 'login-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
+  {name: 'SettingApp', icon: 'settings-icon'},
   {name: 'SettingApp', icon: 'settings-icon'},
   // Add more apps here
 ];
