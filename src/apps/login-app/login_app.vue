@@ -10,7 +10,7 @@
   </div>
 
   <!--具体页面-->
-  <component :is="currentView" @close="backAppHome"/>
+  <component :is="currentView" class="login_compo" @close="backAppHome"/>
 
 </template>
 

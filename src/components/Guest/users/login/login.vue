@@ -1,9 +1,9 @@
 <template>
   <div class="login">
     <div class="login-box">
+
+
       <div class="mid">
-
-
         <!--登录表单-->
         <el-form
             ref="dataFormRef"
@@ -18,6 +18,7 @@
                 placeholder="请输入帐号"
             />
           </el-form-item>
+
           <el-form-item prop="password">
             <el-input
                 v-model="dataForm.password"
@@ -26,6 +27,7 @@
                 type="password"
             />
           </el-form-item>
+
           <el-form-item prop="account">
             <el-input
                 v-model="dataForm.code"
@@ -33,6 +35,7 @@
                 placeholder="请输入验证码"
             />
           </el-form-item>
+
           <el-form-item>
             <el-button
                 class="login-btn"
@@ -42,10 +45,11 @@
               登录
             </el-button>
           </el-form-item>
+
         </el-form>
       </div>
 
-      
+
       <div class="bottom-sign">
         Copyright © 2025 睡眠促进委员会 Sleep Promotion Committee
       </div>
