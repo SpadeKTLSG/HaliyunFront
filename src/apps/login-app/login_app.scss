@@ -1,0 +1,23 @@
+
+.login_app {
+  display: flex;
+  margin-top: -18px;
+  margin-left: 10px;
+  width: 100%;
+
+  .base_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f91313;
+    background-color: #15d41b;
+    line-height: 35px;
+    width: 100%;
+    font-size: 25px;
+    border-radius: 20px;
+    opacity: 0.4;
+
+  }
+
+
+}

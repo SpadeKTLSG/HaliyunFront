@@ -52,7 +52,7 @@
 <script setup>
 import './login.scss'
 import * as Maven from '@/components/common/maven.js'
-import currentPage from '@/apps/login-app/login_app.vue'
+import {inject} from 'vue'
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -107,38 +107,40 @@ const dataRule = {
   ]
 }
 
+// DI 依赖注入
+const currentPage = inject('currentPage');
 
 const login = () => {
-  currentPage = 'home'; //todo
+  currentPage.value = 'home'; //todo
 
-  http({
-    url: http.adornUrl('/Guest/users/login'),
-    method: 'post',
-    data: http.adornData({
-      account: dataForm.value.account,
-      // passWord: encrypt(dataForm.value.password), todo 联调实现加密落库
-      passWord: dataForm.value.password,
-      code: dataForm.value.code,
-      // 临时:
-      admin: 1,
-      loginType: 3,
-      phone: "15911451419"
-    })
-  }).then(({data}) => {
-    ElMessage({
-      message: "登录成功",
-      type: 'success',
-      duration: 1000
-    });
-    cookie.set('Authorization', data)
-    cookie.set('account', dataForm.value.account)
-  }).catch(() => {
-    ElMessage({
-      message: "登录失败",
-      type: 'error',
-      duration: 1000
-    });
-  })
+  // http({
+  //   url: http.adornUrl('/Guest/users/login'),
+  //   method: 'post',
+  //   data: http.adornData({
+  //     account: dataForm.value.account,
+  //     // passWord: encrypt(dataForm.value.password), todo 联调实现加密落库
+  //     passWord: dataForm.value.password,
+  //     code: dataForm.value.code,
+  //     // 临时:
+  //     admin: 1,
+  //     loginType: 3,
+  //     phone: "15911451419"
+  //   })
+  // }).then(({data}) => {
+  //   ElMessage({
+  //     message: "登录成功",
+  //     type: 'success',
+  //     duration: 1000
+  //   });
+  //   cookie.set('Authorization', data)
+  //   cookie.set('account', dataForm.value.account)
+  // }).catch(() => {
+  //   ElMessage({
+  //     message: "登录失败",
+  //     type: 'error',
+  //     duration: 1000
+  //   });
+  // })
 }
 
 
