@@ -89,7 +89,9 @@
 
             <!-- 2.4 右下角设置按钮 -->
             <el-button class="settings-button" @click="openApp('SettingApp')">
-              <el-icon class="settings-icon"></el-icon>
+              <el-icon>
+                <Setting/>
+              </el-icon>
             </el-button>
 
           </div>
@@ -144,7 +146,7 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
-import {ChatDotRound, Cloudy, Search, Suitcase} from "@element-plus/icons-vue";
+import {ChatDotRound, Cloudy, Search, Setting, Suitcase} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
