@@ -46,13 +46,13 @@
         Copyright © 2025 睡眠促进委员会 Sleep Promotion Committee
       </div>
     </div>
-    <button @click="$emit('close')">关闭</button>
   </div>
 </template>
 
 <script setup>
 import './login.scss'
 import * as Maven from '@/components/common/maven.js'
+import currentPage from '@/apps/login-app/login_app.vue'
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -109,6 +109,8 @@ const dataRule = {
 
 
 const login = () => {
+  currentPage = 'home'; //todo
+
   http({
     url: http.adornUrl('/Guest/users/login'),
     method: 'post',

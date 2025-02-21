@@ -1,8 +1,11 @@
 <template>
   <div>
-    <el-text class="temp">轴心框架 - 页面模板</el-text>
+    <el-header class="base_header">
+      <div class="title"></div>
+
+    </el-header>
     <slot></slot>
-    <button @click="$emit('close')">关闭应用</button>
+
   </div>
 </template>
 
@@ -10,5 +13,21 @@
 
 defineProps();
 defineEmits(['close']);
+// @click="$emit('close')" //todo 这个写在对应的组件里面, 实现App内的跳页
 
 </script>
+
+<style scoped>
+.base_header {
+  background-color: #66e90e;
+  color: #f91313;
+  line-height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 10px;
+}
+</style>

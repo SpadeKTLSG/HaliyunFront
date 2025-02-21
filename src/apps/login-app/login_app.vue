@@ -1,14 +1,10 @@
 <template>
 
   <BaseApp>
-    <el-button @click="currentPage = 'login'">登录</el-button>
-    <el-button @click="currentPage = 'home'">首页</el-button>
-
+    <Login v-if="currentPage === 'login' || currentPage === '' " @close="backAppHome"/>
     <Home v-if="currentPage === 'home'" @close="backAppHome"/>
-    <Login v-if="currentPage === 'login'" @close="backAppHome"/>
   </BaseApp>
 
-  <!--  先登录, 之后展示主页-->
 </template>
 
 <script setup>
