@@ -106,8 +106,6 @@
 
         <!-- 3 底部操作栏 (持久化 | 动态设置操作按钮) -->
 
-        <!--todo, 这三个按钮是在一个 圆角的矩形里面, 这个矩形紧贴下方正中位置-->
-
         <el-col class="myfooter">
           <el-col class="footer-buttons">
 
@@ -145,7 +143,6 @@
       <!--  A1 滚动图片框 (2s滚动一次)-->
 
       <div class="scrolling-images">
-        <!-- Add your images here todo-->
         <el-image
             class="scrolling-image"
             fit="contain"
@@ -268,7 +265,7 @@ const search = () => {
 };
 
 // 进入App
-const enterWorld = ref(false); //todo 太麻烦了
+const enterWorld = ref(true);
 const enterApp = () => {
   enterWorld.value = true;
 };
@@ -285,7 +282,7 @@ const showAllApps = () => {
 const backAppHome = () => {
   closeApp();
   ElMessage({
-    message: '回到首页!',
+    message: '你已经回到首页',
     type: 'success'
   });
 };
