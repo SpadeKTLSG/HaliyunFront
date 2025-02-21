@@ -36,15 +36,21 @@
         <!-- 2 ///// 主体区域 (切换区域) /////-->
         <el-main class="main-content">
 
-          <div v-if="currentApp === 'App'" class="only-app">
+          <div v-if="currentApp === 'App'" class="only-app-content">
 
             <!-- 2.0 应用名称 + LOGO-->
-            <div class="app-name">Haliyun网盘</div>
-            <div class="app-logo"/>
+            <div class="app-name">
+              Haliyun网盘
+              <el-icon>
+                <Cloudy/>
+              </el-icon>
+            </div>
+
 
             <!-- 2.1 搜索框 -->
             <el-input
                 v-model="searchQuery"
+                :suffix-icon="Search"
                 class="search-box"
                 placeholder="随处搜索"
                 @keyup.enter="search"
@@ -71,9 +77,10 @@
           </div>
 
           <!-- B 对应应用组件页面 :  -->
-          <transition name="fade">
-            <component :is="currentComponent" v-if="currentComponent" @close="closeApp"/>
-          </transition>
+          <div v-if="currentComponent" class="app-content">
+            <component :is="currentComponent" @close="closeApp"/>
+          </div>
+
 
         </el-main>
 
@@ -119,7 +126,7 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
-import {ChatDotRound, Suitcase} from "@element-plus/icons-vue";
+import {ChatDotRound, Cloudy, Search, Suitcase} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -202,7 +209,7 @@ const search = () => {
 };
 
 // 进入App
-const enterWorld = ref(false);
+const enterWorld = ref(true); //todo 太麻烦了
 const enterApp = () => {
   enterWorld.value = true;
 };

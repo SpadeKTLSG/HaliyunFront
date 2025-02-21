@@ -89,35 +89,56 @@
         align-items: center; // 子元素水平居中
         padding: 3rem;
 
-        .app-name {
-          font-size: 6rem; // 字体大小为2rem
+        // 主体内容区域样式: 只有首页内容
+        .only-app-content {
 
-          font-weight: bold; // 字体加粗
-          margin-bottom: 10rem; // 下外边距
+          .app-name {
+
+            font-size: 6rem; // 字体大小为6rem
+            font-weight: bold; // 字体加粗
+            margin-bottom: 4rem; // 下外边距
+            background: linear-gradient(90deg, #66ccff, #f91313);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #17b9e0;
+            display: inline-block;
+            animation: gradient-animation, blink-animation 3s infinite;
+            //旋转:  rotate-animation 200s linear infinite;
+
+          }
+
+
+          .search-box {
+            //横向居中
+            display: flex;
+            width: 150%; // 宽度为父容器的%
+            margin-bottom: 1rem; // 下外边距为1rem
+          }
+
+          .app-list {
+            display: flex;
+            flex-wrap: wrap; // 子元素换行
+            justify-content: center; // 子元素水平居中
+            gap: 1rem; // 子元素间隔为1rem
+            margin-bottom: 1rem; // 下外边距为1rem
+          }
+
+          .spacer {
+            flex: 1; // 占据剩余空间
+          }
+
+          .settings-button {
+            position: absolute; // 绝对定位
+            bottom: 1rem; // 下外边距为1rem
+            right: 1rem; // 右外边距为1rem
+          }
         }
 
-        .search-box {
-          width: 50%; // 宽度为父容器的50%
-          margin-bottom: 1rem; // 下外边距为1rem
+        // 主体内容区域样式: 有应用内容
+        .app-content {
+
         }
 
-        .app-list {
-          display: flex;
-          flex-wrap: wrap; // 子元素换行
-          justify-content: center; // 子元素水平居中
-          gap: 1rem; // 子元素间隔为1rem
-          margin-bottom: 1rem; // 下外边距为1rem
-        }
-
-        .spacer {
-          flex: 1; // 占据剩余空间
-        }
-
-        .settings-button {
-          position: absolute; // 绝对定位
-          bottom: 1rem; // 下外边距为1rem
-          right: 1rem; // 右外边距为1rem
-        }
       }
 
       // 底部操作栏样式
@@ -196,4 +217,37 @@
 .search-icon, .settings-icon, .all-apps-icon, .current-app-icon, .back-icon {
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+//! Animation 动画
+
+
+@keyframes gradient-animation { //渐变动画
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes blink-animation { //闪烁动画
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes rotate-animation { //旋转动画
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
