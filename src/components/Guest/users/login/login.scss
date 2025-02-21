@@ -6,10 +6,6 @@
   background-size: cover;
 
   .login-box {
-    position: absolute;
-    transform: translateX(-50%);
-    height: 100%;
-    padding-top: 10%;
 
     .top {
       margin-bottom: 30px;
@@ -21,10 +17,7 @@
         margin: 0 auto;
       }
 
-      &:deep(.company) {
-        font-size: 16px;
-        margin-top: 10px;
-      }
+
     }
 
     .mid {
@@ -45,7 +38,7 @@
 
           .login-button {
             cursor: pointer;
-            transition: filter 0.3s ease;
+        
           }
 
         }
@@ -53,9 +46,7 @@
     }
 
     .bottom-sign {
-      position: absolute;
-      bottom: 10%;
-      width: 100%;
+
       color: #999;
       font-size: 12px;
       text-align: center;

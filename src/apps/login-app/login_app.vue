@@ -6,11 +6,11 @@
     <!--应用标识-->
 
     <el-text class="base_header">登录器</el-text>
-    <!--具体页面-->
-    <component :is="currentView" @close="backAppHome"/>
 
   </div>
 
+  <!--具体页面-->
+  <component :is="currentView" @close="backAppHome"/>
 
 </template>
 
