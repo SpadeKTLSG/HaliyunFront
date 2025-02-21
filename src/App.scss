@@ -121,10 +121,35 @@
             display: flex;
             flex-wrap: wrap; // 子元素换行
             justify-content: center; // 子元素水平居中
-            gap: 1rem; // 子元素间隔为1rem
+            gap: 3rem; // 子元素间隔
             margin-bottom: 1rem; // 下外边距为1rem
             width: 80%;
             margin-left: 10%;
+
+            .app-target {
+              display: flex;
+              flex-direction: column; // 子元素垂直
+              align-items: center; // 子元素水平居中
+
+
+              .square-button {
+                width: 60px;
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .full-size-image {
+                  width: 60px; // Full
+                }
+              }
+
+              .app-show-text {
+                font-size: 2rem;
+                color: #0c82eb;
+              }
+            }
+
           }
 
 

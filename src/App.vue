@@ -60,15 +60,27 @@
 
             <!-- 2.2 App列表区域 页面宽度动态排列, 超过了滚动 -->
             <div class="app-list">
-              <el-button v-for="app in apps"
-                         :key="app.name"
-                         :icon="Edit"
-                         @click="openApp(app.name)"
-              >
-                <el-icon :class="app.icon"></el-icon>
-                <span>{{ app.name }}</span>
+              <div v-for="app in apps"
+                   class="app-target">
 
-              </el-button>
+                <el-button
+                    :key="app.name"
+                    class="square-button"
+                    @click="openApp(app.name)"
+                >
+                  <el-image
+                      class="full-size-image"
+                      fit="contain"
+                      src="../static/svg/LOGOWeb.svg">
+                  </el-image>
+                </el-button>
+
+                <el-text class="app-show-text">
+                  {{ app.show }}
+                </el-text>
+
+              </div>
+
 
             </div>
 
@@ -132,7 +144,7 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
-import {ChatDotRound, Cloudy, Edit, Search, Suitcase} from "@element-plus/icons-vue";
+import {ChatDotRound, Cloudy, Search, Suitcase} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -153,28 +165,24 @@ const currentApp = ref('App');
 
 // 应用集
 const apps = [
-  {name: 'LoginApp', icon: 'login-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  {name: 'SettingApp', icon: 'settings-icon'},
-  // Add more apps here
+  {name: 'LoginApp', show: '登陆器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'},
+  {name: 'SettingApp', show: '设置器'}
 ];
 
 // 计算属性来获取当前显示的组件
