@@ -104,7 +104,7 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
   ElMenu, ElMenuItem, ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow,
   ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip,
   ElMessage, ref, watch, reactive, onMounted, onBeforeMount, nextTick, computed,
-  cookie, http, Debounce, encrypt
+  cookie, http, Debounce, ezEncrypt: encrypt
 } = Maven);
 
 /**
@@ -173,11 +173,11 @@ const getCode = () => {
       duration: 1000
     });
   })
-      .catch(({data}) => {
+      .catch(() => {
         ElMessage({
-          message: data,
+          message: '验证码发送失败',
           type: 'error',
-          duration: 10000
+          duration: 1000
         });
       })
 }
@@ -198,7 +198,6 @@ const login2Admin = () => {
 
 
 const login = () => {
-
 
   http({
     url: http.adornUrl('Guest/users/login'),
