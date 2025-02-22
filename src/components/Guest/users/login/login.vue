@@ -28,6 +28,18 @@
             />
           </el-form-item>
 
+          <el-form-item prop="phone">
+
+            <el-input
+                v-model="dataForm.phone"
+                class="info"
+                placeholder="请输入手机号"
+
+            />
+
+
+          </el-form-item>
+
           <el-form-item prop="code">
             <el-input
                 v-model="dataForm.code"
@@ -37,22 +49,37 @@
             <el-button
                 class="get_code"
                 type="primary"
+                @click="getCode"
             >
               获取验证码
             </el-button>
           </el-form-item>
 
-          <el-form-item>
+          <el-form-item class="login_launch">
             <el-button
-                class="login-btn"
+                class="login-btn1"
                 type="primary"
-                @click="login"
+                @click="login2User"
             >
-              登录
+              用户登录
+            </el-button>
+            <el-button
+                class="login-btn2"
+                type="primary"
+                @click="login2Admin"
+            >
+              管理登录
             </el-button>
           </el-form-item>
 
+          <el-text class="login-tip" @click="regi(0)">
+            没有账号? 点我立即注册
+          </el-text>
+
         </el-form>
+        <el-text class="login-tip-admin" @click="regi(1)">
+          管理员内部注册入口
+        </el-text>
       </div>
 
 
@@ -67,7 +94,6 @@
 import './login.scss'
 import * as Maven from '@/components/common/maven.js'
 import {inject} from 'vue'
-
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -91,7 +117,11 @@ const dataFormRef = ref(null)
  */
 const dataForm = ref({
   account: '',
-  password: '',
+  //主要账号:
+  // Admin, 15911451419
+  // Guest, 15911451420
+  password: 2333, //调试使用
+  phone: '15911451419',
   code: ''
 })
 
@@ -113,10 +143,10 @@ const dataRule = {
       trigger: 'blur'
     }
   ],
-  code: [
+  phone: [
     {
       required: true,
-      message: '验证码不能为空',
+      message: '手机号不能为空',
       trigger: 'blur'
     }
   ]
@@ -125,21 +155,61 @@ const dataRule = {
 // DI 依赖注入
 const currentPage = inject('currentPage');
 
+
+//! 验证码获取
+const getCode = () => {
+
+  http({
+    url: http.adornUrl('Guest/users/code'),
+    method: 'get',
+    params: http.adornParams({
+      phone: dataForm.value.phone
+    })
+  }).then(({data}) => {
+    console.log(data + '验证码信息')
+    ElMessage({
+      message: '验证码已发送:===> ' + data,
+      type: 'success',
+      duration: 1000
+    });
+  })
+      .catch(({data}) => {
+        ElMessage({
+          message: data,
+          type: 'error',
+          duration: 10000
+        });
+      })
+}
+
+
+//! 登陆
+let userType = 0; // 0 = user, 1 = admin
+
+const login2User = () => {
+  userType = 0;
+  login()
+}
+
+const login2Admin = () => {
+  userType = 1;
+  login()
+}
+
+
 const login = () => {
 
 
   http({
-    url: http.adornUrl('/Guest/users/login'),
+    url: http.adornUrl('Guest/users/login'),
     method: 'post',
     data: http.adornData({
       account: dataForm.value.account,
-      // passWord: encrypt(dataForm.value.password), todo 联调实现加密落库
-      passWord: dataForm.value.password,
+      passWord: encrypt(dataForm.value.password),
+      phone: dataForm.value.phone, //管理员手机号: 15911451419
       code: dataForm.value.code,
-      // 临时:
-      admin: 1,
-      loginType: 3,
-      phone: "15911451419"
+      admin: userType,
+      loginType: 3, //暂时只支持手机 + 账密登录
     })
   }).then(({data}) => {
     ElMessage({
@@ -153,15 +223,44 @@ const login = () => {
     nextTick(() => {
       currentPage.value = 'home';
     })
-  }).catch(() => {
+  }).catch((response) => {
     ElMessage({
-      message: "登录失败",
+      message: response.message,
       type: 'error',
       duration: 1000
     });
   })
 }
 
+
+//! 注册
+
+
+const regi = (userType) => {
+  http({
+    url: http.adornUrl('Guest/users/register'),
+    method: 'post',
+    data: http.adornData({
+      account: dataForm.value.account,
+      password: encrypt(dataForm.value.password),
+      phone: dataForm.value.phone,
+      code: dataForm.value.code,
+      admin: userType
+    })
+  }).then(({data}) => {
+    ElMessage({
+      message: "注册成功",
+      type: 'success',
+      duration: 1000
+    });
+  }).catch((e) => {
+    ElMessage({
+      message: e.message,
+      type: 'error',
+      duration: 1000
+    });
+  })
+}
 
 </script>
 
