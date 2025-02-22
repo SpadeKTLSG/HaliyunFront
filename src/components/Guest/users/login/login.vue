@@ -28,12 +28,18 @@
             />
           </el-form-item>
 
-          <el-form-item prop="account">
+          <el-form-item prop="code">
             <el-input
                 v-model="dataForm.code"
-                class="info"
+                class="code"
                 placeholder="请输入验证码"
             />
+            <el-button
+                class="get_code"
+                type="primary"
+            >
+              获取验证码
+            </el-button>
           </el-form-item>
 
           <el-form-item>
@@ -61,6 +67,7 @@
 import './login.scss'
 import * as Maven from '@/components/common/maven.js'
 import {inject} from 'vue'
+
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -119,36 +126,40 @@ const dataRule = {
 const currentPage = inject('currentPage');
 
 const login = () => {
-  currentPage.value = 'home'; //todo
 
-  // http({
-  //   url: http.adornUrl('/Guest/users/login'),
-  //   method: 'post',
-  //   data: http.adornData({
-  //     account: dataForm.value.account,
-  //     // passWord: encrypt(dataForm.value.password), todo 联调实现加密落库
-  //     passWord: dataForm.value.password,
-  //     code: dataForm.value.code,
-  //     // 临时:
-  //     admin: 1,
-  //     loginType: 3,
-  //     phone: "15911451419"
-  //   })
-  // }).then(({data}) => {
-  //   ElMessage({
-  //     message: "登录成功",
-  //     type: 'success',
-  //     duration: 1000
-  //   });
-  //   cookie.set('Authorization', data)
-  //   cookie.set('account', dataForm.value.account)
-  // }).catch(() => {
-  //   ElMessage({
-  //     message: "登录失败",
-  //     type: 'error',
-  //     duration: 1000
-  //   });
-  // })
+
+  http({
+    url: http.adornUrl('/Guest/users/login'),
+    method: 'post',
+    data: http.adornData({
+      account: dataForm.value.account,
+      // passWord: encrypt(dataForm.value.password), todo 联调实现加密落库
+      passWord: dataForm.value.password,
+      code: dataForm.value.code,
+      // 临时:
+      admin: 1,
+      loginType: 3,
+      phone: "15911451419"
+    })
+  }).then(({data}) => {
+    ElMessage({
+      message: "登录成功",
+      type: 'success',
+      duration: 1000
+    });
+    cookie.set('Authorization', data)
+    cookie.set('account', dataForm.value.account)
+    // 跳转到介绍页
+    nextTick(() => {
+      currentPage.value = 'home';
+    })
+  }).catch(() => {
+    ElMessage({
+      message: "登录失败",
+      type: 'error',
+      duration: 1000
+    });
+  })
 }
 
 
