@@ -95,7 +95,7 @@
             </el-button>
 
             <!-- 2.5 右下角用户信息按钮 //todo -->
-            <el-button class="user_info-button" @click="'PersonApp'">
+            <el-button class="user_info-button" @click="openApp('PersonApp')">
               <el-icon>
                 <Avatar/>
               </el-icon>
@@ -198,28 +198,28 @@ const currentApp = ref('App');
 const apps = [
   {name: 'LoginApp', show: '登陆'},
   {name: 'PersonApp', show: '用户'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'},
-  {name: 'SettingApp', show: '设置'}
+  {name: 'GroupApp', show: '群组'},
+  {name: 'FileApp', show: '文件'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '设置'},
+  {name: 'DonateApp', show: '捐赠'},
+  {name: 'SysApp', show: '系统'},
+  {name: 'MesApp', show: '消息'},
+  {name: 'LoginApp', show: '日志'}
 ];
 
 // 计算属性来获取当前显示的组件
