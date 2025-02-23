@@ -94,6 +94,13 @@
               </el-icon>
             </el-button>
 
+            <!-- 2.5 右下角用户信息按钮 //todo -->
+            <el-button class="user_info-button" @click="openApp('PersonApp')">
+              <el-icon>
+                <Avatar/>
+              </el-icon>
+            </el-button>
+
           </div>
 
           <!-- B 对应应用组件页面 :  -->
@@ -167,7 +174,8 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
-import {ArrowLeft, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
+import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
+import {useUserStore} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -188,24 +196,30 @@ const currentApp = ref('App');
 
 // 应用集
 const apps = [
-  {name: 'LoginApp', show: '登陆器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'},
-  {name: 'SettingApp', show: '设置器'}
+  {name: 'LoginApp', show: '登陆'},
+  {name: 'PersonApp', show: '用户'},
+  {name: 'GroupApp', show: '群组'},
+  {name: 'FileApp', show: '文件'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '设置'},
+  {name: 'DonateApp', show: '捐赠'},
+  {name: 'SysApp', show: '系统'},
+  {name: 'MesApp', show: '消息'},
+  {name: 'LoginApp', show: '日志'}
 ];
 
 // 计算属性来获取当前显示的组件
@@ -291,6 +305,31 @@ const goBack = () => {
   closeApp();
 };
 
+//! 用户登录相关
+let hasLogin = false;
+const userStore = useUserStore()
 
+//不能使用常规方法, 因为页面加载逻辑不同. 需要每次都计算这个, 当用户回到首页时候, 会重新计算
+const notifyLogin = () => {
+  if (!(userStore.id === 0)) {
+    ElMessage({
+      message: '欢迎回来, ' + userStore.account,
+      type: 'success'
+    });
+    hasLogin = true;
+  } else {
+    ElMessage({
+      message: '您还未登录, 请先点击下方登录器进行登录',
+      type: 'warning'
+    });
+  }
+};
+
+// 每次进入首页时候, 都会重新计算
+watch(currentApp, (newVal) => {
+  if (newVal === 'App') {
+    notifyLogin();
+  }
+});
 </script>
 

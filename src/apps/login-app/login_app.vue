@@ -34,8 +34,8 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
   cookie, http, Debounce, encrypt
 } = Maven);
 
-//todo加入
 
+defineEmits(['close']);
 // 应用内跳页器
 const currentPage = ref('login');
 

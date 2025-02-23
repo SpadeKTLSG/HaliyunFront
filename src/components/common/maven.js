@@ -33,7 +33,7 @@ import {computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch} from
 import 'element-plus/dist/index.css'
 import cookie from 'vue-cookies' // 引入cookie
 import http, {Debounce} from '@/components/common/http.js' // 引入http 请求与防抖
-import {encrypt} from '@/utils/encryptUtil/crypto.js'
+import {ezEncrypt} from '@/utils/encryptUtil/crypto.js'
 
 
 export {
@@ -75,5 +75,5 @@ export {
     cookie,
     http,
     Debounce,
-    encrypt
+    ezEncrypt
 }

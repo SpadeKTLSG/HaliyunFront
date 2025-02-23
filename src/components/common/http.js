@@ -48,20 +48,22 @@ http.interceptors.response.use(response => {
     }
 
 
-    // A = 客户端错误码
-    if (res.message.startsWith("B")) {
-        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace(import.meta.env.VITE_APP_BASE_API, '')}`, '\n', `异常信息: ${res}`, '\n', '============== 请求异常 end ==========')
+    // A = 服务端错误码
+
+    if (res.message.startsWith("A")) {
+        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace("http://localhost:10000/", '')}`, '\n', `异常信息: ${res}`, '\n', '============== 请求异常 end ==========')
         ElMessage({
-            message: '请求参数错误', type: 'error', duration: 1.5 * 1000, customClass: 'element-error-message-zindex'
+            message: '服务端错误', type: 'error', duration: 1.5 * 1000, customClass: 'element-error-message-zindex'
         })
         return Promise.reject(res)
     }
 
-    // B = 服务端错误码
-    if (res.message.startsWith("A")) {
-        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace(import.meta.env.VITE_APP_BASE_API, '')}`, '\n', `异常信息: ${res}`, '\n', '============== 请求异常 end ==========')
+
+    // B = 客户端错误码
+    if (res.message.startsWith("B")) {
+        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace("http://localhost:10000/", '')}`, '\n', `异常信息: ${res}`, '\n', '============== 请求异常 end ==========')
         ElMessage({
-            message: '服务器爆炸力', type: 'error', duration: 1.5 * 1000, customClass: 'element-error-message-zindex'
+            message: '客户端错误', type: 'error', duration: 1.5 * 1000, customClass: 'element-error-message-zindex'
         })
         return Promise.reject(res)
     }
@@ -105,7 +107,7 @@ http.interceptors.response.use(response => {
  * @param {*} actionName action方法名称
  */
 http.adornUrl = actionName => {
-    return import.meta.env.VITE_APP_BASE_API + actionName
+    return "http://localhost:10000/" + actionName;
 }
 
 /**
