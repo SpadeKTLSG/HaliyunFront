@@ -94,6 +94,7 @@
 import './login.scss'
 import * as Maven from '@/components/common/maven.js'
 import {inject} from 'vue'
+import {useUserStore} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -185,6 +186,7 @@ const getCode = () => {
 
 //! 登陆
 let userType = 0; // 0 = user, 1 = admin
+const userStore = useUserStore()
 
 const login2User = () => {
   userType = 0;
@@ -218,6 +220,27 @@ const login = () => {
     });
     cookie.set('Authorization', data)
     cookie.set('account', dataForm.value.account)
+
+    // 获取用户信息
+    http({
+      url: http.adornUrl('Guest/users/user_tl'),
+      method: 'post'
+    }).then(({data}) => {
+      console.log(data)
+      // 保存用户信息到userStore
+      userStore.updateId(data.id)
+      userStore.updateAccount(data.account)
+      userStore.updatePhone(data.phone)
+      userStore.updateLoginType(data.loginType)
+      userStore.updateAdmin(data.admin)
+      console.log(userStore + ': 用户信息已经保存')
+
+      ElMessage({
+        message: '用户id: ' + userStore.id + '   |用户账号: ' + userStore.account + '   |用户手机号: ' + userStore.phone + '   |登录类型Type: ' + userStore.loginType + '   |管理员类型: ' + (userStore.loginType === 1 ? '管理员' : '用户'),
+        type: 'success',
+        duration: 7000
+      });
+    })
     // 跳转到介绍页
     nextTick(() => {
       currentPage.value = 'home';

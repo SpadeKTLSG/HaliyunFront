@@ -95,7 +95,7 @@ html, body {
         flex: 1; // 占据页面剩余空间
         flex-direction: column;
         align-items: center; // 子元素水平居中
-  
+
 
         // 主体内容区域样式: 只有首页内容
         .only-app-content {
@@ -173,6 +173,12 @@ html, body {
           .settings-button {
             position: absolute; // 绝对定位
             bottom: 1rem; // 下外边距为1rem
+            right: 1rem; // 右外边距为1rem
+          }
+
+          .user_info-button {
+            position: absolute; // 绝对定位
+            bottom: 3rem; // 下外边距为1rem
             right: 1rem; // 右外边距为1rem
           }
         }

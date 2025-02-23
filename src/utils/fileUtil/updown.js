@@ -9,7 +9,8 @@ export const uploadFile = function (url, file) {
         // 添加请求头
         headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: cookie.get('Authorization') // 请求头带上token todo测试
+            Authorization: cookie.get('Authorization'),
+            account: cookie.get('account')
         }
     }
     const param = new FormData()

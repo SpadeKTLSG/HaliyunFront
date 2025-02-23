@@ -94,6 +94,13 @@
               </el-icon>
             </el-button>
 
+            <!-- 2.5 右下角用户信息按钮 //todo -->
+            <el-button class="user_info-button" @click="">
+              <el-icon>
+                <Avatar/>
+              </el-icon>
+            </el-button>
+
           </div>
 
           <!-- B 对应应用组件页面 :  -->
@@ -167,7 +174,7 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
-import {ArrowLeft, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
+import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -189,7 +196,7 @@ const currentApp = ref('App');
 // 应用集
 const apps = [
   {name: 'LoginApp', show: '登陆器'},
-  {name: 'SettingApp', show: '设置器'},
+  {name: 'UserApp', show: '用户器'},
   {name: 'SettingApp', show: '设置器'},
   {name: 'SettingApp', show: '设置器'},
   {name: 'SettingApp', show: '设置器'},
@@ -290,6 +297,10 @@ const backAppHome = () => {
 const goBack = () => {
   closeApp();
 };
+
+//! 用户登录相关
+let hasLogin = false;
+// 从userStore中获取登录状态, 每次进入首页时判断并提示 (测试使用)
 
 
 </script>

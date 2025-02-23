@@ -2,38 +2,34 @@ import {defineStore} from 'pinia'
 import cookie from "vue-cookies";
 
 /**
- * 用户信息  -> TL TODO
+ * 用户信息缓存: http://localhost:10000/Guest/users/user_tl 获取
  */
 export const useUserStore = defineStore('user', {
     state: () => {
         return {
-            id: 0,
-            name: '',
-            userId: '',
-            mobile: ''
+            id: 0, admin: 0, loginType: 3, account: '', phone: ''
         }
-    },
-    actions: {
+    }, actions: {
         updateId(id) {
             this.id = id
-        },
-        updateName(name) {
-            this.name = name
-        },
-        updateMobile(mobile) {
-            this.mobile = mobile
-        },
-        updateUserId(userId) {
-            this.userId = userId
+        }, updateAdmin(admin) {
+            this.admin = admin
+        }, updateLoginType(loginType) {
+            this.loginType = loginType
+        }, updateAccount(account) {
+            this.account = account
+        }, updatePhone(phone) {
+            this.phone = phone
         }
     }
 })
 
 
 /**
- * 清除登录信息 TODO
+ * 清除登录信息: 清除 token * 2
  */
 export function clearLoginInfo() {
     cookie.remove('Authorization')
+    cookie.remove('account')
 }
 
