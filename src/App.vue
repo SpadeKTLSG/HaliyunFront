@@ -310,7 +310,7 @@ let hasLogin = false;
 const userStore = useUserStore()
 
 //不能使用常规方法, 因为页面加载逻辑不同. 需要每次都计算这个, 当用户回到首页时候, 会重新计算
-const notifyLogin = () => {
+const notifyLogin = async () => {
   if (!(userStore.id === 0)) {
     ElMessage({
       message: '欢迎回来, ' + userStore.account,
