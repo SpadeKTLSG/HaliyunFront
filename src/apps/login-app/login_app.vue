@@ -39,11 +39,11 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 defineEmits(['close']);
 // 应用内跳页器
 const currentPage = ref('login');
-
+const userStore = useUserStore()
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   // 先判断用户是否登录了
-  if (useUserStore().id !== null) {
+  if (!(userStore.id === 0)) {
     return Home;
   }
   switch (currentPage.value) {

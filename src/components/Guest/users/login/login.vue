@@ -299,3 +299,5 @@ const regi = (userType) => {
 
 </script>
 
+<style lang="scss" scoped>
+</style>

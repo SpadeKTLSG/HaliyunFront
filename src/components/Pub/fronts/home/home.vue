@@ -1,7 +1,9 @@
 <template>
   <div class="home_background">
 
+    <!--1.左侧区域-->
     <div class="home_left">
+      <!--1.1大块介绍-->
       <div class="home_left_readme">
         <el-text size="large" type="primary">
           <h2>
@@ -37,12 +39,29 @@
         </el-text>
       </div>
     </div>
+
+    <!--2.右侧区域-->
     <div class="home_right">
+
+      <!--2.1上方照片墙-->
       <div class="home_right_show">
+        <el-card>
+
+        </el-card>
       </div>
 
-
+      <!--2.2下方按钮区域-->
       <div class="home_right_op">
+        <!--2.2.1横排三个Link按钮-->
+        <div class="home_right_op_buttonList">
+          列表, 每个项目是el-button
+
+        </div>
+        <!--2.2.2单列一个注销按钮-->
+        <div class="home_right_op_logout">
+          <el-button type="danger" @click="logout">注销</el-button>
+
+        </div>
       </div>
     </div>
   </div>
