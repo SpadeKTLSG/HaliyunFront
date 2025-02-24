@@ -116,7 +116,7 @@ const logout = () => {
     clearLoginInfo();
 
     nextTick(() => {
-      window.open('http://localhost:9876/');
+      window.location.replace('http://localhost:9876/');
     })
 
   }).catch(() => {

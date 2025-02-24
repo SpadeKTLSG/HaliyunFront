@@ -245,7 +245,17 @@ const login = () => {
       userStore.updatePhone(data.phone)
       userStore.updateLoginType(data.loginType)
       userStore.updateAdmin(data.admin)
-      console.log(userStore + ': 用户信息已经保存')
+      userStore.updateToken(cookie.get('authorization'))
+      console.log('用户 userStore 已经保存')
+
+      // 保存用户信息到localStorage
+      const userWithExpiry = {
+        ...data,
+        token: cookie.get('authorization'),
+        expiry: new Date().getTime() + 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
+      };
+      localStorage.setItem('user', JSON.stringify(userWithExpiry));
+      console.log('用户信息已经保存到localStorage, 过期时间为: ' + userWithExpiry.expiry)
 
       ElMessage({
         message: '用户id: ' + userStore.id + '   |用户账号: ' + userStore.account + '   |用户手机号: ' + userStore.phone + '   |登录类型Type: ' + userStore.loginType + '   |管理员类型: ' + (userStore.loginType === 1 ? '管理员' : '用户'),

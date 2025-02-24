@@ -175,7 +175,7 @@ import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
 import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
-import {useUserStore} from "@/components/common/user.js";
+import {clearLoginInfo, useUserStore} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -256,6 +256,8 @@ onBeforeMount(() => {
 
 // 页面初始化
 onMounted(() => {
+  // 恢复用户
+  loadUserFromLocalStorage();
   setInterval(() => {
     currentTime.value = new Date().toLocaleString();
   }, 1000);
@@ -309,9 +311,35 @@ const goBack = () => {
 let hasLogin = false;
 const userStore = useUserStore()
 
+
+// 恢复用户登录状态
+const loadUserFromLocalStorage = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user) {
+    const now = new Date().getTime();
+    if (now < user.expiry) {
+      // 恢复 userStore
+      userStore.updateId(user.id);
+      userStore.updateAccount(user.account);
+      userStore.updatePhone(user.phone);
+      userStore.updateLoginType(user.loginType);
+      userStore.updateAdmin(user.admin);
+      userStore.updateToken(user.token)
+      // 恢复 cookie
+      cookie.set('authorization', user.token, '7d')
+      cookie.set('account', user.account, '7d')
+      console.log('登录成功, cookie: ' + cookie.get('authorization') + "  |  " + cookie.get('account'))
+
+    } else { // 过期
+      clearLoginInfo();
+    }
+  }
+};
+
+
 //不能使用常规方法, 因为页面加载逻辑不同. 需要每次都计算这个, 当用户回到首页时候, 会重新计算
 const notifyLogin = async () => {
-  if (!(userStore.id === 0)) {
+  if (userStore.id !== 0) {
     ElMessage({
       message: '欢迎回来, ' + userStore.account,
       type: 'success'

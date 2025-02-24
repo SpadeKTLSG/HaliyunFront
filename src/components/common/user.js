@@ -7,7 +7,7 @@ import cookie from "vue-cookies";
 export const useUserStore = defineStore('user', {
     state: () => {
         return {
-            id: 0, admin: 0, loginType: 3, account: '', phone: ''
+            id: 0, admin: 0, loginType: 3, account: '', phone: '', token: ''
         }
     }, actions: {
         updateId(id) {
@@ -20,16 +20,19 @@ export const useUserStore = defineStore('user', {
             this.account = account
         }, updatePhone(phone) {
             this.phone = phone
+        }, updateToken(token) {
+            this.token = token
         }
     }
 })
 
 
 /**
- * 清除登录信息: 清除 token * 2
+ * 清除登录信息: 清除 token * 2 + localStorage
  */
 export function clearLoginInfo() {
     cookie.remove('authorization')
     cookie.remove('account')
+    localStorage.removeItem('user');
 }
 
