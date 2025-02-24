@@ -9,7 +9,7 @@ export const uploadFile = function (url, file) {
         // 添加请求头
         headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: cookie.get('Authorization'),
+            authorization: cookie.get('authorization'),
             account: cookie.get('account')
         }
     }

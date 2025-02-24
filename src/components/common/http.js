@@ -20,8 +20,9 @@ const http = axios.create({
  * 请求拦截
  */
 http.interceptors.request.use(config => {
-    config.headers.Authorization = cookie.get('Authorization') // 请求头带上token
+    config.headers.authorization = cookie.get('authorization') // 请求头带上token
     config.headers.account = cookie.get('account') // 请求头带上account
+    console.log('请求拦截中设置的cookie', '\n', 'authorization:', cookie.get('authorization'), '\n', 'account:', cookie.get('account'))
     return config
 }, error => {
     return Promise.reject(error)

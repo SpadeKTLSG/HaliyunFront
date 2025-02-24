@@ -183,7 +183,7 @@ const getCode = () => {
     ElMessage({
       message: '验证码已发送:===> ' + data,
       type: 'success',
-      duration: 1000
+      duration: 10000
     });
   })
       .catch(() => {
@@ -210,62 +210,61 @@ const login2Admin = () => {
   login()
 }
 
-const login = async () => {
-  try {
-    const {data} = await http({
-      url: http.adornUrl('Guest/users/login'),
-      method: 'post',
-      data: http.adornData({
-        account: sanitizedDataForm.value.account,
-        passWord: encrypt(dataForm.value.password),
-        phone: sanitizedDataForm.value.phone, //管理员手机号: 15911451419
-        code: sanitizedDataForm.value.code,
-        admin: userType,
-        loginType: 3, //暂时只支持手机 + 账密登录
-      })
-    });
+const login = () => {
 
+  http({
+    url: http.adornUrl('Guest/users/login'),
+    method: 'post',
+    data: http.adornData({
+      account: dataForm.value.account,
+      passWord: encrypt(dataForm.value.password),
+      phone: dataForm.value.phone, //管理员手机号: 15911451419
+      code: dataForm.value.code,
+      admin: userType,
+      loginType: 3, //暂时只支持手机 + 账密登录
+    })
+  }).then(({data}) => {
     ElMessage({
       message: "登录成功",
       type: 'success',
       duration: 1000
     });
-    cookie.set('Authorization', data);
-    cookie.set('account', sanitizedDataForm.value.account);
+    cookie.set('authorization', data)
+    cookie.set('account', dataForm.value.account)
+    console.log('登录成功, cookie: ' + cookie.get('authorization') + "  |  " + cookie.get('account'))
 
     // 获取用户信息
-    const userInfo = await http({
+    http({
       url: http.adornUrl('Guest/users/user_tl'),
       method: 'post'
-    });
+    }).then(({data}) => {
+      console.log(data)
+      // 保存用户信息到userStore
+      userStore.updateId(data.id)
+      userStore.updateAccount(data.account)
+      userStore.updatePhone(data.phone)
+      userStore.updateLoginType(data.loginType)
+      userStore.updateAdmin(data.admin)
+      console.log(userStore + ': 用户信息已经保存')
 
-    console.log(userInfo.data);
-    // 保存用户信息到userStore
-    userStore.updateId(userInfo.data.id);
-    userStore.updateAccount(userInfo.data.account);
-    userStore.updatePhone(userInfo.data.phone);
-    userStore.updateLoginType(userInfo.data.loginType);
-    userStore.updateAdmin(userInfo.data.admin);
-    console.log(userStore + ': 用户信息已经保存');
-
-    ElMessage({
-      message: '用户id: ' + userStore.id + '   |用户账号: ' + userStore.account + '   |用户手机号: ' + userStore.phone + '   |登录类型Type: ' + userStore.loginType + '   |管理员类型: ' + (userStore.loginType === 1 ? '管理员' : '用户'),
-      type: 'success',
-      duration: 7000
-    });
-
+      ElMessage({
+        message: '用户id: ' + userStore.id + '   |用户账号: ' + userStore.account + '   |用户手机号: ' + userStore.phone + '   |登录类型Type: ' + userStore.loginType + '   |管理员类型: ' + (userStore.loginType === 1 ? '管理员' : '用户'),
+        type: 'success',
+        duration: 7000
+      });
+    })
     // 跳转到介绍页
     nextTick(() => {
       currentPage.value = 'home';
-    });
-  } catch (response) {
+    })
+  }).catch((response) => {
     ElMessage({
       message: response.message,
       type: 'error',
       duration: 1000
     });
-  }
-};
+  })
+}
 
 //! 注册
 

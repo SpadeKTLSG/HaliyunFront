@@ -17,7 +17,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 //引入组件
-import Home from '@/components/Pub/fronts/home/home.vue'
+import Home from '@/components/Pub/fronts/home.vue'
 import Login from '@/components/Guest/users/login.vue'
 import {provide} from 'vue'
 import {useUserStore} from "@/components/common/user.js";

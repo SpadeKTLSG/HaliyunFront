@@ -29,7 +29,7 @@ export const useUserStore = defineStore('user', {
  * 清除登录信息: 清除 token * 2
  */
 export function clearLoginInfo() {
-    cookie.remove('Authorization')
+    cookie.remove('authorization')
     cookie.remove('account')
 }
 
