@@ -15,11 +15,10 @@
 </template>
 
 <script setup>
-import './login_app.scss'
 import * as Maven from '@/components/common/maven.js'
 //引入组件
 import Home from '@/components/Pub/fronts/home/home.vue'
-import Login from '@/components/Guest/users/login/login.vue'
+import Login from '@/components/Guest/users/login.vue'
 import {provide} from 'vue'
 import {useUserStore} from "@/components/common/user.js";
 
@@ -63,3 +62,37 @@ const backAppHome = () => {
 // 把currentPage暴露出去
 provide('currentPage', currentPage);
 </script>
+
+<style lang="scss" scoped>
+
+
+.login_app {
+  display: flex;
+  margin-top: -10px;
+  flex-direction: column;
+  height: 5vh;
+
+
+  .base_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f91313;
+    background-color: #15d41b;
+    line-height: 35px;
+    font-size: 25px;
+    width: 1400px;
+    border-radius: 20px;
+    opacity: 0.4;
+
+  }
+
+
+}
+
+//对应页面组件, 需要占满剩下的全部页面.
+.login_compo {
+  flex: 1; /* 使 login_compo 占满剩余空间 */
+}
+
+</style>

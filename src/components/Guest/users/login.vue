@@ -91,7 +91,6 @@
 </template>
 
 <script setup>
-import './login.scss'
 import * as Maven from '@/components/common/maven.js'
 import {inject} from 'vue'
 import {useUserStore} from "@/components/common/user.js";
@@ -300,4 +299,80 @@ const regi = (userType) => {
 </script>
 
 <style lang="scss" scoped>
+
+
+.login {
+  width: 1650px;
+  height: 810px;
+  border-radius: 10px;
+  background: url("@/../static/bg/login-bg.jpg") no-repeat;
+  background-size: cover;
+  justify-content: center;
+
+
+  .login-box {
+    padding-left: 25px;
+    padding-top: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .mid {
+      font-size: 14px;
+
+      .info {
+        width: 410px;
+      }
+
+      .code {
+        width: 300px;
+        padding-right: 20px;
+
+        .get_code {
+          margin-left: 10px;
+        }
+      }
+
+
+      .login_launch {
+        .login-btn1 {
+          width: 200px;
+        }
+
+        .login-btn2 {
+          width: 200px;
+        }
+      }
+
+      .login-tip {
+        color: #999;
+        font-size: 12px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+
+      .login-tip-admin {
+        color: #999;
+        font-size: 12px;
+        margin-left: 250px;
+        cursor: pointer;
+      }
+
+    }
+
+
+    .bottom-sign {
+      color: #999;
+      font-size: 12px;
+      text-align: center;
+      margin-top: auto; /* Push to the bottom */
+      padding-top: 27%;
+      padding-bottom: 5%; /* Add padding at the bottom */
+
+    }
+
+  }
+}
+
 </style>
