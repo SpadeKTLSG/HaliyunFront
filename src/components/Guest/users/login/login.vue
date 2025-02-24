@@ -95,6 +95,7 @@ import './login.scss'
 import * as Maven from '@/components/common/maven.js'
 import {inject} from 'vue'
 import {useUserStore} from "@/components/common/user.js";
+import DOMPurify from 'dompurify';
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -126,6 +127,17 @@ const dataForm = ref({
   code: ''
 })
 
+
+/**
+ * 计算属性, 用于转义用户输入
+ */
+const sanitizedDataForm = computed(() => ({
+  account: DOMPurify.sanitize(dataForm.value.account),
+  password: DOMPurify.sanitize(dataForm.value.password),
+  phone: DOMPurify.sanitize(dataForm.value.phone),
+  code: DOMPurify.sanitize(dataForm.value.code)
+}));
+
 /**
  * 表单验证规则
  */
@@ -153,6 +165,7 @@ const dataRule = {
   ]
 }
 
+
 // DI 依赖注入
 const currentPage = inject('currentPage');
 
@@ -164,7 +177,7 @@ const getCode = () => {
     url: http.adornUrl('Guest/users/code'),
     method: 'get',
     params: http.adornParams({
-      phone: dataForm.value.phone
+      phone: sanitizedDataForm.value.phone
     })
   }).then(({data}) => {
     console.log(data + '验证码信息')
@@ -185,7 +198,7 @@ const getCode = () => {
 
 
 //! 登陆
-let userType = 0; // 0 = user, 1 = admin
+let userType = 0;
 const userStore = useUserStore()
 
 const login2User = () => {
@@ -204,10 +217,10 @@ const login = async () => {
       url: http.adornUrl('Guest/users/login'),
       method: 'post',
       data: http.adornData({
-        account: dataForm.value.account,
+        account: sanitizedDataForm.value.account,
         passWord: encrypt(dataForm.value.password),
-        phone: dataForm.value.phone, //管理员手机号: 15911451419
-        code: dataForm.value.code,
+        phone: sanitizedDataForm.value.phone, //管理员手机号: 15911451419
+        code: sanitizedDataForm.value.code,
         admin: userType,
         loginType: 3, //暂时只支持手机 + 账密登录
       })
@@ -219,7 +232,7 @@ const login = async () => {
       duration: 1000
     });
     cookie.set('Authorization', data);
-    cookie.set('account', dataForm.value.account);
+    cookie.set('account', sanitizedDataForm.value.account);
 
     // 获取用户信息
     const userInfo = await http({
@@ -263,10 +276,10 @@ const regi = (userType) => {
     url: http.adornUrl('Guest/users/register'),
     method: 'post',
     data: http.adornData({
-      account: dataForm.value.account,
+      account: sanitizedDataForm.value.account,
       password: encrypt(dataForm.value.password),
-      phone: dataForm.value.phone,
-      code: dataForm.value.code,
+      phone: sanitizedDataForm.value.phone,
+      code: sanitizedDataForm.value.code,
       admin: userType
     })
   }).then(({data}) => {
