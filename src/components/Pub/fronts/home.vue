@@ -106,6 +106,7 @@ const navigateTo = (link) => {
 
 
 const logout = () => {
+
   // 后端登出
   http({
     url: http.adornUrl('Guest/users/logout'),
@@ -113,8 +114,11 @@ const logout = () => {
   }).then(() => {
     // 前端登出
     clearLoginInfo();
-    // 跳转到主页
-    currentPage.value = 'login';
+
+    nextTick(() => {
+      window.open('http://localhost:9876/');
+    })
+
   }).catch(() => {
     ElMessage.error('登出失败');
   });
