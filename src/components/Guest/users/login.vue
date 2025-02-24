@@ -229,8 +229,8 @@ const login = () => {
       type: 'success',
       duration: 1000
     });
-    cookie.set('authorization', data)
-    cookie.set('account', dataForm.value.account)
+    cookie.set('authorization', data, '7d')
+    cookie.set('account', dataForm.value.account, '7d')
     console.log('登录成功, cookie: ' + cookie.get('authorization') + "  |  " + cookie.get('account'))
 
     // 获取用户信息

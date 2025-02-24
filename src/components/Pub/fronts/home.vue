@@ -106,20 +106,18 @@ const navigateTo = (link) => {
 
 
 const logout = () => {
-  
-  //后端登出
+  // 后端登出
   http({
     url: http.adornUrl('Guest/users/logout'),
     method: 'delete'
+  }).then(() => {
+    // 前端登出
+    clearLoginInfo();
+    // 跳转到主页
+    currentPage.value = 'login';
   }).catch(() => {
     ElMessage.error('登出失败');
   });
-
-  //前端登出
-  clearLoginInfo();
-
-  //跳转到主页
-  currentPage.value = 'login';
 };
 
 </script>
