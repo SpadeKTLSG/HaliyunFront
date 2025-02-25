@@ -260,7 +260,7 @@ const login = () => {
       ElMessage({
         message: '用户id: ' + userStore.id + '   |用户账号: ' + userStore.account + '   |用户手机号: ' + userStore.phone + '   |登录类型Type: ' + userStore.loginType + '   |管理员类型: ' + (userStore.loginType === 1 ? '管理员' : '用户'),
         type: 'success',
-        duration: 7000
+        duration: 5000
       });
     })
     // 跳转到介绍页

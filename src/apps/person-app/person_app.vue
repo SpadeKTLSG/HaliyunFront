@@ -1,26 +1,35 @@
 <template>
 
 
-  <div class="login_app">
+  <div class="person_app">
 
     <!--应用标识-->
+    <el-text class="base_header">用户信息</el-text>
 
-    <el-text class="base_header">登录器</el-text>
+  </div>
+
+  <!--左侧导航区域-->
+  <div class="person_app_left_nav">
+    
+    <el-menu default-active="1" class="el-menu-vertical" @select="handleSelect">
+      <el-menu-item index="1">个人信息</el-menu-item>
+      <el-menu-item index="2">功能</el-menu-item>
+    </el-menu>
 
   </div>
 
   <!--具体页面-->
-  <component :is="currentView" class="login_app_compo" @close="backAppHome"/>
+  <component :is="currentView" class="person_app_compo" @close="backAppHome"/>
 
 </template>
 
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 //引入组件
-import Home from '@/components/Pub/fronts/home.vue'
-import Login from '@/components/Guest/users/login.vue'
 import {provide} from 'vue'
 import {useUserStore} from "@/components/common/user.js";
+import Userfunc from "@/components/Guest/users/userfunc.vue";
+import Userinfo from "@/components/Guest/users/userinfo.vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -37,20 +46,32 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 
 defineEmits(['close']);
 // 应用内跳页器
-const currentPage = ref('login');
+const currentPage = ref('userinfo');
 const userStore = useUserStore()
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
-  // 先判断用户是否登录了
-  if (!(userStore.id === 0)) {
-    return Home;
+
+  // 统一 userStore 登陆状态拦阻索: 如果用户未登录, 展示三秒弹框提示: 未登录, 之后踢回首页
+  if (userStore.id === 0) {
+    ElMessage({
+      message: '未登录, 请先登录',
+      type: 'warning',
+      duration: 3000
+    });
+    nextTick(() => {
+      setTimeout(() => {
+        window.location.replace('http://localhost:9876/');
+      }, 3000);
+    });
   }
+
+
   switch (currentPage.value) {
-    case 'home':
-      return Home;
-    case 'login':
+    case 'userinfo':
+      return Userfunc;
+    case 'userfunc':
     default:
-      return Login;
+      return Userinfo;
   }
 });
 
@@ -91,7 +112,7 @@ provide('currentPage', currentPage);
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
-.login_app_compo {
+.login_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
 }
 

@@ -174,6 +174,7 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
+import PersonApp from "@/apps/person-app/person_app.vue";
 import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
 import {clearLoginInfo, useUserStore} from "@/components/common/user.js";
 
@@ -227,7 +228,8 @@ const currentComponent = computed(() => {
   switch (currentApp.value) {
     case 'LoginApp':
       return LoginApp;
-      // Add more cases for other apps
+    case 'PersonApp':
+      return PersonApp;
     default:
       return null;
   }
