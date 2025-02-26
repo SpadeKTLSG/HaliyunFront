@@ -10,10 +10,14 @@
 
   <!--左侧导航区域-->
   <div class="person_app_left_nav">
-    
-    <el-menu default-active="1" class="el-menu-vertical" @select="handleSelect">
-      <el-menu-item index="1">个人信息</el-menu-item>
-      <el-menu-item index="2">功能</el-menu-item>
+
+    <el-menu default-active="1" class="el-menu-vertical" @select="()=>{currentPage.value = 'userinfo';}">
+      <el-menu-item index="1">
+        用户详情
+      </el-menu-item>
+      <el-menu-item index="2">
+        用户功能
+      </el-menu-item>
     </el-menu>
 
   </div>
@@ -68,10 +72,10 @@ const currentView = computed(() => {
 
   switch (currentPage.value) {
     case 'userinfo':
-      return Userfunc;
+      return Userinfo;
     case 'userfunc':
     default:
-      return Userinfo;
+      return Userfunc;
   }
 });
 
