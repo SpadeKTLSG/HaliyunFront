@@ -11,7 +11,7 @@
   <!--左侧导航区域-->
   <div class="person_app_left_nav">
 
-    <el-menu default-active="1" class="el-menu-vertical" @select="()=>{currentPage.value = 'userinfo';}">
+    <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <el-menu-item index="1">
         用户详情
       </el-menu-item>
@@ -52,6 +52,17 @@ defineEmits(['close']);
 // 应用内跳页器
 const currentPage = ref('userinfo');
 const userStore = useUserStore()
+
+// 处理左侧导航栏点击事件
+const handleMenuSelect = (index) => {
+  if (index === '1') {
+    currentPage.value = 'userinfo';
+  } else if (index === '2') {
+    currentPage.value = 'userfunc';
+  }
+};
+
+
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
 
@@ -91,7 +102,7 @@ provide('currentPage', currentPage);
 <style lang="scss" scoped>
 
 
-.login_app {
+.person_app {
   display: flex;
   margin-top: -10px;
   flex-direction: column;
@@ -112,7 +123,24 @@ provide('currentPage', currentPage);
 
   }
 
+}
 
+.person_app_left_nav {
+  width: 10%;
+  margin-left: -150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .el-menu-vertical {
+    width: 100%;
+  }
+}
+
+//对应页面组件, 需要占满剩下的全部页面.
+.person_app_compo {
+  flex: 1; /* 使 login_compo 占满剩余空间 */
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
