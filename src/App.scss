@@ -21,7 +21,8 @@ html, body {
     height: 100%;
     width: 100%;
     background-color: variables.$background-color;
-    background-image: url("@/../static/img/首页背景.jpg");
+    //background-image: url("@/../static/img/首页背景.jpg");
+    background-image: url("@/../static/img/首页背景.png");
     background-size: cover;
     // 主页容器样式
     .home-container {

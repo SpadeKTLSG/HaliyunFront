@@ -4,7 +4,7 @@
     <div class="userinfo_upper">
       <!--用户User表信息-->
       <el-col :span="8" class="userinfo-basic">
-        <el-descriptions :column="1" border>
+        <el-descriptions :column="2" border>
           <el-descriptions-item label="账号">{{ userData.account }}</el-descriptions-item>
           <el-descriptions-item label="管理员">
             {{ userData.admin === 1 ? '是' : '否' }}
