@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import cookie from "vue-cookies";
 
 /**
- * 用户信息缓存: http://localhost:10000/Guest/users/user_tl 获取
+ * 用户基础信息缓存
  */
 export const useUserStore = defineStore('user', {
     state: () => {

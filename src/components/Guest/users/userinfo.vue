@@ -143,19 +143,19 @@ const userStore = useUserStore()
 //? 用户数据展示表单
 const userData = ref({
   //User表
-  admin: undefined,
-  status: undefined,
-  account: undefined,
-  loginType: undefined,
+  admin: '-/-',
+  status: '-/-',
+  account: '-/-',
+  loginType: '-/-',
 
   //UserDetail表
-  gender: undefined,
-  phone: undefined,
-  email: undefined,
-  avatar: undefined, // 这字段不展示暂未接入OSS, 如果是default就直接去拿本地即可
-  area: undefined,
-  nickname: undefined,
-  introduce: undefined
+  gender: '-/-',
+  phone: '-/-',
+  email: '-/-',
+  avatar: '-/-', // 这字段不展示暂未接入OSS, 如果是default就直接去拿本地即可
+  area: '-/-',
+  nickname: '-/-',
+  introduce: '-/-'
 });
 
 //? 数据转义显示
@@ -190,6 +190,12 @@ const genderDescription = computed(() => {
 
 
 //! 查
+
+// 使用 onMounted 钩子在组件加载时获取数据
+onMounted(() => {
+  getData();
+});
+
 // 获取用户数据
 const getData = () => {
   http({

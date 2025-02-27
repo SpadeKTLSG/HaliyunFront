@@ -48,6 +48,26 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 } = Maven);
 
 
+//!进入特定应用的鉴权
+onBeforeMount(() => {
+  // todo
+  //暂时先针对登陆进行鉴权, 之后还能加入对应的权限鉴权
+  // 统一 userStore 登陆状态拦阻索: 如果用户未登录, 展示三秒弹框提示: 未登录, 之后踢回首页
+  if (userStore.id === 0) {
+    ElMessage({
+      message: '未登录, 请先登录',
+      type: 'warning',
+      duration: 3000
+    });
+    nextTick(() => {
+      setTimeout(() => {
+        window.location.replace('http://localhost:9876/');
+      }, 3000);
+    });
+  }
+});
+
+
 defineEmits(['close']);
 // 应用内跳页器
 const currentPage = ref('userinfo');
@@ -65,20 +85,6 @@ const handleMenuSelect = (index) => {
 
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
-
-  // 统一 userStore 登陆状态拦阻索: 如果用户未登录, 展示三秒弹框提示: 未登录, 之后踢回首页
-  if (userStore.id === 0) {
-    ElMessage({
-      message: '未登录, 请先登录',
-      type: 'warning',
-      duration: 3000
-    });
-    nextTick(() => {
-      setTimeout(() => {
-        window.location.replace('http://localhost:9876/');
-      }, 3000);
-    });
-  }
 
 
   switch (currentPage.value) {
