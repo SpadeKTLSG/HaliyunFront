@@ -233,10 +233,13 @@ const login = () => {
     cookie.set('account', dataForm.value.account, '7d')
     console.log('登录成功, cookie: ' + cookie.get('authorization') + "  |  " + cookie.get('account'))
 
-    // 获取用户信息
+    // 获取用户标志信息
     http({
-      url: http.adornUrl('Guest/users/user_tl'),
-      method: 'post'
+      url: http.adornUrl('Guest/users/user_mark'),
+      method: 'get',
+      params: http.adornParams({
+        account: dataForm.value.account
+      })
     }).then(({data}) => {
       console.log(data)
       // 保存用户信息到userStore
@@ -245,6 +248,7 @@ const login = () => {
       userStore.updatePhone(data.phone)
       userStore.updateLoginType(data.loginType)
       userStore.updateAdmin(data.admin)
+
       userStore.updateToken(cookie.get('authorization'))
       console.log('用户 userStore 已经保存')
 

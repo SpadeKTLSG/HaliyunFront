@@ -169,7 +169,7 @@ const statusDescription = computed(() => {
     case 2:
       return '封禁';
     default:
-      return '停用';
+      return '-/-';
   }
 });
 
@@ -184,7 +184,7 @@ const genderDescription = computed(() => {
     case 2:
       return '不明';
     default:
-      return '不明';
+      return '-/-';
   }
 });
 
