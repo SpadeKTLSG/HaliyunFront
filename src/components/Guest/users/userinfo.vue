@@ -9,7 +9,7 @@
           <el-descriptions-item label="账号名">{{ userData.account }}</el-descriptions-item>
           <el-descriptions-item label="管理员权限"> {{ userData.admin === 1 ? '是' : '否' }}</el-descriptions-item>
           <el-descriptions-item label="账号状态">{{ statusDescription }}</el-descriptions-item>
-          <el-descriptions-item label="登陆类型">{{ userData.loginType === 3 ? '手机验证码' : '暂不支持请等待后续适配' }}</el-descriptions-item>
+          <el-descriptions-item label="登陆类型">{{ userData.loginType === 3 ? '手机验证码' : '非法!' }}</el-descriptions-item>
           <el-descriptions-item label="昵称">{{ userData.nickname }}</el-descriptions-item>
         </el-descriptions>
       </el-col>
@@ -143,19 +143,19 @@ const userStore = useUserStore()
 //? 用户数据展示表单
 const userData = ref({
   //User表
-  admin: 1,
-  status: 0,
-  account: 'Admin',
-  loginType: 3,
+  admin: undefined,
+  status: undefined,
+  account: undefined,
+  loginType: undefined,
 
   //UserDetail表
-  gender: 1,
-  phone: '15911451419',
-  email: 'spadekxcwxtlsg@gmail.com',
-  avatar: 'default', // 这字段不展示暂未接入OSS, 如果是default就直接去拿本地即可
-  area: '地球',
-  nickname: '管理员玄桃K',
-  introduce: '这个人很懒，什么都没有留下'
+  gender: undefined,
+  phone: undefined,
+  email: undefined,
+  avatar: undefined, // 这字段不展示暂未接入OSS, 如果是default就直接去拿本地即可
+  area: undefined,
+  nickname: undefined,
+  introduce: undefined
 });
 
 //? 数据转义显示
