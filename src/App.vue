@@ -94,7 +94,7 @@
               </el-icon>
             </el-button>
 
-            <!-- 2.5 右下角用户信息按钮 //todo -->
+            <!-- 2.5 右下角用户信息按钮 -->
             <el-button class="user_info-button" @click="openApp('PersonApp')">
               <el-icon>
                 <Avatar/>

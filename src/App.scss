@@ -21,7 +21,8 @@ html, body {
     height: 100%;
     width: 100%;
     background-color: variables.$background-color;
-
+    background-image: url("@/../static/img/首页背景.jpg");
+    background-size: cover;
     // 主页容器样式
     .home-container {
 
@@ -119,7 +120,7 @@ html, body {
           .search-box {
             //横向居中
             display: flex;
-            width: 80%;
+            width: 50%;
             height: 40px;
             margin: 0 auto 3rem auto;
 
@@ -158,7 +159,7 @@ html, body {
 
               .app-show-text {
                 font-size: 2rem;
-                color: #0c82eb;
+                color: #66ccff;
               }
             }
 
