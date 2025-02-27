@@ -7,9 +7,7 @@
       <el-col :span="8" class="userinfo-basic">
         <el-descriptions :column="2" border>
           <el-descriptions-item label="账号名">{{ userData.account }}</el-descriptions-item>
-          <el-descriptions-item label="管理员权限">
-            {{ userData.admin === 1 ? '是' : '否' }}
-          </el-descriptions-item>
+          <el-descriptions-item label="管理员权限"> {{ userData.admin === 1 ? '是' : '否' }}</el-descriptions-item>
           <el-descriptions-item label="账号状态">{{ statusDescription }}</el-descriptions-item>
           <el-descriptions-item label="登陆类型">{{ userData.loginType === 3 ? '手机验证码' : '暂不支持请等待后续适配' }}</el-descriptions-item>
           <el-descriptions-item label="昵称">{{ userData.nickname }}</el-descriptions-item>
@@ -59,8 +57,11 @@
         <!--刷新-获取数据-->
         <el-button @click="getData()" class="userinfo_op-buttons">刷新</el-button>
 
-        <!--修改-弹出修改表单-->
+        <!--修改-弹出修改表单 + 修改密码需求-->
         <el-button @click="showForm()" class="userinfo_op-buttons">修改</el-button>
+
+        <!--注销账号-->
+        <el-button @click="delAccount()" class="userinfo_op-buttons">删号</el-button>
 
         <!--登出 - 同之前的登出操作-->
         <el-button @click="logout()" class="userinfo_op-buttons">登出</el-button>
@@ -72,54 +73,45 @@
 
     </div>
 
-    <!--修改表单-->
-    <el-dialog :visible.sync="formVisible" title="修改用户信息">
-      <el-form :model="formData" label-width="120px">
-        <el-form-item label="账号名">
-          <el-input v-model="formData.account"></el-input>
-        </el-form-item>
-        <el-form-item label="管理员权限">
-          <el-select v-model="formData.admin">
-            <el-option label="是" :value="1"></el-option>
-            <el-option label="否" :value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="账号状态">
-          <el-select v-model="formData.status">
-            <el-option label="正常" :value="0"></el-option>
-            <el-option label="停用" :value="1"></el-option>
-            <el-option label="封禁" :value="2"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-input v-model="formData.loginType"></el-input>
 
+    <!--修改表单组件-->
+    <el-dialog :visible.sync="formVisible" title="修改用户信息">
+
+      <!--表单对象-->
+      <el-form :model="userData4Update" label-width="120px">
+
+        <!--密码确认修改组合对象-->
+
+
+        <!--基础修改对象-->
         <el-form-item label="昵称">
-          <el-input v-model="formData.nickname"></el-input>
+          <el-input v-model="userData4Update.nickname"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="formData.gender">
+          <el-select v-model="userData4Update.gender">
             <el-option label="男" :value="1"></el-option>
             <el-option label="女" :value="0"></el-option>
             <el-option label="不明" :value="2"></el-option>
-            <el-form-item label="手机号">
-              <el-input v-model="formData.phone"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱">
-              <el-input v-model="formData.email"></el-input>
-            </el-form-item>
-            <el-form-item label="地区">
-              <el-input v-model="formData.area"></el-input>
-            </el-form-item>
-            <el-form-item label="介绍">
-              <el-input v-model="formData.introduce"></el-input>
-            </el-form-item>
           </el-select>
         </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="userData4Update.email"></el-input>
+        </el-form-item>
+        <el-form-item label="地区">
+          <el-input v-model="userData4Update.area"></el-input>
+        </el-form-item>
+        <el-form-item label="介绍">
+          <el-input v-model="userData4Update.introduce"></el-input>
+        </el-form-item>
+
       </el-form>
+
+      <!--表单操作-->
       <div slot="footer" class="dialog-footer">
         <el-button @click="formVisible = false">取消</el-button>
         <el-button type="primary" @click="submitForm">提交</el-button>
       </div>
+
     </el-dialog>
   </div>
 </template>
@@ -128,6 +120,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
+import {useUserStore} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -144,8 +137,10 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 
 // DI 依赖注入
 const currentPage = inject('currentPage');
+const userStore = useUserStore()
 
-// !后端获取的数据
+
+//? 用户数据展示表单
 const userData = ref({
   //User表
   admin: 1,
@@ -160,18 +155,7 @@ const userData = ref({
   avatar: 'default', // 这字段不展示暂未接入OSS, 如果是default就直接去拿本地即可
   area: '地球',
   nickname: '管理员玄桃K',
-  introduce: '这个人很懒，什么都没有留下',
-  /* levelId: "1894671134331666432",
-   vip: 1,
-   createGroupCount: 0,
-   createGroupMax: 114514,
-   joinGroupCount: 0,
-   joinGroupMax: 1145141919,
-   coin: 1099,
-   energyCoin: 1099,
-   registerCode: '3662f948d2014bc08b892014b32c8fb0',
-   levelFloor: 7,
-   levelName: '以太'*/
+  introduce: '这个人很懒，什么都没有留下'
 });
 
 //? 数据转义显示
@@ -205,7 +189,70 @@ const genderDescription = computed(() => {
 });
 
 
-// 手动数据获取
+//! 查
+// 获取用户数据
+const getData = () => {
+  http({
+    url: http.adornUrl('Guest/users/user_info'),
+    method: 'get',
+    params: http.adornParams({
+      id: userStore.id
+    })
+  }).then(({data}) => {
+    userData.value = data;
+    formData.value = {...userData.value};
+  }).catch((error) => {
+    ElMessage({
+      message: '获取用户数据失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+};
+
+
+//! 改
+const formData = ref({...userData.value});
+const formVisible = ref(false);
+// 显示修改表单
+const showForm = () => {
+  formVisible.value = true;
+};
+
+//? 用户数据修改表单 : 只有能修改的字段, 需要查询时候也填过来
+// note: 未来方便管理, 于是拆分为了两个表单. 一个是展示表单, 一个是修改表单
+const userData4Update = ref({
+  password: '',
+  gender: 2,
+  email: '',
+  avatar: 'default',
+  area: '地球',
+  nickname: '',
+  introduce: ''
+});
+
+// 提交修改表单
+const submitForm = () => {
+  http({
+    url: http.adornUrl('Guest/users/user_info'),
+    method: 'put',
+    data: http.adornData(userData4Update.value)
+  }).then(() => {
+    ElMessage({
+      message: '用户信息更新成功',
+      type: 'success',
+      duration: 1000
+    });
+    formVisible.value = false;
+    getData();
+  }).catch((error) => {
+    ElMessage({
+      message: '更新用户信息失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+};
 
 </script>
 
