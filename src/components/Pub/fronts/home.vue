@@ -138,6 +138,13 @@ const logout = () => {
     padding: 20px;
     border: 1px solid #ccc;
     box-sizing: border-box;
+
+    .home_left_readme {
+      padding: 15px;
+      height: 80%;
+      overflow-y: auto;
+      background-color: #f0f0f0;
+    }
   }
 
   .home_right {
