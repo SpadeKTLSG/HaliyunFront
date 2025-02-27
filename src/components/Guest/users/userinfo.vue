@@ -2,6 +2,7 @@
   <div class="userinfo">
     <!-- 上部区域-->
     <div class="userinfo_upper">
+
       <!--用户User表信息-->
       <el-col :span="8" class="userinfo-basic">
         <el-descriptions :column="2" border>
@@ -15,20 +16,30 @@
         </el-descriptions>
       </el-col>
 
+      <!--垂直分割线-->
+      <el-divider :direction="'vertical'"
+                  :content-position="'center'"
+                  class="full-height-divider">
+      </el-divider>
+
       <!--用户User表信息提取用户头像/账号-->
-      <el-col :span="12" class="userinfo-profile">
+      <el-col :span="6" class="userinfo-profile">
         <el-card class="avatar-card" shadow="hover">
-          <img :src="userData.avatar" alt="User Avatar" class="avatar-image"/>
+          <img :src="userData.avatar === 'default' ? '@/../static/img/首页轮播图集合 (2).png' : '' " alt="User Avatar" class="avatar-image"/>
           <div class="account-name">{{ userData.account }}</div>
         </el-card>
       </el-col>
+
     </div>
+
+    <el-divider></el-divider>
 
     <!--下部区域-->
     <div class="userinfo_lower">
+
       <!--用户UserDetail表信息-->
       <div class="userinfo-detail">
-        <el-col :span="8" class="">
+        <el-col :span="8">
           <el-descriptions :column="1" border>
             <el-descriptions-item label="性别">{{ genderDescription }}</el-descriptions-item>
             <el-descriptions-item label="手机号">{{ userData.phone }}</el-descriptions-item>
@@ -37,11 +48,79 @@
             <el-descriptions-item label="介绍">{{ userData.introduce }}</el-descriptions-item>
           </el-descriptions>
         </el-col>
-
       </div>
+
+      <el-divider></el-divider>
+
+      <!--操作按钮-->
+
+      <el-col :span="10">
+
+        <!--刷新-获取数据-->
+        <el-button @click="getData()" class="userinfo_op-buttons">刷新</el-button>
+
+        <!--修改-弹出修改表单-->
+        <el-button @click="showForm()" class="userinfo_op-buttons">修改</el-button>
+
+        <!--登出 - 同之前的登出操作-->
+        <el-button @click="logout()" class="userinfo_op-buttons">登出</el-button>
+
+        <!--注销账号-->
+        <el-button @click="delAccount()" class="userinfo_op-buttons">删号</el-button>
+
+      </el-col>
 
     </div>
 
+    <!--修改表单-->
+    <el-dialog :visible.sync="formVisible" title="修改用户信息">
+      <el-form :model="formData" label-width="120px">
+        <el-form-item label="账号名">
+          <el-input v-model="formData.account"></el-input>
+        </el-form-item>
+        <el-form-item label="管理员权限">
+          <el-select v-model="formData.admin">
+            <el-option label="是" :value="1"></el-option>
+            <el-option label="否" :value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="账号状态">
+          <el-select v-model="formData.status">
+            <el-option label="正常" :value="0"></el-option>
+            <el-option label="停用" :value="1"></el-option>
+            <el-option label="封禁" :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-input v-model="formData.loginType"></el-input>
+
+        <el-form-item label="昵称">
+          <el-input v-model="formData.nickname"></el-input>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-select v-model="formData.gender">
+            <el-option label="男" :value="1"></el-option>
+            <el-option label="女" :value="0"></el-option>
+            <el-option label="不明" :value="2"></el-option>
+            <el-form-item label="手机号">
+              <el-input v-model="formData.phone"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱">
+              <el-input v-model="formData.email"></el-input>
+            </el-form-item>
+            <el-form-item label="地区">
+              <el-input v-model="formData.area"></el-input>
+            </el-form-item>
+            <el-form-item label="介绍">
+              <el-input v-model="formData.introduce"></el-input>
+            </el-form-item>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="formVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitForm">提交</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -125,8 +204,8 @@ const genderDescription = computed(() => {
   }
 });
 
-function someMethod() {
-}
+
+// 手动数据获取
 
 </script>
 
@@ -140,12 +219,16 @@ function someMethod() {
     display: flex;
     justify-content: space-between;
     margin-top: -100px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
     .userinfo-basic {
 
       padding-top: -30px; //
       padding-right: 10px;
+    }
+
+    .full-height-divider {
+      height: 120px;
     }
 
     .userinfo-profile {
@@ -173,6 +256,9 @@ function someMethod() {
   }
 
   .userinfo_lower {
+    margin-top: 10px;
+    margin-bottom: 20px;
+
     .userdetail-card {
       width: 100%;
       min-height: 300px;
