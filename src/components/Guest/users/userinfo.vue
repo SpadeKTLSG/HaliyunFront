@@ -5,33 +5,13 @@
       <!--用户User表信息-->
       <el-col :span="8" class="userinfo-basic">
         <el-descriptions :column="2" border>
-          <el-descriptions-item label="账号">{{ userData.account }}</el-descriptions-item>
-          <el-descriptions-item label="管理员">
+          <el-descriptions-item label="账号名">{{ userData.account }}</el-descriptions-item>
+          <el-descriptions-item label="管理员权限">
             {{ userData.admin === 1 ? '是' : '否' }}
           </el-descriptions-item>
           <el-descriptions-item label="账号状态">{{ statusDescription }}</el-descriptions-item>
           <el-descriptions-item label="登陆类型">{{ userData.loginType === 3 ? '手机验证码' : '暂不支持请等待后续适配' }}</el-descriptions-item>
-        </el-descriptions>
-      </el-col>
-      <el-col :span="8" class="">
-        <el-descriptions :column="1" border>
-          <el-descriptions-item label="Gender">{{ userData.gender }}</el-descriptions-item>
-          <el-descriptions-item label="Phone">{{ userData.phone }}</el-descriptions-item>
-          <el-descriptions-item label="Email">{{ userData.email }}</el-descriptions-item>
-          <el-descriptions-item label="Area">{{ userData.area }}</el-descriptions-item>
-          <el-descriptions-item label="Nickname">{{ userData.nickname }}</el-descriptions-item>
-          <el-descriptions-item label="Introduce">{{ userData.introduce }}</el-descriptions-item>
-          <el-descriptions-item label="Level ID">{{ userData.levelId }}</el-descriptions-item>
-          <el-descriptions-item label="VIP">{{ userData.vip }}</el-descriptions-item>
-          <el-descriptions-item label="Create Group Count">{{ userData.createGroupCount }}</el-descriptions-item>
-          <el-descriptions-item label="Create Group Max">{{ userData.createGroupMax }}</el-descriptions-item>
-          <el-descriptions-item label="Join Group Count">{{ userData.joinGroupCount }}</el-descriptions-item>
-          <el-descriptions-item label="Join Group Max">{{ userData.joinGroupMax }}</el-descriptions-item>
-          <el-descriptions-item label="Coin">{{ userData.coin }}</el-descriptions-item>
-          <el-descriptions-item label="Energy Coin">{{ userData.energyCoin }}</el-descriptions-item>
-          <el-descriptions-item label="Register Code">{{ userData.registerCode }}</el-descriptions-item>
-          <el-descriptions-item label="Level Floor">{{ userData.levelFloor }}</el-descriptions-item>
-          <el-descriptions-item label="Level Name">{{ userData.levelName }}</el-descriptions-item>
+          <el-descriptions-item label="昵称">{{ userData.nickname }}</el-descriptions-item>
         </el-descriptions>
       </el-col>
 
@@ -50,23 +30,11 @@
       <div class="userinfo-detail">
         <el-col :span="8" class="">
           <el-descriptions :column="1" border>
-            <el-descriptions-item label="Gender">{{ userData.gender }}</el-descriptions-item>
-            <el-descriptions-item label="Phone">{{ userData.phone }}</el-descriptions-item>
-            <el-descriptions-item label="Email">{{ userData.email }}</el-descriptions-item>
-            <el-descriptions-item label="Area">{{ userData.area }}</el-descriptions-item>
-            <el-descriptions-item label="Nickname">{{ userData.nickname }}</el-descriptions-item>
-            <el-descriptions-item label="Introduce">{{ userData.introduce }}</el-descriptions-item>
-            <el-descriptions-item label="Level ID">{{ userData.levelId }}</el-descriptions-item>
-            <el-descriptions-item label="VIP">{{ userData.vip }}</el-descriptions-item>
-            <el-descriptions-item label="Create Group Count">{{ userData.createGroupCount }}</el-descriptions-item>
-            <el-descriptions-item label="Create Group Max">{{ userData.createGroupMax }}</el-descriptions-item>
-            <el-descriptions-item label="Join Group Count">{{ userData.joinGroupCount }}</el-descriptions-item>
-            <el-descriptions-item label="Join Group Max">{{ userData.joinGroupMax }}</el-descriptions-item>
-            <el-descriptions-item label="Coin">{{ userData.coin }}</el-descriptions-item>
-            <el-descriptions-item label="Energy Coin">{{ userData.energyCoin }}</el-descriptions-item>
-            <el-descriptions-item label="Register Code">{{ userData.registerCode }}</el-descriptions-item>
-            <el-descriptions-item label="Level Floor">{{ userData.levelFloor }}</el-descriptions-item>
-            <el-descriptions-item label="Level Name">{{ userData.levelName }}</el-descriptions-item>
+            <el-descriptions-item label="性别">{{ genderDescription }}</el-descriptions-item>
+            <el-descriptions-item label="手机号">{{ userData.phone }}</el-descriptions-item>
+            <el-descriptions-item label="邮箱">{{ userData.email }}</el-descriptions-item>
+            <el-descriptions-item label="地区">{{ userData.area }}</el-descriptions-item>
+            <el-descriptions-item label="介绍">{{ userData.introduce }}</el-descriptions-item>
           </el-descriptions>
         </el-col>
 
@@ -100,29 +68,31 @@ const currentPage = inject('currentPage');
 
 // !后端获取的数据
 const userData = ref({
-  account: 'Admin',
+  //User表
   admin: 1,
   status: 0,
+  account: 'Admin',
   loginType: 3,
-  // password is intentionally omitted
+
+  //UserDetail表
   gender: 1,
   phone: '15911451419',
   email: 'spadekxcwxtlsg@gmail.com',
-  avatar: 'default', // URL or asset path for the avatar
+  avatar: 'default', // 这字段不展示暂未接入OSS, 如果是default就直接去拿本地即可
   area: '地球',
   nickname: '管理员玄桃K',
   introduce: '这个人很懒，什么都没有留下',
-  levelId: "1894671134331666432",
-  vip: 1,
-  createGroupCount: 0,
-  createGroupMax: 114514,
-  joinGroupCount: 0,
-  joinGroupMax: 1145141919,
-  coin: 1099,
-  energyCoin: 1099,
-  registerCode: '3662f948d2014bc08b892014b32c8fb0',
-  levelFloor: 7,
-  levelName: '以太'
+  /* levelId: "1894671134331666432",
+   vip: 1,
+   createGroupCount: 0,
+   createGroupMax: 114514,
+   joinGroupCount: 0,
+   joinGroupMax: 1145141919,
+   coin: 1099,
+   energyCoin: 1099,
+   registerCode: '3662f948d2014bc08b892014b32c8fb0',
+   levelFloor: 7,
+   levelName: '以太'*/
 });
 
 //? 数据转义显示
@@ -136,7 +106,22 @@ const statusDescription = computed(() => {
     case 2:
       return '封禁';
     default:
-      return '未知';
+      return '停用';
+  }
+});
+
+
+// 用户性别展示
+const genderDescription = computed(() => {
+  switch (userData.value.gender) {
+    case 0:
+      return '女';
+    case 1:
+      return '男';
+    case 2:
+      return '不明';
+    default:
+      return '不明';
   }
 });
 
