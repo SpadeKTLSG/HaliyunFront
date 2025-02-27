@@ -105,7 +105,7 @@ provide('currentPage', currentPage);
 .person_app {
   display: flex;
   margin-top: -10px;
-  flex-direction: column;
+  flex-direction: row;
   height: 5vh;
 
 
@@ -141,11 +141,15 @@ provide('currentPage', currentPage);
 //对应页面组件, 需要占满剩下的全部页面.
 .person_app_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
+  display: flex;
+  flex-direction: column;
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
 .login_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
+  display: flex;
+  flex-direction: column;
 }
 
 </style>

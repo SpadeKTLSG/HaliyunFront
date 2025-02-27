@@ -3,14 +3,18 @@
     <!-- 上部区域-->
     <div class="userinfo_upper">
       <!--用户User表信息-->
-      <el-col :span="12" class="userinfo-basic">
-        <el-descriptions title="User Information" column="1" border>
-          <el-descriptions-item label="Account">{{ userData.account }}</el-descriptions-item>
-          <el-descriptions-item label="Admin">
-            {{ userData.admin === 1 ? 'Yes' : 'No' }}
+      <el-col :span="8" class="userinfo-basic">
+        <el-descriptions :column="1" border>
+          <el-descriptions-item label="账号">{{ userData.account }}</el-descriptions-item>
+          <el-descriptions-item label="管理员">
+            {{ userData.admin === 1 ? '是' : '否' }}
           </el-descriptions-item>
-          <el-descriptions-item label="Status">{{ userData.status }}</el-descriptions-item>
-          <el-descriptions-item label="Login Type">{{ userData.loginType }}</el-descriptions-item>
+          <el-descriptions-item label="账号状态">{{ statusDescription }}</el-descriptions-item>
+          <el-descriptions-item label="登陆类型">{{ userData.loginType === 3 ? '手机验证码' : '暂不支持请等待后续适配' }}</el-descriptions-item>
+        </el-descriptions>
+      </el-col>
+      <el-col :span="8" class="">
+        <el-descriptions :column="1" border>
           <el-descriptions-item label="Gender">{{ userData.gender }}</el-descriptions-item>
           <el-descriptions-item label="Phone">{{ userData.phone }}</el-descriptions-item>
           <el-descriptions-item label="Email">{{ userData.email }}</el-descriptions-item>
@@ -44,7 +48,27 @@
     <div class="userinfo_lower">
       <!--用户UserDetail表信息-->
       <div class="userinfo-detail">
-
+        <el-col :span="8" class="">
+          <el-descriptions :column="1" border>
+            <el-descriptions-item label="Gender">{{ userData.gender }}</el-descriptions-item>
+            <el-descriptions-item label="Phone">{{ userData.phone }}</el-descriptions-item>
+            <el-descriptions-item label="Email">{{ userData.email }}</el-descriptions-item>
+            <el-descriptions-item label="Area">{{ userData.area }}</el-descriptions-item>
+            <el-descriptions-item label="Nickname">{{ userData.nickname }}</el-descriptions-item>
+            <el-descriptions-item label="Introduce">{{ userData.introduce }}</el-descriptions-item>
+            <el-descriptions-item label="Level ID">{{ userData.levelId }}</el-descriptions-item>
+            <el-descriptions-item label="VIP">{{ userData.vip }}</el-descriptions-item>
+            <el-descriptions-item label="Create Group Count">{{ userData.createGroupCount }}</el-descriptions-item>
+            <el-descriptions-item label="Create Group Max">{{ userData.createGroupMax }}</el-descriptions-item>
+            <el-descriptions-item label="Join Group Count">{{ userData.joinGroupCount }}</el-descriptions-item>
+            <el-descriptions-item label="Join Group Max">{{ userData.joinGroupMax }}</el-descriptions-item>
+            <el-descriptions-item label="Coin">{{ userData.coin }}</el-descriptions-item>
+            <el-descriptions-item label="Energy Coin">{{ userData.energyCoin }}</el-descriptions-item>
+            <el-descriptions-item label="Register Code">{{ userData.registerCode }}</el-descriptions-item>
+            <el-descriptions-item label="Level Floor">{{ userData.levelFloor }}</el-descriptions-item>
+            <el-descriptions-item label="Level Name">{{ userData.levelName }}</el-descriptions-item>
+          </el-descriptions>
+        </el-col>
 
       </div>
 
@@ -74,7 +98,7 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 // DI 依赖注入
 const currentPage = inject('currentPage');
 
-// 后端获取
+// !后端获取的数据
 const userData = ref({
   account: 'Admin',
   admin: 1,
@@ -88,7 +112,7 @@ const userData = ref({
   area: '地球',
   nickname: '管理员玄桃K',
   introduce: '这个人很懒，什么都没有留下',
-  levelId: 1894671134331666432,
+  levelId: "1894671134331666432",
   vip: 1,
   createGroupCount: 0,
   createGroupMax: 114514,
@@ -101,6 +125,20 @@ const userData = ref({
   levelName: '以太'
 });
 
+//? 数据转义显示
+// 用户账号状态展示
+const statusDescription = computed(() => {
+  switch (userData.value.status) {
+    case 0:
+      return '正常';
+    case 1:
+      return '停用';
+    case 2:
+      return '封禁';
+    default:
+      return '未知';
+  }
+});
 
 function someMethod() {
 }
@@ -111,12 +149,17 @@ function someMethod() {
 <style lang="scss" scoped>
 
 .userinfo {
-  padding: 20px;
+
 
   .userinfo_upper {
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: -100px;
+    margin-bottom: 10px;
 
     .userinfo-basic {
+
+      padding-top: -30px; //
       padding-right: 10px;
     }
 
