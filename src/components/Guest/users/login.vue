@@ -212,6 +212,12 @@ const login2Admin = () => {
 
 const login = () => {
 
+  //? note: 登陆的流程: (异步可能会出问题, 因此全部使用同步)
+  // 1. 基础表单来发起登陆请求
+  // 2. 获得的返回data是令牌, 需要先保存到cookie, 并加上accout
+  // 3. 有了cookie才能作为继续访问鉴权接口的凭证, 之后再获得用户完整信息
+  // 4. 获取了用户完整信息之后存入到localStorage, 之后就可以在任何地方使用了
+
   http({
     url: http.adornUrl('Guest/users/login'),
     method: 'post',
@@ -241,7 +247,6 @@ const login = () => {
         account: dataForm.value.account
       })
     }).then(({data}) => {
-      console.log(data)
 
       // 保存用户信息到localStorage
       const userWithExpiry = {
@@ -251,9 +256,9 @@ const login = () => {
       };
       localStorage.setItem('user', JSON.stringify(userWithExpiry));
       console.log('用户信息已经保存到localStorage, 过期时间为: ' + userWithExpiry.expiry)
-
+      const storedUser = localStorage.getItem('user')
       ElMessage({
-        message: '用户id: ' + localStorage.getItem('id') + '   |   用户账号: ' + localStorage.getItem('account') + '   |   用户手机号: ' + localStorage.getItem('phone') + '   |   用户登录类型: ' + localStorage.getItem('loginType') + '   |   用户权限: ' + localStorage.getItem('admin') + '   |   用户token: ' + localStorage.getItem('token'),
+        message: '用户id: ' + storedUser.id + '   |   用户账号: ' + storedUser.account + '   |   用户手机号: ' + localStorage.getItem('phone') + '   |   用户登录类型: ' + localStorage.getItem('loginType') + '   |   用户权限: ' + localStorage.getItem('admin') + '   |   用户token: ' + localStorage.getItem('token'),
         type:
             'success',
         duration:
