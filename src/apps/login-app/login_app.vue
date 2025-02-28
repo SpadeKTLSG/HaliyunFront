@@ -38,7 +38,11 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 defineEmits(['close']);
 // 应用内跳页器
 const currentPage = ref('login');
+// 把currentPage暴露出去
+provide('currentPage', currentPage);
+
 const userStore = useUserStore()
+
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   // 先判断用户是否登录了
@@ -59,8 +63,7 @@ const backAppHome = () => {
   currentPage.value = '';
 };
 
-// 把currentPage暴露出去
-provide('currentPage', currentPage);
+
 </script>
 
 <style lang="scss" scoped>

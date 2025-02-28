@@ -1,4 +1,6 @@
 <template>
+  <!--主体-->
+
   <div class="userinfo">
     <!-- 上部区域-->
     <div class="userinfo_upper">
@@ -60,60 +62,62 @@
         <!--修改-弹出修改表单 + 修改密码需求-->
         <el-button @click="showForm()" class="userinfo_op-buttons">修改</el-button>
 
-        <!--注销账号-->
-        <el-button @click="delAccount()" class="userinfo_op-buttons">删号</el-button>
-
         <!--登出 - 同之前的登出操作-->
         <el-button @click="logout()" class="userinfo_op-buttons">登出</el-button>
 
-        <!--注销账号-->
+        <!--逻辑删除账号-->
         <el-button @click="delAccount()" class="userinfo_op-buttons">删号</el-button>
+
+        <!--关闭界面-->
+        <el-button @click="()=>{currentPage=''}" class="userinfo_op-buttons">已阅</el-button>
 
       </el-col>
 
     </div>
-
-
-    <!--修改表单组件-->
-    <el-dialog :visible.sync="formVisible" title="修改用户信息">
-
-      <!--表单对象-->
-      <el-form :model="userData4Update" label-width="120px">
-
-        <!--密码确认修改组合对象-->
-
-
-        <!--基础修改对象-->
-        <el-form-item label="昵称">
-          <el-input v-model="userData4Update.nickname"></el-input>
-        </el-form-item>
-        <el-form-item label="性别">
-          <el-select v-model="userData4Update.gender">
-            <el-option label="男" :value="1"></el-option>
-            <el-option label="女" :value="0"></el-option>
-            <el-option label="不明" :value="2"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="userData4Update.email"></el-input>
-        </el-form-item>
-        <el-form-item label="地区">
-          <el-input v-model="userData4Update.area"></el-input>
-        </el-form-item>
-        <el-form-item label="介绍">
-          <el-input v-model="userData4Update.introduce"></el-input>
-        </el-form-item>
-
-      </el-form>
-
-      <!--表单操作-->
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="formVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitForm">提交</el-button>
-      </div>
-
-    </el-dialog>
   </div>
+
+
+  <!--修改表单组件-->
+  <el-dialog :visible.sync="formVisible" class="userinfo-dialog" title="修改用户信息">
+
+    <!--表单对象-->
+    <el-form :model="userData4Update" class="userinfo-dialog-main">
+
+      <!--密码确认修改组合对象-->
+
+
+      <!--基础修改对象-->
+      <el-form-item label="昵称">
+        <el-input v-model="userData4Update.nickname"></el-input>
+      </el-form-item>
+      <el-form-item label="性别">
+        <el-select v-model="userData4Update.gender">
+          <el-option label="男" :value="1"></el-option>
+          <el-option label="女" :value="0"></el-option>
+          <el-option label="不明" :value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input v-model="userData4Update.email"></el-input>
+      </el-form-item>
+      <el-form-item label="地区">
+        <el-input v-model="userData4Update.area"></el-input>
+      </el-form-item>
+      <el-form-item label="介绍">
+        <el-input v-model="userData4Update.introduce"></el-input>
+      </el-form-item>
+
+    </el-form>
+
+    <!--表单操作-->
+    <div slot="footer" class="userinfo-dialog-footer">
+      <el-button @click="formVisible = false">取消</el-button>
+      <el-button type="primary" @click="submitForm">提交</el-button>
+    </div>
+
+  </el-dialog>
+
+
 </template>
 
 
@@ -136,6 +140,10 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 
 
 // DI 依赖注入
+const props = defineProps({
+  class: String,
+});
+const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 const userStore = useUserStore()
 
@@ -257,6 +265,29 @@ const submitForm = () => {
       type: 'error',
       duration: 1000
     });
+  });
+};
+
+
+//! 登出
+
+
+const logout = () => {
+
+  // 后端登出
+  http({
+    url: http.adornUrl('Guest/users/logout'),
+    method: 'delete'
+  }).then(() => {
+    // 前端登出
+    clearLoginInfo();
+
+    nextTick(() => {
+      window.location.replace('http://localhost:9876/');
+    })
+
+  }).catch(() => {
+    ElMessage.error('登出失败');
   });
 };
 

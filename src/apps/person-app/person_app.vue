@@ -69,8 +69,11 @@ onBeforeMount(() => {
 
 
 defineEmits(['close']);
-// 应用内跳页器
+
+// 应用内跳页器, 暴露出去
 const currentPage = ref('userinfo');
+provide('currentPage', currentPage);
+
 const userStore = useUserStore()
 
 // 处理左侧导航栏点击事件
@@ -85,8 +88,6 @@ const handleMenuSelect = (index) => {
 
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
-
-
   switch (currentPage.value) {
     case 'userinfo':
       return Userinfo;
@@ -101,8 +102,6 @@ const backAppHome = () => {
   currentPage.value = '';
 };
 
-// 把currentPage暴露出去
-provide('currentPage', currentPage);
 </script>
 
 <style lang="scss" scoped>
