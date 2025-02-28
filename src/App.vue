@@ -94,7 +94,7 @@
               </el-icon>
             </el-button>
 
-            <!-- 2.5 右下角用户信息按钮 //todo -->
+            <!-- 2.5 右下角用户信息按钮 -->
             <el-button class="user_info-button" @click="openApp('PersonApp')">
               <el-icon>
                 <Avatar/>
@@ -174,8 +174,10 @@
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
+import PersonApp from "@/apps/person-app/person_app.vue";
 import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
-import {useUserStore} from "@/components/common/user.js";
+import {UserContext} from "@/components/common/user.js";
+
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -227,7 +229,8 @@ const currentComponent = computed(() => {
   switch (currentApp.value) {
     case 'LoginApp':
       return LoginApp;
-      // Add more cases for other apps
+    case 'PersonApp':
+      return PersonApp;
     default:
       return null;
   }
@@ -256,6 +259,8 @@ onBeforeMount(() => {
 
 // 页面初始化
 onMounted(() => {
+  // 恢复用户
+  loadUserFromLocalStorage();
   setInterval(() => {
     currentTime.value = new Date().toLocaleString();
   }, 1000);
@@ -279,7 +284,7 @@ const search = () => {
 };
 
 // 进入App
-const enterWorld = ref(true);
+const enterWorld = ref(false);
 const enterApp = () => {
   enterWorld.value = true;
 };
@@ -307,13 +312,31 @@ const goBack = () => {
 
 //! 用户登录相关
 let hasLogin = false;
-const userStore = useUserStore()
+
+
+// 恢复用户登录状态
+const loadUserFromLocalStorage = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user) {
+    const now = new Date().getTime();
+    if (now < user.expiry) {
+      // 恢复 cookie
+      cookie.set('authorization', user.token, '7d')
+      cookie.set('account', user.account, '7d')
+      console.log('登录成功, cookie: ' + cookie.get('authorization') + "  |  " + cookie.get('account'))
+
+    } else { // 过期
+      UserContext.clearUser()
+    }
+  }
+};
+
 
 //不能使用常规方法, 因为页面加载逻辑不同. 需要每次都计算这个, 当用户回到首页时候, 会重新计算
-const notifyLogin = () => {
-  if (!(userStore.id === 0)) {
+const notifyLogin = async () => {
+  if (UserContext.hasUser()) {
     ElMessage({
-      message: '欢迎回来, ' + userStore.account,
+      message: '欢迎回来, ' + UserContext.getUserAccount(),
       type: 'success'
     });
     hasLogin = true;

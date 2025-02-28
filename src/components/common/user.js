@@ -1,35 +1,99 @@
-import {defineStore} from 'pinia'
 import cookie from "vue-cookies";
 
+const USER_KEY = 'user';
+
 /**
- * 用户信息缓存: http://localhost:10000/Guest/users/user_tl 获取
+ * UserTL 用户信息保存的类声明
  */
-export const useUserStore = defineStore('user', {
-    state: () => {
-        return {
-            id: 0, admin: 0, loginType: 3, account: '', phone: ''
-        }
-    }, actions: {
-        updateId(id) {
-            this.id = id
-        }, updateAdmin(admin) {
-            this.admin = admin
-        }, updateLoginType(loginType) {
-            this.loginType = loginType
-        }, updateAccount(account) {
-            this.account = account
-        }, updatePhone(phone) {
-            this.phone = phone
-        }
+export class UserTL {
+    constructor(id, account, phone, loginType, admin, token, expiry) {
+        this.id = id;
+        this.account = account;
+        this.phone = phone;
+        this.loginType = loginType;
+        this.admin = admin;
+
+        this.token = token;
+        this.expiry = expiry;
     }
-})
+}
 
 
 /**
- * 清除登录信息: 清除 token * 2
+ * UserContext 用户上下文, 使用localStorage模拟
+ * @type {{getUser(): (any|null), clearUser(): void, setUser(*): void}}
  */
-export function clearLoginInfo() {
-    cookie.remove('Authorization')
-    cookie.remove('account')
-}
+export const UserContext = {
+
+    /**
+     * 当前有无用户
+     *
+     * @returns {boolean} 是否有用户, 如果有用户返回true, 否则返回false
+     */
+    hasUser() {
+        return !!this.getUser();
+    },
+
+    /**
+     * 设置用户
+     * @param user
+     */
+    setUser(user) {
+        const userWithExpiry = new UserTL(
+            user.id,
+            user.account,
+            user.phone,
+            user.loginType,
+            user.admin,
+            user.token,
+            new Date().getTime() + 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
+        );
+        localStorage.setItem(USER_KEY, JSON.stringify(userWithExpiry));
+        // console.log('用户信息已经保存到localStorage');
+    },
+
+    /**
+     * 获取用户
+     * @returns {any|null}
+     */
+    getUser() {
+        const user = JSON.parse(localStorage.getItem(USER_KEY));
+        if (user) {
+            const now = new Date().getTime();
+            if (now < user.expiry) {
+                return new UserTL(
+                    user.id,
+                    user.account,
+                    user.phone,
+                    user.loginType,
+                    user.admin,
+                    user.token,
+                    user.expiry
+                );
+            } else {
+                this.clearUser();
+            }
+        }
+        return null;
+    },
+
+    getUserAccount() {
+        const user = this.getUser();
+        return user ? user.account : null;
+    },
+
+    getUserId() {
+        const user = this.getUser();
+        return user ? user.id : null;
+    },
+
+    /**
+     * 清除TL: 清除 token * 2 + localStorage
+     */
+    clearUser() {
+        localStorage.removeItem(USER_KEY);
+        cookie.remove('authorization');
+        cookie.remove('account');
+    }
+};
 
