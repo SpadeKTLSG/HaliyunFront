@@ -75,11 +75,11 @@
           <el-text class="login-tip" @click="regi(0)">
             没有账号? 点我立即注册
           </el-text>
-
+          <el-text class="login-tip-admin" @click="regi(1)">
+            管理员内部注册入口
+          </el-text>
         </el-form>
-        <el-text class="login-tip-admin" @click="regi(1)">
-          管理员内部注册入口
-        </el-text>
+
       </div>
 
 
@@ -363,14 +363,17 @@ const regi = (userType) => {
         color: #999;
         font-size: 12px;
         margin-top: 10px;
-        cursor: pointer;
+        margin-left: 10px;
+        cursor: pointer; //鼠标变成小手
+        text-decoration: underline; //下划线
       }
 
       .login-tip-admin {
         color: #999;
         font-size: 12px;
-        margin-left: 250px;
-        cursor: pointer;
+        margin-left: 150px;
+        cursor: pointer; //鼠标变成小手
+        text-decoration: underline; //下划线
       }
 
     }
