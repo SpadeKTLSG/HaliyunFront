@@ -34,5 +34,6 @@ export function clearLoginInfo() {
     cookie.remove('authorization')
     cookie.remove('account')
     localStorage.removeItem('user');
+    useUserStore.reset();
 }
 

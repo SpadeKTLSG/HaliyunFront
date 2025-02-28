@@ -242,15 +242,6 @@ const login = () => {
       })
     }).then(({data}) => {
       console.log(data)
-      // 保存用户信息到userStore
-      userStore.updateId(data.id)
-      userStore.updateAccount(data.account)
-      userStore.updatePhone(data.phone)
-      userStore.updateLoginType(data.loginType)
-      userStore.updateAdmin(data.admin)
-
-      userStore.updateToken(cookie.get('authorization'))
-      console.log('用户 userStore 已经保存')
 
       // 保存用户信息到localStorage
       const userWithExpiry = {
@@ -262,10 +253,13 @@ const login = () => {
       console.log('用户信息已经保存到localStorage, 过期时间为: ' + userWithExpiry.expiry)
 
       ElMessage({
-        message: '用户id: ' + userStore.id + '   |用户账号: ' + userStore.account + '   |用户手机号: ' + userStore.phone + '   |登录类型Type: ' + userStore.loginType + '   |管理员类型: ' + (userStore.loginType === 1 ? '管理员' : '用户'),
-        type: 'success',
-        duration: 5000
-      });
+        message: '用户id: ' + localStorage.getItem('id') + '   |   用户账号: ' + localStorage.getItem('account') + '   |   用户手机号: ' + localStorage.getItem('phone') + '   |   用户登录类型: ' + localStorage.getItem('loginType') + '   |   用户权限: ' + localStorage.getItem('admin') + '   |   用户token: ' + localStorage.getItem('token'),
+        type:
+            'success',
+        duration:
+            5000
+      })
+      ;
     })
     // 跳转到介绍页
     nextTick(() => {
