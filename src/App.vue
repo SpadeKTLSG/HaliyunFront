@@ -284,7 +284,7 @@ const search = () => {
 };
 
 // 进入App
-const enterWorld = ref(true);
+const enterWorld = ref(false);
 const enterApp = () => {
   enterWorld.value = true;
 };
