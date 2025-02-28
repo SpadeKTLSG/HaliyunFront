@@ -95,6 +95,7 @@ import * as Maven from '@/components/common/maven.js'
 import {inject} from 'vue'
 
 import DOMPurify from 'dompurify';
+import {UserContext, UserTL} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -230,14 +231,17 @@ const login = () => {
       loginType: 3, //暂时只支持手机 + 账密登录
     })
   }).then(({data}) => {
+
+    cookie.set('authorization', data, '7d')
+    cookie.set('account', dataForm.value.account, '7d')
+
     ElMessage({
       message: "登录成功",
       type: 'success',
       duration: 1000
     });
-    cookie.set('authorization', data, '7d')
-    cookie.set('account', dataForm.value.account, '7d')
-    console.log('登录成功, cookie: ' + cookie.get('authorization') + "  |  " + cookie.get('account'))
+
+    // console.log('登录成功, cookie: ' + cookie.get('authorization') + "  |  " + cookie.get('account'))
 
     // 获取用户标志信息
     http({
@@ -248,17 +252,21 @@ const login = () => {
       })
     }).then(({data}) => {
 
-      // 保存用户信息到localStorage
-      const userWithExpiry = {
-        ...data,
-        token: cookie.get('authorization'),
-        expiry: new Date().getTime() + 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
-      };
-      localStorage.setItem('user', JSON.stringify(userWithExpiry));
-      console.log('用户信息已经保存到localStorage, 过期时间为: ' + userWithExpiry.expiry)
-      const storedUser = localStorage.getItem('user')
+      // 保存用户信息到localStorage: 显式UserTL对象
+      UserContext.setUser(new UserTL(
+          data.id,
+          data.account,
+          data.phone,
+          data.loginType,
+          data.admin,
+          cookie.get('authorization'),
+          new Date().getTime() + 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
+      ));
+
+      // 提示用户信息 (测试使用)
+      const storedUser = UserContext.getUser()
       ElMessage({
-        message: '用户id: ' + storedUser.id + '   |   用户账号: ' + storedUser.account + '   |   用户手机号: ' + localStorage.getItem('phone') + '   |   用户登录类型: ' + localStorage.getItem('loginType') + '   |   用户权限: ' + localStorage.getItem('admin') + '   |   用户token: ' + localStorage.getItem('token'),
+        message: '用户id: ' + storedUser.id + '   |   用户账号: ' + storedUser.account + '   |   用户手机号: ' + storedUser.phone + '   |   用户登录类型: ' + storedUser.loginType + '   |   用户权限: ' + storedUser.admin + '   |   用户token: ' + storedUser.token,
         type:
             'success',
         duration:
@@ -279,8 +287,8 @@ const login = () => {
   })
 }
 
-//! 注册
 
+//! 注册
 
 const regi = (userType) => {
   http({
@@ -295,7 +303,7 @@ const regi = (userType) => {
     })
   }).then(({data}) => {
     ElMessage({
-      message: "注册成功",
+      message: "注册成功, 请登录",
       type: 'success',
       duration: 1000
     });

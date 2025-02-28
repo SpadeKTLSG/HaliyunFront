@@ -12,6 +12,7 @@ export class UserTL {
         this.phone = phone;
         this.loginType = loginType;
         this.admin = admin;
+
         this.token = token;
         this.expiry = expiry;
     }
@@ -51,12 +52,30 @@ export const UserContext = {
         if (user) {
             const now = new Date().getTime();
             if (now < user.expiry) {
-                return user;
+                return new UserTL(
+                    user.id,
+                    user.account,
+                    user.phone,
+                    user.loginType,
+                    user.admin,
+                    user.token,
+                    user.expiry
+                );
             } else {
                 this.clearUser();
             }
         }
         return null;
+    },
+
+    getUserAccount() {
+        const user = this.getUser();
+        return user ? user.account : null;
+    },
+
+    getUserId() {
+        const user = this.getUser();
+        return user ? user.id : null;
     },
 
     /**
