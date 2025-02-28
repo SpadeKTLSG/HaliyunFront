@@ -74,48 +74,52 @@
       </el-col>
 
     </div>
+
+
+    <!--修改表单组件-->
+    <el-dialog
+        v-model="formVisible"
+        class="userinfo-dialog"
+        title="修改用户信息">
+
+      <!--表单对象-->
+      <el-form :model="userData4Update" class="userinfo-dialog-main">
+
+        <!--密码确认修改组合对象-->
+
+
+        <!--基础修改对象-->
+        <el-form-item label="昵称">
+          <el-input v-model="userData4Update.nickname"></el-input>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-select v-model="userData4Update.gender">
+            <el-option label="男" :value="1"></el-option>
+            <el-option label="女" :value="0"></el-option>
+            <el-option label="不明" :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="userData4Update.email"></el-input>
+        </el-form-item>
+        <el-form-item label="地区">
+          <el-input v-model="userData4Update.area"></el-input>
+        </el-form-item>
+        <el-form-item label="介绍">
+          <el-input v-model="userData4Update.introduce"></el-input>
+        </el-form-item>
+
+      </el-form>
+
+      <!--表单操作-->
+      <div slot="footer" class="userinfo-dialog-footer">
+        <el-button @click="formVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitForm">提交</el-button>
+      </div>
+
+    </el-dialog>
+
   </div>
-
-
-  <!--修改表单组件-->
-  <el-dialog :visible.sync="formVisible" class="userinfo-dialog" title="修改用户信息">
-
-    <!--表单对象-->
-    <el-form :model="userData4Update" class="userinfo-dialog-main">
-
-      <!--密码确认修改组合对象-->
-
-
-      <!--基础修改对象-->
-      <el-form-item label="昵称">
-        <el-input v-model="userData4Update.nickname"></el-input>
-      </el-form-item>
-      <el-form-item label="性别">
-        <el-select v-model="userData4Update.gender">
-          <el-option label="男" :value="1"></el-option>
-          <el-option label="女" :value="0"></el-option>
-          <el-option label="不明" :value="2"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="邮箱">
-        <el-input v-model="userData4Update.email"></el-input>
-      </el-form-item>
-      <el-form-item label="地区">
-        <el-input v-model="userData4Update.area"></el-input>
-      </el-form-item>
-      <el-form-item label="介绍">
-        <el-input v-model="userData4Update.introduce"></el-input>
-      </el-form-item>
-
-    </el-form>
-
-    <!--表单操作-->
-    <div slot="footer" class="userinfo-dialog-footer">
-      <el-button @click="formVisible = false">取消</el-button>
-      <el-button type="primary" @click="submitForm">提交</el-button>
-    </div>
-
-  </el-dialog>
 
 
 </template>
@@ -124,7 +128,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
-import {useUserStore} from "@/components/common/user.js";
+import {clearLoginInfo, useUserStore} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -231,11 +235,19 @@ const formVisible = ref(false);
 // 显示修改表单
 const showForm = () => {
   formVisible.value = true;
+
+  //把展示表单的数据复制到修改表单(userData4Update), 但是只能给他本身有的字段
+  for (const key in userData4Update.value) {
+    if (formData.value.hasOwnProperty(key)) {
+      userData4Update.value[key] = formData.value[key];
+    }
+  }
 };
 
 //? 用户数据修改表单 : 只有能修改的字段, 需要查询时候也填过来
 // note: 未来方便管理, 于是拆分为了两个表单. 一个是展示表单, 一个是修改表单
 const userData4Update = ref({
+  id: userStore.id,
   password: '',
   gender: 2,
   email: '',
@@ -247,6 +259,7 @@ const userData4Update = ref({
 
 // 提交修改表单
 const submitForm = () => {
+  console.log(userData4Update.value)
   http({
     url: http.adornUrl('Guest/users/user_info'),
     method: 'put',
@@ -348,6 +361,20 @@ const logout = () => {
       min-height: 300px;
       padding: 20px;
     }
+  }
+
+
+  .userinfo-dialog {
+
+
+    .userinfo-dialog-main {
+      padding: 20px;
+    }
+
+    .userinfo-dialog-footer {
+      text-align: center;
+    }
+
   }
 }
 
