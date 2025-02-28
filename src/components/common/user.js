@@ -1,30 +1,4 @@
-import {defineStore} from 'pinia'
 import cookie from "vue-cookies";
-
-/**
- * 用户基础信息缓存
- */
-export const useUserStore = defineStore('user', {
-    state: () => {
-        return {
-            id: 0, admin: 0, loginType: 3, account: '', phone: '', token: ''
-        }
-    }, actions: {
-        updateId(id) {
-            this.id = id
-        }, updateAdmin(admin) {
-            this.admin = admin
-        }, updateLoginType(loginType) {
-            this.loginType = loginType
-        }, updateAccount(account) {
-            this.account = account
-        }, updatePhone(phone) {
-            this.phone = phone
-        }, updateToken(token) {
-            this.token = token
-        }
-    }
-})
 
 
 /**
@@ -34,6 +8,5 @@ export function clearLoginInfo() {
     cookie.remove('authorization')
     cookie.remove('account')
     localStorage.removeItem('user');
-    useUserStore.reset();
 }
 

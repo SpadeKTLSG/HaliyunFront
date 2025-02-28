@@ -176,7 +176,7 @@ import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
 import PersonApp from "@/apps/person-app/person_app.vue";
 import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
-import {clearLoginInfo, useUserStore} from "@/components/common/user.js";
+import {clearLoginInfo} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -311,7 +311,6 @@ const goBack = () => {
 
 //! 用户登录相关
 let hasLogin = false;
-const userStore = useUserStore()
 
 
 // 恢复用户登录状态
@@ -320,13 +319,6 @@ const loadUserFromLocalStorage = () => {
   if (user) {
     const now = new Date().getTime();
     if (now < user.expiry) {
-      // 恢复 userStore
-      userStore.updateId(user.id);
-      userStore.updateAccount(user.account);
-      userStore.updatePhone(user.phone);
-      userStore.updateLoginType(user.loginType);
-      userStore.updateAdmin(user.admin);
-      userStore.updateToken(user.token)
       // 恢复 cookie
       cookie.set('authorization', user.token, '7d')
       cookie.set('account', user.account, '7d')
@@ -341,9 +333,9 @@ const loadUserFromLocalStorage = () => {
 
 //不能使用常规方法, 因为页面加载逻辑不同. 需要每次都计算这个, 当用户回到首页时候, 会重新计算
 const notifyLogin = async () => {
-  if (userStore.id !== 0) {
+  if (localStorage.getItem('id') !== null) {
     ElMessage({
-      message: '欢迎回来, ' + userStore.account,
+      message: '欢迎回来, ' + localStorage.getItem('account'),
       type: 'success'
     });
     hasLogin = true;

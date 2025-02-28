@@ -31,7 +31,7 @@
 import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
-import {useUserStore} from "@/components/common/user.js";
+
 import Userfunc from "@/components/Guest/users/userfunc.vue";
 import Userinfo from "@/components/Guest/users/userinfo.vue";
 
@@ -52,8 +52,8 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 onBeforeMount(() => {
   // todo
   //暂时先针对登陆进行鉴权, 之后还能加入对应的权限鉴权
-  // 统一 userStore 登陆状态拦阻索: 如果用户未登录, 展示三秒弹框提示: 未登录, 之后踢回首页
-  if (userStore.id === 0) {
+  // 统一 登陆状态拦阻索: 如果用户未登录, 展示三秒弹框提示: 未登录, 之后踢回首页
+  if (localStorage.getItem('id') === '') {
     ElMessage({
       message: '未登录, 请先登录',
       type: 'warning',
@@ -74,7 +74,6 @@ defineEmits(['close']);
 const currentPage = ref('userinfo');
 provide('currentPage', currentPage);
 
-const userStore = useUserStore()
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {

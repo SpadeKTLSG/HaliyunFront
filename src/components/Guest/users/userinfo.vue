@@ -128,7 +128,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
-import {clearLoginInfo, useUserStore} from "@/components/common/user.js";
+import {clearLoginInfo} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -149,7 +149,6 @@ const props = defineProps({
 });
 const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
-const userStore = useUserStore()
 
 
 //? 用户数据展示表单
@@ -214,7 +213,7 @@ const getData = () => {
     url: http.adornUrl('Guest/users/user_info'),
     method: 'get',
     params: http.adornParams({
-      id: userStore.id
+      id: localStorage.getItem('id')
     })
   }).then(({data}) => {
     userData.value = data;
@@ -247,7 +246,7 @@ const showForm = () => {
 //? 用户数据修改表单 : 只有能修改的字段, 需要查询时候也填过来
 // note: 未来方便管理, 于是拆分为了两个表单. 一个是展示表单, 一个是修改表单
 const userData4Update = ref({
-  id: userStore.id,
+  id: localStorage.getItem('id'),
   password: '',
   gender: 2,
   email: '',

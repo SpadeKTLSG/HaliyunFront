@@ -93,7 +93,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from 'vue'
-import {useUserStore} from "@/components/common/user.js";
+
 import DOMPurify from 'dompurify';
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
@@ -198,7 +198,7 @@ const getCode = () => {
 
 //! 登陆
 let userType = 0;
-const userStore = useUserStore()
+
 
 const login2User = () => {
   userType = 0;
