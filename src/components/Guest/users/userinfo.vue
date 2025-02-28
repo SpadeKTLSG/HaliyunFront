@@ -303,6 +303,33 @@ const logout = () => {
   });
 };
 
+
+//! 注销
+
+const delAccount = () => {
+  http({
+    url: http.adornUrl('Guest/users/killme'),
+    method: 'delete',
+    params: http.adornParams({
+      id: UserContext.getUserId()
+    })
+  }).then(() => {
+    ElMessage({
+      message: '账号已注销',
+      type: 'success',
+      duration: 1000
+    });
+    logout();
+  }).catch((error) => {
+    ElMessage({
+      message: '注销账号失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+};
+
+
 </script>
 
 
