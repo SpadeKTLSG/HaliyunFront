@@ -77,8 +77,8 @@
 <script setup>
 
 import * as Maven from "@/components/common/maven.js";
-import {clearLoginInfo} from "@/components/common/user.js";
 import {inject} from "vue";
+import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -113,7 +113,7 @@ const logout = () => {
     method: 'delete'
   }).then(() => {
     // 前端登出
-    clearLoginInfo();
+    UserContext.clearUser()
 
     nextTick(() => {
       window.location.replace('http://localhost:9876/');

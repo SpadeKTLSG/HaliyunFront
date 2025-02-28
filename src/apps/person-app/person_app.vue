@@ -34,6 +34,7 @@ import {provide} from 'vue'
 
 import Userfunc from "@/components/Guest/users/userfunc.vue";
 import Userinfo from "@/components/Guest/users/userinfo.vue";
+import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -53,7 +54,7 @@ onBeforeMount(() => {
   // todo
   //暂时先针对登陆进行鉴权, 之后还能加入对应的权限鉴权
   // 统一 登陆状态拦阻索: 如果用户未登录, 展示三秒弹框提示: 未登录, 之后踢回首页
-  if (localStorage.getItem('id') === '') {
+  if (!UserContext.hasUser()) {
     ElMessage({
       message: '未登录, 请先登录',
       type: 'warning',

@@ -26,6 +26,15 @@ export class UserTL {
 export const UserContext = {
 
     /**
+     * 当前有无用户
+     *
+     * @returns {boolean} 是否有用户, 如果有用户返回true, 否则返回false
+     */
+    hasUser() {
+        return !!this.getUser();
+    },
+
+    /**
      * 设置用户
      * @param user
      */

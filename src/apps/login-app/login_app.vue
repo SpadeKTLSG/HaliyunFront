@@ -20,6 +20,7 @@ import * as Maven from '@/components/common/maven.js'
 import Home from '@/components/Pub/fronts/home.vue'
 import Login from '@/components/Guest/users/login.vue'
 import {provide} from 'vue'
+import {UserContext} from "@/components/common/user.js";
 
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
@@ -45,7 +46,7 @@ provide('currentPage', currentPage);
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   // 先判断用户是否登录了
-  if (localStorage.getItem('id') === '') {
+  if (UserContext.hasUser()) {
     return Home;
   }
   switch (currentPage.value) {

@@ -278,12 +278,6 @@ const login = () => {
     nextTick(() => {
       currentPage.value = 'home';
     })
-  }).catch((response) => {
-    ElMessage({
-      message: response.message,
-      type: 'error',
-      duration: 1000
-    });
   })
 }
 

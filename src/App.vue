@@ -176,7 +176,8 @@ import * as Maven from '@/components/common/maven.js'
 import LoginApp from "@/apps/login-app/login_app.vue";
 import PersonApp from "@/apps/person-app/person_app.vue";
 import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
-import {clearLoginInfo} from "@/components/common/user.js";
+import {UserContext} from "@/components/common/user.js";
+
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -325,7 +326,7 @@ const loadUserFromLocalStorage = () => {
       console.log('登录成功, cookie: ' + cookie.get('authorization') + "  |  " + cookie.get('account'))
 
     } else { // 过期
-      clearLoginInfo();
+      UserContext.clearUser()
     }
   }
 };
@@ -333,9 +334,9 @@ const loadUserFromLocalStorage = () => {
 
 //不能使用常规方法, 因为页面加载逻辑不同. 需要每次都计算这个, 当用户回到首页时候, 会重新计算
 const notifyLogin = async () => {
-  if (localStorage.getItem('id') !== null) {
+  if (UserContext.hasUser()) {
     ElMessage({
-      message: '欢迎回来, ' + localStorage.getItem('account'),
+      message: '欢迎回来, ' + UserContext.getUserAccount(),
       type: 'success'
     });
     hasLogin = true;
