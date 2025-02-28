@@ -38,21 +38,26 @@ http.interceptors.response.use(response => {
         return response
     }
 
-    // 获得响应数据
+    // 判断成功与否
+
+
+    // 获得响应数据, 按照后端返回的数据格式进行解析
     res = response.data
 
 
     // 0 = 请求成功
     if (res.code === '0') {
-        console.log('==============请求成功的响应数据==============', '\n', res, '\n', '==============响应数据 end==============')
+        console.log('==============请求成功的响应数据==============', '\n', res.data, '\n', '==============响应数据 end==============')
         return res
+    } else { // 1 = 请求失败
+        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace("http://localhost:10000/", '')}`, '\n', `异常信息: ${res.message}`, '\n', '============== 请求异常 end ==========')
     }
 
 
     // A = 服务端错误码
 
     if (res.message.startsWith("A")) {
-        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace("http://localhost:10000/", '')}`, '\n', `异常信息: ${res}`, '\n', '============== 请求异常 end ==========')
+        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace("http://localhost:10000/", '')}`, '\n', `异常信息: ${res.message}`, '\n', '============== 请求异常 end ==========')
         ElMessage({
             message: '服务端错误', type: 'error', duration: 1.5 * 1000, customClass: 'element-error-message-zindex'
         })
@@ -62,7 +67,7 @@ http.interceptors.response.use(response => {
 
     // B = 客户端错误码
     if (res.message.startsWith("B")) {
-        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace("http://localhost:10000/", '')}`, '\n', `异常信息: ${res}`, '\n', '============== 请求异常 end ==========')
+        console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace("http://localhost:10000/", '')}`, '\n', `异常信息: ${res.message}`, '\n', '============== 请求异常 end ==========')
         ElMessage({
             message: '客户端错误', type: 'error', duration: 1.5 * 1000, customClass: 'element-error-message-zindex'
         })
