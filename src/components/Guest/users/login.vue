@@ -381,8 +381,8 @@ const regi = (userType) => {
       font-size: 12px;
       text-align: center;
       margin-top: auto; /* Push to the bottom */
-      padding-top: 27%;
-      padding-bottom: 5%; /* Add padding at the bottom */
+      padding-top: 20%;
+
 
     }
 
