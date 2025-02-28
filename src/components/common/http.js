@@ -51,6 +51,10 @@ http.interceptors.response.use(response => {
         return res
     } else { // 1 = 请求失败
         console.error('============== 请求异常 ==============', '\n', `接口地址: ${response.config.url.replace("http://localhost:10000/", '')}`, '\n', `异常信息: ${res.message}`, '\n', '============== 请求异常 end ==========')
+        ElMessage({
+            message: res.message, type: 'error', duration: 1.5 * 1000, customClass: 'element-error-message-zindex'
+        })
+
     }
 
 
