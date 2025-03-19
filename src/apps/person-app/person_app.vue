@@ -12,11 +12,38 @@
   <div class="person_app_left_nav">
 
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
+      <!--一级菜单-->
       <el-menu-item index="1">
         用户详情
       </el-menu-item>
       <el-menu-item index="2">
         用户功能
+      </el-menu-item>
+
+      <!--      todo: 之后把一级二级区分下-->
+      <!--二级菜单-->
+      <el-menu-item index="3">
+        VIP
+      </el-menu-item>
+
+      <el-menu-item index="4">
+        群组
+      </el-menu-item>
+
+      <el-menu-item index="5">
+        资产
+      </el-menu-item>
+
+      <el-menu-item index="6">
+        推广
+      </el-menu-item>
+
+      <el-menu-item index="7">
+        敬请期待
+      </el-menu-item>
+
+      <el-menu-item index="8">
+        敬请期待
       </el-menu-item>
     </el-menu>
 
@@ -148,13 +175,9 @@ const backAppHome = () => {
   flex: 1; /* 使 login_compo 占满剩余空间 */
   display: flex;
   flex-direction: column;
+  // 纵向顶到最上面
+  width: 90%;
 }
 
-//对应页面组件, 需要占满剩下的全部页面.
-.login_compo {
-  flex: 1; /* 使 login_compo 占满剩余空间 */
-  display: flex;
-  flex-direction: column;
-}
 
 </style>
