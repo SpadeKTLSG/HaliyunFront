@@ -23,7 +23,7 @@
       <!--      todo: 之后把一级二级区分下-->
       <!--二级菜单-->
       <el-menu-item index="3">
-        VIP
+        会员
       </el-menu-item>
 
       <el-menu-item index="4">
