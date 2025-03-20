@@ -1,5 +1,80 @@
 <template>
 
+  <!--主体-->
+  <div class="userfunc">
+
+    <!-- 上部区域-->
+    <div class="userfunc_upper">
+
+      <!--用户Func表信息-->
+
+      <!--1.等级-->
+      <el-text class="userfunc-title">等级</el-text>
+      <el-col :span="8" class="userfunc-basic">
+        <el-descriptions :column="2" border>
+
+          <el-descriptions-item label="等级名">{{ userData.levelName }}</el-descriptions-item>
+          <el-descriptions-item label="等级"> {{ userData.levelFloor }}</el-descriptions-item>
+
+        </el-descriptions>
+      </el-col>
+
+
+      <!--2.会员-->
+      <el-text class="userfunc-title">会员</el-text>
+      <el-col :span="8" class="userfunc-basic">
+        <el-descriptions :column="2" border>
+
+          <el-descriptions-item label="会员">{{ vipDescription }}</el-descriptions-item>
+
+        </el-descriptions>
+
+      </el-col>
+
+      <!--3.群组-->
+      <el-text class="userfunc-title">群组</el-text>
+      <el-col :span="8" class="userfunc-basic">
+        <el-descriptions :column="2" border>
+
+          <el-descriptions-item label="创建群组数">{{ userData.createGroupCount }}</el-descriptions-item>
+          <el-descriptions-item label="最大创建数">{{ userData.createGroupMax }}</el-descriptions-item>
+          <el-descriptions-item label="加入群组数">{{ userData.joinGroupCount }}</el-descriptions-item>
+          <el-descriptions-item label="最大加入数">{{ userData.joinGroupMax }}</el-descriptions-item>
+
+        </el-descriptions>
+      </el-col>
+
+
+      <!--4.资产-->
+      <el-text class="userfunc-title">资产</el-text>
+      <el-col :span="8" class="userfunc-basic">
+        <el-descriptions :column="2" border>
+
+          <el-descriptions-item label="金币">{{ userData.coin }}</el-descriptions-item>
+          <el-descriptions-item label="能量币">{{ userData.energyCoin }}</el-descriptions-item>
+
+        </el-descriptions>
+      </el-col>
+
+
+      <!--5.推广-->
+      <el-text class="userfunc-title">推广</el-text>
+      <el-col :span="8" class="userfunc-basic">
+        <el-descriptions :column="2" border>
+
+          <el-descriptions-item label="推广码">{{ userData.registerCode }}</el-descriptions-item>
+
+        </el-descriptions>
+      </el-col>
+
+
+      <!--6-X 敬请期待-->
+      <el-text class="userfunc-title">敬请期待...</el-text>
+
+    </div>
+    <el-divider></el-divider>
+
+  </div>
 </template>
 
 <script setup>
@@ -58,13 +133,13 @@ const userData = ref({
 
 //? 数据转义显示
 const vipDescription = computed(() => {
-  switch (userData.value.status) {
+  switch (userData.value.vip) {
     case 0:
       return '普通用户';
     case 1:
       return '会员用户';
     default:
-      return '未知请联系管理员';
+      return '未知, 请联系管理员';
   }
 });
 
@@ -99,5 +174,25 @@ const getData = () => {
 
 
 <style lang="scss" scoped>
+
+.userfunc {
+
+  .userfunc_upper {
+    margin-top: -30%;
+    margin-bottom: 20px;
+
+    .userfunc-title {
+      width: 100%;
+      margin: 10px 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #17b9e0;
+    }
+
+    .userfunc-basic {
+      margin: 10px 0;
+    }
+  }
+}
 
 </style>
