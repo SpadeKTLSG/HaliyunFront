@@ -35,6 +35,7 @@ const userData = ref({
   //1. 等级
   levelId: '-/-', //后端会传不展示
   levelName: '-/-',
+  levelFloor: '-/-',
 
   //2. 会员
   vip: '-/-',
@@ -72,6 +73,7 @@ const vipDescription = computed(() => {
 onMounted(() => {
   getData();
 });
+
 
 //和 Detail 一样, 也是获取用户数据, 但是还需要拿 Level 的等级名称信息, 包给后端处理. 后面加缓存实现优化
 const getData = () => {
