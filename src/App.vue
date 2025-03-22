@@ -173,10 +173,13 @@
 <script setup>
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
-import LoginApp from "@/apps/login-app/login_app.vue";
-import PersonApp from "@/apps/person-app/person_app.vue";
+
 import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
 import {UserContext} from "@/components/common/user.js";
+
+//对应应用组件
+import LoginApp from "@/apps/login-app/login_app.vue";
+import PersonApp from "@/apps/person-app/person_app.vue";
 
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
@@ -198,10 +201,12 @@ const currentApp = ref('App');
 
 // 应用集
 const apps = [
-  {name: 'LoginApp', show: '登陆'},
-  {name: 'PersonApp', show: '用户'},
-  {name: 'GroupApp', show: '群组'},
-  {name: 'FileApp', show: '文件'},
+  {name: 'LoginApp', show: '用户登陆'},
+  {name: 'PersonApp', show: '用户信息'},
+  {name: 'LevelApp', show: '用户等级'},
+  {name: 'UserDataApp', show: '用户数据'},
+  {name: 'UserMesApp', show: '用户消息'},
+  {name: 'UserRecordApp', show: '用户记录'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
@@ -215,13 +220,9 @@ const apps = [
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '设置'},
-  {name: 'DonateApp', show: '捐赠'},
-  {name: 'SysApp', show: '系统'},
-  {name: 'MesApp', show: '消息'},
-  {name: 'LoginApp', show: '日志'}
+  {name: 'XXXApp', show: '界面设置'},
+  {name: 'XXXApp', show: '推广捐赠'},
+  {name: 'XXXApp', show: '系统日志'}
 ];
 
 // 计算属性来获取当前显示的组件
