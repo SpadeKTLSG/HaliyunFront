@@ -3,13 +3,22 @@
   <!--主体-->
   <div class="userlevel">
 
-    <!-- 上部区域-->
-    <div class="userfunc_upper">
+    <!-- 上部区域: 等级金字塔-->
+    <div class="userlevel_upper">
 
+      <div>
+        <el-button type="primary" @click="showLevelinfo()">返回</el-button>
+      </div>
 
     </div>
 
     <el-divider></el-divider>
+
+    <!-- 下部区域: 等级描述-->
+    <div class="userlevel_lower">
+
+
+    </div>
 
 
   </div>
@@ -48,12 +57,13 @@ const userData = ref({});
 //! 查
 
 onMounted(() => {
-  getData();
+  //初始化展示用户数据: 获得用户当前的等级信息, 并置灰更高等级 + 点亮当前等级
+  showLevelinfo();
 });
 
 
 //和 Detail 一样, 也是获取用户数据, 但是还需要拿 Level 的等级名称信息, 包给后端处理. 后面加缓存实现优化
-const getData = () => {
+const showLevelinfo = () => {
   http({
     url: http.adornUrl('Guest/users/user_info'),
     method: 'get',
