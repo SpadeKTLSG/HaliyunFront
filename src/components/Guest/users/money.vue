@@ -6,46 +6,6 @@
     <!-- 上部区域-->
     <div class="userfunc_upper">
 
-      <!--用户Func表信息-->
-
-      <!--1.等级-->
-      <el-text class="userfunc-title">等级</el-text>
-      <el-col :span="8" class="userfunc-basic">
-        <el-descriptions :column="2" border>
-
-          <el-descriptions-item label="等级名">{{ userData.levelName }}</el-descriptions-item>
-          <el-descriptions-item label="等级"> {{ userData.levelFloor }}</el-descriptions-item>
-
-        </el-descriptions>
-      </el-col>
-
-
-      <!--2.会员-->
-      <el-text class="userfunc-title">会员</el-text>
-      <el-col :span="8" class="userfunc-basic">
-        <el-descriptions :column="2" border>
-
-          <el-descriptions-item label="会员">{{ vipDescription }}</el-descriptions-item>
-
-        </el-descriptions>
-
-      </el-col>
-
-      <!--3.群组-->
-      <el-text class="userfunc-title">群组</el-text>
-      <el-col :span="8" class="userfunc-basic">
-        <el-descriptions :column="2" border>
-
-          <el-descriptions-item label="创建群组数">{{ userData.createGroupCount }}</el-descriptions-item>
-          <el-descriptions-item label="最大创建数">{{ userData.createGroupMax }}</el-descriptions-item>
-          <el-descriptions-item label="加入群组数">{{ userData.joinGroupCount }}</el-descriptions-item>
-          <el-descriptions-item label="最大加入数">{{ userData.joinGroupMax }}</el-descriptions-item>
-
-        </el-descriptions>
-      </el-col>
-
-
-      <!--4.资产-->
       <el-text class="userfunc-title">资产</el-text>
       <el-col :span="8" class="userfunc-basic">
         <el-descriptions :column="2" border>
@@ -57,22 +17,14 @@
       </el-col>
 
 
-      <!--5.推广-->
-      <el-text class="userfunc-title">推广</el-text>
-      <el-col :span="8" class="userfunc-basic">
-        <el-descriptions :column="2" border>
-
-          <el-descriptions-item label="推广码">{{ userData.registerCode }}</el-descriptions-item>
-
-        </el-descriptions>
-      </el-col>
-
-
-      <!--6-X 敬请期待-->
-      <el-text class="userfunc-title">敬请期待...</el-text>
-
     </div>
     <el-divider></el-divider>
+
+    <el-text class="userfunc-info">资产概念介绍:</el-text>
+
+    <div>
+      <el-text class="userfunc-info-detail"> 用来量化平台货币概念. 硬币数 (指平台硬币), (换算的)能量币数 (指群内硬币的估价总额)</el-text>
+    </div>
 
   </div>
 </template>
@@ -103,45 +55,12 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
-//? 用户数据展示表单 (对应子页签分区数据)
+//? 用户数据展示表单 (对应子页签分区数据) 复用
 const userData = ref({
-  //UserFunc表
-
-  //1. 等级
-  levelId: '-/-', //后端会传不展示
-  levelName: '-/-',
-  levelFloor: '-/-',
-
-  //2. 会员
-  vip: '-/-',
-
-  //3. 群组
-  createGroupCount: '-/-',
-  createGroupMax: '-/-',
-  joinGroupCount: '-/-',
-  joinGroupMax: '-/-',
-
-  //4. 资产
   coin: '-/-',
-  energyCoin: '-/-',
-
-  //5. 推广
-  registerCode: '-/-'
-
-  //6-X. 敬请期待
+  energyCoin: '-/-'
 });
 
-//? 数据转义显示
-const vipDescription = computed(() => {
-  switch (userData.value.vip) {
-    case 0:
-      return '普通用户';
-    case 1:
-      return '会员用户';
-    default:
-      return '未知, 请联系管理员';
-  }
-});
 
 //! 查
 
@@ -192,6 +111,19 @@ const getData = () => {
     .userfunc-basic {
       margin: 10px 0;
     }
+  }
+
+  .userfunc-info {
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #7cfc00;
+  }
+
+  .userfunc-info-detail {
+    margin: 20px;
+    font-size: 15px;
+    color: #ffffff;
   }
 }
 

@@ -5,7 +5,6 @@
 
     <!-- 上部区域-->
     <div class="userfunc_upper">
-
       <!--用户Func表信息-->
 
       <!--1.等级-->
@@ -74,6 +73,13 @@
     </div>
     <el-divider></el-divider>
 
+    <el-text class="userfunc-info">会员功能暂不成熟, 下面是早期的会员功能</el-text>
+
+
+    <el-table :data="vipFuncList" stripe border fit height="500" class="userfunc-table">
+      <el-table-column prop="name" label="功能"></el-table-column>
+      <el-table-column prop="description" label="描述"></el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -103,45 +109,13 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
-//? 用户数据展示表单 (对应子页签分区数据)
+//? 用户数据展示表单 (对应子页签分区数据) 复用
 const userData = ref({
-  //UserFunc表
-
-  //1. 等级
   levelId: '-/-', //后端会传不展示
   levelName: '-/-',
   levelFloor: '-/-',
-
-  //2. 会员
-  vip: '-/-',
-
-  //3. 群组
-  createGroupCount: '-/-',
-  createGroupMax: '-/-',
-  joinGroupCount: '-/-',
-  joinGroupMax: '-/-',
-
-  //4. 资产
-  coin: '-/-',
-  energyCoin: '-/-',
-
-  //5. 推广
-  registerCode: '-/-'
-
-  //6-X. 敬请期待
 });
 
-//? 数据转义显示
-const vipDescription = computed(() => {
-  switch (userData.value.vip) {
-    case 0:
-      return '普通用户';
-    case 1:
-      return '会员用户';
-    default:
-      return '未知, 请联系管理员';
-  }
-});
 
 //! 查
 
@@ -192,6 +166,17 @@ const getData = () => {
     .userfunc-basic {
       margin: 10px 0;
     }
+  }
+
+  .userfunc-info {
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #7cfc00;
+  }
+
+  .userfunc-table {
+    margin-top: 20px;
   }
 }
 
