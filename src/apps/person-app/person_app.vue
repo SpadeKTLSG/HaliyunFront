@@ -120,6 +120,8 @@ const handleMenuSelect = (index) => {
     currentPage.value = 'asset';
   } else if (index === '6') {
     currentPage.value = 'promotion';
+  } else if (index === '7') {
+    currentPage.value = 'wait';
   } else {
     currentPage.value = 'wait';
   }
