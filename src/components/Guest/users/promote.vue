@@ -5,58 +5,7 @@
 
     <!-- 上部区域-->
     <div class="userfunc_upper">
-      <!--用户Func表信息-->
 
-      <!--1.等级-->
-      <el-text class="userfunc-title">等级</el-text>
-      <el-col :span="8" class="userfunc-basic">
-        <el-descriptions :column="2" border>
-
-          <el-descriptions-item label="等级名">{{ userData.levelName }}</el-descriptions-item>
-          <el-descriptions-item label="等级"> {{ userData.levelFloor }}</el-descriptions-item>
-
-        </el-descriptions>
-      </el-col>
-
-
-      <!--2.会员-->
-      <el-text class="userfunc-title">会员</el-text>
-      <el-col :span="8" class="userfunc-basic">
-        <el-descriptions :column="2" border>
-
-          <el-descriptions-item label="会员">{{ vipDescription }}</el-descriptions-item>
-
-        </el-descriptions>
-
-      </el-col>
-
-      <!--3.群组-->
-      <el-text class="userfunc-title">群组</el-text>
-      <el-col :span="8" class="userfunc-basic">
-        <el-descriptions :column="2" border>
-
-          <el-descriptions-item label="创建群组数">{{ userData.createGroupCount }}</el-descriptions-item>
-          <el-descriptions-item label="最大创建数">{{ userData.createGroupMax }}</el-descriptions-item>
-          <el-descriptions-item label="加入群组数">{{ userData.joinGroupCount }}</el-descriptions-item>
-          <el-descriptions-item label="最大加入数">{{ userData.joinGroupMax }}</el-descriptions-item>
-
-        </el-descriptions>
-      </el-col>
-
-
-      <!--4.资产-->
-      <el-text class="userfunc-title">资产</el-text>
-      <el-col :span="8" class="userfunc-basic">
-        <el-descriptions :column="2" border>
-
-          <el-descriptions-item label="金币">{{ userData.coin }}</el-descriptions-item>
-          <el-descriptions-item label="能量币">{{ userData.energyCoin }}</el-descriptions-item>
-
-        </el-descriptions>
-      </el-col>
-
-
-      <!--5.推广-->
       <el-text class="userfunc-title">推广</el-text>
       <el-col :span="8" class="userfunc-basic">
         <el-descriptions :column="2" border>
@@ -67,19 +16,16 @@
       </el-col>
 
 
-      <!--6-X 敬请期待-->
-      <el-text class="userfunc-title">敬请期待...</el-text>
-
     </div>
     <el-divider></el-divider>
 
-    <el-text class="userfunc-info">会员功能暂不成熟, 下面是早期的会员功能</el-text>
 
+    <el-text class="userfunc-info">推广概念介绍:</el-text>
 
-    <el-table :data="vipFuncList" stripe border fit height="500" class="userfunc-table">
-      <el-table-column prop="name" label="功能"></el-table-column>
-      <el-table-column prop="description" label="描述"></el-table-column>
-    </el-table>
+    <div>
+      <el-text class="userfunc-info-detail"> 用户使用推广码注册, 会对双方给予好处</el-text>
+    </div>
+
   </div>
 </template>
 
@@ -175,8 +121,11 @@ const getData = () => {
     color: #7cfc00;
   }
 
-  .userfunc-table {
-    margin-top: 20px;
+
+  .userfunc-info-detail {
+    margin: 20px;
+    font-size: 15px;
+    color: #ffffff;
   }
 }
 
