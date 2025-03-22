@@ -78,7 +78,6 @@ let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown,
 
 //!进入特定应用的鉴权
 onBeforeMount(() => {
-  // todo
   //暂时先针对登陆进行鉴权, 之后还能加入对应的权限鉴权
   // 统一 登陆状态拦阻索: 如果用户未登录, 展示三秒弹框提示: 未登录, 之后踢回首页
   if (!UserContext.hasUser()) {
@@ -109,6 +108,16 @@ const handleMenuSelect = (index) => {
     currentPage.value = 'userinfo';
   } else if (index === '2') {
     currentPage.value = 'userfunc';
+  } else if (index === '3') {
+    currentPage.value = 'vip';
+  } else if (index === '4') {
+    currentPage.value = 'group';
+  } else if (index === '5') {
+    currentPage.value = 'asset';
+  } else if (index === '6') {
+    currentPage.value = 'promotion';
+  } else {
+    currentPage.value = 'wait';
   }
 };
 
