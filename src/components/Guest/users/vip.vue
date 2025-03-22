@@ -27,8 +27,8 @@
 
 
     <el-table :data="vipFuncList" stripe border fit height="500" class="userfunc-table">
-      <el-table-column prop="name" label="功能名称"></el-table-column>
-      <el-table-column prop="description" label="功能描述"></el-table-column>
+      <el-table-column prop="name" label="功能"></el-table-column>
+      <el-table-column prop="description" label="描述"></el-table-column>
     </el-table>
   </div>
 </template>
@@ -59,7 +59,7 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
-//? 用户数据展示表单 (对应子页签分区数据)
+//? 用户数据展示表单 (对应子页签分区数据) 复用
 const userData = ref({
   levelId: '-/-', //后端会传不展示
   levelName: '-/-',
@@ -79,7 +79,7 @@ const vipDescription = computed(() => {
 });
 
 //? 写死的VIP用户功能列表
-
+// todo, 想啊, 很想啊
 const vipFuncList = [
   {name: 'VIP1', description: 'VIP1 功能描述'},
   {name: 'VIP2', description: 'VIP2 功能描述'},
