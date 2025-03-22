@@ -14,36 +14,35 @@
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
       <el-menu-item index="1">
-        用户详情
+        I. 用户详情
       </el-menu-item>
       <el-menu-item index="2">
-        用户功能
+        I. 用户功能
       </el-menu-item>
 
-      <!--      todo: 之后把一级二级区分下-->
       <!--二级菜单-->
       <el-menu-item index="3">
-        会员
+        - II. 会员
       </el-menu-item>
 
       <el-menu-item index="4">
-        群组
+        - II. 群组
       </el-menu-item>
 
       <el-menu-item index="5">
-        资产
+        - II. 资产
       </el-menu-item>
 
       <el-menu-item index="6">
-        推广
+        - II. 推广
       </el-menu-item>
 
       <el-menu-item index="7">
-        敬请期待
+        - II. 敬请期待
       </el-menu-item>
 
       <el-menu-item index="8">
-        敬请期待
+        I. 敬请期待
       </el-menu-item>
     </el-menu>
 
@@ -61,6 +60,11 @@ import {provide} from 'vue'
 
 import Userfunc from "@/components/Guest/users/userfunc.vue";
 import Userinfo from "@/components/Guest/users/userinfo.vue";
+import Vip from "@/components/Guest/users/vip.vue";
+import Group from "@/components/Guest/users/group.vue";
+import Money from "@/components/Guest/users/money.vue";
+import Promote from "@/components/Guest/users/promote.vue";
+import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
@@ -128,8 +132,19 @@ const currentView = computed(() => {
     case 'userinfo':
       return Userinfo;
     case 'userfunc':
-    default:
       return Userfunc;
+    case 'vip':
+      return Vip;
+    case 'group':
+      return Group;
+    case 'asset':
+      return Money;
+    case 'promotion':
+      return Promote;
+    case 'wait':
+      return Tofinish;
+    default:
+      return Userinfo;
   }
 });
 
