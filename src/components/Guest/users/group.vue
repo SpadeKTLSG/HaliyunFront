@@ -65,7 +65,7 @@ const userData = ref({
   createGroupCount: '-/-',
   createGroupMax: '-/-',
   joinGroupCount: '-/-',
-  joinGroupMax: '-/-',
+  joinGroupMax: '-/-'
 });
 
 

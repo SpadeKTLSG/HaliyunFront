@@ -116,33 +116,6 @@ const userData = ref({
   levelFloor: '-/-',
 });
 
-//? 数据转义显示
-const vipDescription = computed(() => {
-  switch (userData.value.vip) {
-    case 0:
-      return '普通用户';
-    case 1:
-      return '会员用户';
-    default:
-      return '未知, 请联系管理员';
-  }
-});
-
-//? 写死的VIP用户功能列表
-// todo, 想啊, 很想啊
-const vipFuncList = [
-  {name: 'VIP1', description: 'VIP1 功能描述'},
-  {name: 'VIP2', description: 'VIP2 功能描述'},
-  {name: 'VIP3', description: 'VIP3 功能描述'},
-  {name: 'VIP4', description: 'VIP4 功能描述'},
-  {name: 'VIP5', description: 'VIP5 功能描述'},
-  {name: 'VIP6', description: 'VIP6 功能描述'},
-  {name: 'VIP7', description: 'VIP7 功能描述'},
-  {name: 'VIP8', description: 'VIP8 功能描述'},
-  {name: 'VIP9', description: 'VIP9 功能描述'},
-  {name: 'VIP10', description: 'VIP10 功能描述'},
-];
-
 
 //! 查
 
