@@ -224,6 +224,8 @@ const apps = [
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
+  {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '界面设置'},
   {name: 'XXXApp', show: '推广捐赠'},
   {name: 'XXXApp', show: '系统日志'}
