@@ -180,6 +180,10 @@ import {UserContext} from "@/components/common/user.js";
 //对应应用组件
 import LoginApp from "@/apps/login-app/login_app.vue";
 import PersonApp from "@/apps/person-app/person_app.vue";
+import LevelApp from "@/apps/level-app/level_app.vue";
+import UserDataApp from "@/apps/user-data-app/user_data_app.vue";
+import UserMesApp from "@/apps/user-mes-app/user_mes_app.vue";
+import UserRecordApp from "@/apps/user-record-app/user_record_app.vue";
 
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
@@ -232,6 +236,14 @@ const currentComponent = computed(() => {
       return LoginApp;
     case 'PersonApp':
       return PersonApp;
+    case 'LevelApp':
+      return LevelApp;
+    case 'UserDataApp':
+      return UserDataApp;
+    case 'UserMesApp':
+      return UserMesApp;
+    case 'UserRecordApp':
+      return UserRecordApp;
     default:
       return null;
   }
