@@ -5,11 +5,39 @@
 
     <!-- 上部区域: 等级金字塔-->
     <div class="userlevel_upper">
+      哈哈哈
 
       <div>
-        <el-button type="primary" @click="showLevelinfo()">返回</el-button>
+        <!--7级-->
+        <el-button @click="showLevelinfo(7)"> 7级</el-button>
       </div>
 
+      <div>
+        <!--6级-->
+      </div>
+
+      <div>
+        <!--5级-->
+      </div>
+
+      <div>
+        <!--4级-->
+      </div>
+
+      <div>
+        <!--3级-->
+      </div>
+      <div>
+        <!--2级-->
+      </div>
+
+      <div>
+        <!--1级-->
+      </div>
+
+      <div>
+        <!--0级-->
+      </div>
     </div>
 
     <el-divider></el-divider>
@@ -27,7 +55,6 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
-import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -61,20 +88,36 @@ onMounted(() => {
   showLevelinfo();
 });
 
+// 用户的等级 floor:
+let userLevel;
 
-//和 Detail 一样, 也是获取用户数据, 但是还需要拿 Level 的等级名称信息, 包给后端处理. 后面加缓存实现优化
-const showLevelinfo = () => {
+const getUserLevel = () => {
   http({
-    url: http.adornUrl('Guest/users/user_info'),
+    url: http.adornUrl('Guest/users/userslevel/floor'),
+    method: 'get'
+  }).then(({data}) => {
+    userLevel = data;
+  }).catch((error) => {
+    ElMessage({
+      message: '获取用户等级数据失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+};
+
+const showLevelinfo = (level) => {
+  http({
+    url: http.adornUrl('Guest/levels/levelinfo/floor'),
     method: 'get',
     params: http.adornParams({
-      id: UserContext.getUserId(),
+      floor: level
     })
   }).then(({data}) => {
     userData.value = data;
   }).catch((error) => {
     ElMessage({
-      message: '获取用户数据失败: ' + error.message,
+      message: '获取楼层数据失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
@@ -90,7 +133,7 @@ const showLevelinfo = () => {
 .userlevel {
 
   .userlevel_upper {
-    margin-top: -30%;
+    margin-top: 25px;
     margin-bottom: 20px;
 
 
