@@ -55,6 +55,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
+import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -78,25 +79,34 @@ const currentPage = inject('currentPage');
 
 
 //? 用户数据展示表单 (对应子页签分区数据) 复用
-const userData = ref({});
+const levelData = ref({});
 
+// 用户的等级 floor:
+const userLevel = ref(0);
 
 //! 查
 
-onMounted(() => {
-  //初始化展示用户数据: 获得用户当前的等级信息, 并置灰更高等级 + 点亮当前等级
-  showLevelinfo();
+onBeforeMount(() => {
+  getUserLevel();
 });
 
-// 用户的等级 floor:
-let userLevel;
+onMounted(() => {
+  showLevelinfo(userLevel.value);
+});
 
+
+/**
+ * 获取用户等级数据
+ */
 const getUserLevel = () => {
   http({
     url: http.adornUrl('Guest/users/userslevel/floor'),
-    method: 'get'
+    method: 'get',
+    params: http.adornParams({
+      id: UserContext.getUserId()
+    })
   }).then(({data}) => {
-    userLevel = data;
+    userLevel.value = data;
   }).catch((error) => {
     ElMessage({
       message: '获取用户等级数据失败: ' + error.message,
@@ -106,6 +116,10 @@ const getUserLevel = () => {
   });
 };
 
+
+/**
+ * 展示等级信息
+ */
 const showLevelinfo = (level) => {
   http({
     url: http.adornUrl('Guest/levels/levelinfo/floor'),
@@ -114,7 +128,7 @@ const showLevelinfo = (level) => {
       floor: level
     })
   }).then(({data}) => {
-    userData.value = data;
+    levelData.value = data;
   }).catch((error) => {
     ElMessage({
       message: '获取楼层数据失败: ' + error.message,
