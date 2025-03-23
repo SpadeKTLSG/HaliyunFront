@@ -5,42 +5,15 @@
 
     <!-- 上部区域: 等级金字塔-->
     <div class="userlevel_upper">
-
-      <div class="level7">
-        <!--7级-->
-        <el-button @click="showLevelinfo(7)"> 7级</el-button>
-      </div>
-
-      <div>
-        <!--6级-->
-        <el-button @click="showLevelinfo(6)"> 6级</el-button>
-      </div>
-
-      <div>
-        <!--5级-->
-        ...
-      </div>
-
-      <div>
-        <!--4级-->
-      </div>
-
-      <div>
-        <!--3级-->
-      </div>
-      <div>
-        <!--2级-->
-      </div>
-
-      <div>
-        <!--1级-->
-      </div>
-
-      <div>
-        <!--0级-->
+      <div class="level" v-for="level in 8" :key="level">
+        <el-button @click="showLevelinfo( 8-level)"
+                   :class="'level' + (level - 1)"
+                   :round="true"
+                   :size="'large'">
+          {{ 8 - level }}级
+        </el-button>
       </div>
     </div>
-
     <el-divider></el-divider>
 
     <!-- 下部区域: 等级描述-->
@@ -151,48 +124,51 @@ const showLevelinfo = (level) => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 25px;
+    margin-top: 10px;
     margin-bottom: 20px;
 
     .level {
       display: flex;
       justify-content: center;
       margin-bottom: 10px;
+
+      el-button {
+        width: 100% !important;
+      }
     }
 
     .level0 {
-      width: 30px;
+      width: 30px !important;
     }
 
     .level1 {
-      width: 50px;
+      width: 50px !important;
     }
 
     .level2 {
-      width: 70px;
+      width: 70px !important;
     }
 
     .level3 {
-      width: 90px;
+      width: 90px !important;
     }
 
     .level4 {
-      width: 110px;
+      width: 110px !important;
     }
 
     .level5 {
-      width: 130px;
+      width: 130px !important;
     }
 
     .level6 {
-      width: 150px;
+      width: 150px !important;
     }
 
     .level7 {
-      width: 170px;
+      width: 170px !important;
     }
   }
-
 }
 
 </style>
