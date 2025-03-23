@@ -5,19 +5,20 @@
 
     <!-- 上部区域: 等级金字塔-->
     <div class="userlevel_upper">
-      哈哈哈
 
-      <div>
+      <div class="level7">
         <!--7级-->
         <el-button @click="showLevelinfo(7)"> 7级</el-button>
       </div>
 
       <div>
         <!--6级-->
+        <el-button @click="showLevelinfo(6)"> 6级</el-button>
       </div>
 
       <div>
         <!--5级-->
+        ...
       </div>
 
       <div>
@@ -147,12 +148,50 @@ const showLevelinfo = (level) => {
 .userlevel {
 
   .userlevel_upper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 25px;
     margin-bottom: 20px;
 
+    .level {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
 
+    .level0 {
+      width: 30px;
+    }
+
+    .level1 {
+      width: 50px;
+    }
+
+    .level2 {
+      width: 70px;
+    }
+
+    .level3 {
+      width: 90px;
+    }
+
+    .level4 {
+      width: 110px;
+    }
+
+    .level5 {
+      width: 130px;
+    }
+
+    .level6 {
+      width: 150px;
+    }
+
+    .level7 {
+      width: 170px;
+    }
   }
-
 
 }
 
