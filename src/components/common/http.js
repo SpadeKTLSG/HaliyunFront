@@ -127,6 +127,22 @@ http.adornParams = (params = {}) => {
     return params
 }
 
+
+/**
+ * 分页请求参数处理
+ * @param {Object} params 其他请求参数
+ * @param {Number} current 当前页码
+ * @param {Number} size 每页展示条数
+ */
+http.adornParamsPageBody = (params = {}, current = 1, size = 10) => {
+    return {
+        ...params,
+        current,
+        size
+    };
+}
+
+
 /**
  * post请求数据处理
  * @param {*} data 数据对象
