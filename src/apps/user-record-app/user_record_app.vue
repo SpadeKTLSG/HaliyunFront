@@ -4,7 +4,7 @@
   <div class="level_app">
 
     <!--应用标识-->
-    <el-text class="base_header">用户信息</el-text>
+    <el-text class="base_header">用户等级</el-text>
 
   </div>
 
@@ -14,35 +14,7 @@
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
       <el-menu-item index="1">
-        I. 用户详情
-      </el-menu-item>
-      <el-menu-item index="2">
-        I. 用户功能
-      </el-menu-item>
-
-      <!--二级菜单-->
-      <el-menu-item index="3">
-        - II. 会员
-      </el-menu-item>
-
-      <el-menu-item index="4">
-        - II. 群组
-      </el-menu-item>
-
-      <el-menu-item index="5">
-        - II. 资产
-      </el-menu-item>
-
-      <el-menu-item index="6">
-        - II. 推广
-      </el-menu-item>
-
-      <el-menu-item index="7">
-        - II. 敬请期待
-      </el-menu-item>
-
-      <el-menu-item index="8">
-        I. 敬请期待
+        I. 用户等级
       </el-menu-item>
     </el-menu>
 
@@ -58,12 +30,7 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import Userfunc from "@/components/Guest/users/userfunc.vue";
-import Userinfo from "@/components/Guest/users/userinfo.vue";
-import Vip from "@/components/Guest/users/vip.vue";
-import Group from "@/components/Guest/users/group.vue";
-import Money from "@/components/Guest/users/money.vue";
-import Promote from "@/components/Guest/users/promote.vue";
+import Userlevel from "@/components/Guest/levels/level.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -102,26 +69,14 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('userinfo');
+const currentPage = ref('userlevel');
 provide('currentPage', currentPage);
 
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {
   if (index === '1') {
-    currentPage.value = 'userinfo';
-  } else if (index === '2') {
-    currentPage.value = 'userfunc';
-  } else if (index === '3') {
-    currentPage.value = 'vip';
-  } else if (index === '4') {
-    currentPage.value = 'group';
-  } else if (index === '5') {
-    currentPage.value = 'asset';
-  } else if (index === '6') {
-    currentPage.value = 'promotion';
-  } else if (index === '7') {
-    currentPage.value = 'wait';
+    currentPage.value = 'userlevel';
   } else {
     currentPage.value = 'wait';
   }
@@ -131,22 +86,12 @@ const handleMenuSelect = (index) => {
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   switch (currentPage.value) {
-    case 'userinfo':
-      return Userinfo;
-    case 'userfunc':
-      return Userfunc;
-    case 'vip':
-      return Vip;
-    case 'group':
-      return Group;
-    case 'asset':
-      return Money;
-    case 'promotion':
-      return Promote;
+    case 'userlevel':
+      return Userlevel;
     case 'wait':
       return Tofinish;
     default:
-      return Userinfo;
+      return Userlevel;
   }
 });
 
