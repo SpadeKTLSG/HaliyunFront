@@ -16,6 +16,16 @@
       <el-menu-item index="1">
         I. 用户收藏
       </el-menu-item>
+      <el-menu-item index="2">
+        => II. 动态收藏
+      </el-menu-item>
+      <el-menu-item index="3">
+        => II. 文件收藏
+      </el-menu-item>
+      <el-menu-item index="4">
+        => II. 群组收藏
+      </el-menu-item>
+
     </el-menu>
 
   </div>
@@ -31,6 +41,9 @@ import * as Maven from '@/components/common/maven.js'
 import {provide} from 'vue'
 
 import Collect from "@/components/Guest/datas/collect.vue";
+import File_collect from "@/components/Guest/datas/file_collect.vue";
+import Group_collect from "@/components/Guest/datas/group_collect.vue";
+import Post_collect from "@/components/Guest/datas/post_collect.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -77,6 +90,12 @@ provide('currentPage', currentPage);
 const handleMenuSelect = (index) => {
   if (index === '1') {
     currentPage.value = 'collect';
+  } else if (index === '2') {
+    currentPage.value = 'post_collect';
+  } else if (index === '3') {
+    currentPage.value = 'file_collect';
+  } else if (index === '4') {
+    currentPage.value = 'group_collect';
   } else {
     currentPage.value = 'wait';
   }
@@ -88,6 +107,12 @@ const currentView = computed(() => {
   switch (currentPage.value) {
     case 'collect':
       return Collect;
+    case 'file_collect':
+      return File_collect;
+    case 'post_collect':
+      return Post_collect;
+    case 'group_collect':
+      return Group_collect;
     case 'wait':
       return Tofinish;
     default:
