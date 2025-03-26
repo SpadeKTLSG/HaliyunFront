@@ -8,8 +8,10 @@
       <el-text class="simple_text_red"> 用户收藏类型与数量统计</el-text>
       <!--      todo 后端给我加个缓存啊混蛋这个很吃性能  -->
 
-      <el-table>
-        <!--        todo-->
+      <el-table :data="[tableData]" style="width: 100%">
+        <el-table-column prop="postCount" label="动态收藏数量"></el-table-column>
+        <el-table-column prop="fileCount" label="文件收藏数量"></el-table-column>
+        <el-table-column prop="groupCount" label="群组收藏数量"></el-table-column>
       </el-table>
 
     </div>
@@ -29,6 +31,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
+import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -53,9 +56,9 @@ const currentPage = inject('currentPage');
 
 //? 用户数据展示表单 (对应子页签分区数据) 复用
 const tableData = ref({
-  postCount: 0,
-  fileCount: 0,
-  groupCount: 0,
+  postCount: -1,
+  fileCount: -1,
+  groupCount: -1,
 });
 
 
@@ -63,28 +66,27 @@ const tableData = ref({
 
 
 onMounted(() => {
-  getUserDataCollectCount();
+  // 收藏导览页面, 拉取用户收藏的总览信息; 具体子页面进行分页查询展示数据
+  getUserDataOfAllCollect();
 });
 
 
-const getUserDataCollectCount = () => {
+const getUserDataOfAllCollect = () => {
   http({
-    url: http.adornUrl('Guest/levels/levelinfo/floor'),
+    url: http.adornUrl('Guest/datas/collect/count'),
     method: 'get',
-    params: http.adornParams({
-      floor: level
-    })
+    params: UserContext.getUserId()
   }).then(({data}) => {
-    levelData.value = data;
+    // 处理响应数据
+    tableData.value = data;
   }).catch((error) => {
     ElMessage({
-      message: '获取楼层数据失败: ' + error.message,
+      message: '获取用户数据失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
   });
 };
-
 
 </script>
 
@@ -114,6 +116,7 @@ const getUserDataCollectCount = () => {
 
 
 .simple_text_red {
+  padding: 5px;
   font-size: 20px;
   font-weight: bold;
   color: #ee0b1a;
