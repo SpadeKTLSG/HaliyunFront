@@ -14,12 +14,20 @@
         </el-button>
       </div>
     </div>
+
+
     <el-divider></el-divider>
 
     <!-- 下部区域: 等级描述-->
     <div class="userlevel_lower">
-
-
+      <el-table v-if="computedLevelData" :data="[computedLevelData]" style="width: 100%">
+        <el-table-column prop="name" label="等级名称"></el-table-column>
+        <el-table-column prop="cut" label="折扣优惠小数倍率"></el-table-column>
+        <el-table-column prop="grow" label="到下一级需要成长值"></el-table-column>
+        <el-table-column prop="desc" label="等级描述"></el-table-column>
+        <el-table-column prop="remark" label="等级备注"></el-table-column>
+      </el-table>
+      <el-text v-else> 等级数据加载中...</el-text>
     </div>
 
 
@@ -53,7 +61,15 @@ const currentPage = inject('currentPage');
 
 
 //? 用户数据展示表单 (对应子页签分区数据) 复用
-const levelData = ref({});
+const levelData = ref({
+  cut: 1,
+  desc: "就是个寄吧",
+  floor: 0,
+  grow: 50,
+  id: "1894667686932631600",
+  name: "青铜",
+  remark: "新人入职转生"
+});
 
 // 用户的等级 floor:
 const userLevel = ref(0);
@@ -111,6 +127,8 @@ const showLevelinfo = (level) => {
     });
   });
 };
+
+const computedLevelData = computed(() => levelData.value);
 
 
 </script>
