@@ -29,16 +29,23 @@
     <!-- 下部区域: 具体文件收藏分页查询列表项-->
     <div class="usercollect_file_lower">
       <!--分页查询的展示框, 提供回车查询绑定, 以及指定查询参数功能-->
+
       <!--右侧单条折叠操作: 删除-->
       <el-table :data="pageData.records" style="width: 100%">
-        <el-table-column prop="id" label="ID"></el-table-column>
-        <el-table-column prop="fileName" label="文件名"></el-table-column>
-        <el-table-column prop="userId" label="用户ID"></el-table-column>
-        <el-table-column prop="groupId" label="群组ID"></el-table-column>
-        <el-table-column prop="title" label="标题"></el-table-column>
-        <el-table-column prop="content" label="内容"></el-table-column>
-        <el-table-column prop="pics" label="图片"></el-table-column>
+        <el-table-column prop="name" label="文件名"></el-table-column>
+        <el-table-column prop="groupName" label="来自群组"></el-table-column>
+        <el-table-column label="操作">
+          <template #default="scope">
+            <el-button
+                type="danger"
+                icon="el-icon-delete"
+                @click="deleteFileCollect(scope.row)"
+            >删除
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
+
       <el-pagination
           @current-change="handleCurrentChange"
           :current-page="pageData.current"
@@ -111,22 +118,6 @@ const pageData = reactive({
 //  */
 // private List<T> records;
 
-//PostVO extends BaseVO {
-// private Long id;
-//
-// private Long userId;
-//
-// private Long groupId;
-//
-// private Integer personShow;
-//
-// private String title;
-//
-// private String content;
-//
-// private String pics;
-// }
-
 //! 查
 
 onMounted(() => {
@@ -145,6 +136,8 @@ const handleCurrentChange = (newPage) => {
   getUserDataOfFile(newPage, pageData.size);
 };
 
+
+// 获取用户收藏的文件数据
 const getUserDataOfFile = (current, size) => {
   http({
     url: http.adornUrl('Guest/datas/collect/data/post'),
@@ -160,6 +153,28 @@ const getUserDataOfFile = (current, size) => {
   }).catch((error) => {
     ElMessage({
       message: '获取用户数据失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+};
+
+
+// 删除文件收藏 todo 后端做好了再来改
+const deleteFileCollect = (row) => {
+  http({
+    url: http.adornUrl(`Guest/datas/collect/data/delete/${row.id}`),
+    method: 'delete'
+  }).then(() => {
+    ElMessage({
+      message: '删除成功',
+      type: 'success',
+      duration: 1000
+    });
+    searchFileCollect();
+  }).catch((error) => {
+    ElMessage({
+      message: '删除失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
