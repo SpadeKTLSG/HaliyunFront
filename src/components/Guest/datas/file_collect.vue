@@ -5,6 +5,7 @@
 
     <!-- 上部区域: 单独文件收藏的操作工作区域 -->
     <div class="usercollect_file_upper">
+
       <div class="usercollect_file_control_panel">
         <!--查询按钮-->
         <el-col :span="8">
@@ -12,7 +13,6 @@
           <el-button
               type="primary"
               icon="el-icon-search"
-              circle
               @click="searchFileCollect"
           >查询
           </el-button>
@@ -177,15 +177,16 @@ const getUserDataOfFile = (current, size) => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
+    margin-top: -200px;
     margin-bottom: 20px;
+
+
+    .usercollect_file_control_panel {
+      width: 100%;
+      display: flex;
+    }
   }
 
-  .usercollect_file_control_panel {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
 
   .usercollect_file_lower {
     display: flex;
