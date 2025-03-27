@@ -31,7 +31,7 @@
       <!--分页查询的展示框, 提供回车查询绑定, 以及指定查询参数功能-->
 
       <!--右侧单条折叠操作: 删除-->
-      <el-table :data="pageData.records" style="width: 100%; height: 80%">
+      <el-table :data="pageData.records" style="width: 100%">
         <el-table-column prop="name" label="文件名"></el-table-column>
         <el-table-column prop="groupName" label="来自群组"></el-table-column>
         <el-table-column label="操作">
@@ -47,11 +47,14 @@
       </el-table>
 
       <el-pagination
+          layout="total, prev, pager, next"
           @current-change="handleCurrentChange"
           :current-page="pageData.current"
           :page-size="pageData.size"
-          layout="total, prev, pager, next"
-          :total="pageData.total">
+          :total="pageData.total"
+          type="primary"
+          style="margin-top: 20px;"
+      >
       </el-pagination>
     </div>
 
@@ -96,57 +99,33 @@ const pageData = reactive({
   records: []
 });
 
-//Result<PageResponse<PostVO>>
-
-//    /**
-// * 当前页
-// */
-// private Long current;
-//
-// /**
-//  * 每页显示条数
-//  */
-// private Long size;
-//
-// /**
-//  * 总数
-//  */
-// private Long total;
-//
-// /**
-//  * 查询数据列表
-//  */
-// private List<T> records;
-
 //! 查
 
 onMounted(() => {
   // 先拉取用户收藏的信息
   getUserDataOfFile(pageData.current, pageData.size);
 
-  //如果没有数据, 就填充几个假数据
-  pageData.records = [
-    {
-      id: 1,
-      name: '示例文件对象',
-      groupName: '来自示例群组'
-    },
-    {
-      id: 2,
-      name: '示例文件对象2',
-      groupName: '来自示例群组2'
-    },
-
-
-  ];
-
-  //插入更多示例数据, 使用for循环
-  for (let i = 3; i < 20; i++) {
-    pageData.records.push({
-      id: i,
-      name: '示例文件对象' + i,
-      groupName: '来自示例群组' + i
+  if (pageData.total === 0) {
+    ElMessage({
+      message: '暂无数据',
+      type: 'warning',
+      duration: 1000
     });
+    //如果没有数据, 先填充几个假数据
+    pageData.records = [
+      {
+        id: 1,
+        name: '示例文件对象: 在对应文件处点击收藏后回来查看',
+        groupName: '来自示例群组'
+      },
+      {
+        id: 2,
+        name: '示例文件对象2',
+        groupName: '来自示例群组2'
+      },
+    ];
+
+    pageData.total = 2;
   }
 
 
@@ -165,9 +144,9 @@ const handleCurrentChange = (newPage) => {
 
 
 // 获取用户收藏的文件数据
-const getUserDataOfFile = (current, size) => {
+const getUserDataOfFile = (current = 1, size = 10) => {
   http({
-    url: http.adornUrl('Guest/datas/collect/data/post'),
+    url: http.adornUrl('Guest/datas/collect/data/file'),
     method: 'get',
     params: UserContext.getUserId(),
     data: http.adornParamsPageBody({}, current, size)
