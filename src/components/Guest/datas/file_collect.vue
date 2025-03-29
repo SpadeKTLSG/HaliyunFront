@@ -105,28 +105,6 @@ onMounted(async () => {
   // 先拉取用户收藏的信息
   await getUserDataOfFile(pageData.current, pageData.size);
 
-  if (pageData.total === 0) {
-    ElMessage({
-      message: '暂无数据',
-      type: 'warning',
-      duration: 1000
-    });
-    //如果没有数据, 先填充示例假数据
-    pageData.records = [
-      {
-        id: 1,
-        name: '示例文件对象: 在对应文件处点击收藏后回来查看',
-        clusterName: '来自示例群组'
-      },
-      {
-        id: 2,
-        name: '示例文件对象2',
-        clusterName: '来自示例群组2 (没啥用) '
-      },
-    ];
-
-    pageData.total = 2;
-  }
 });
 
 // 查询按钮点击事件
@@ -156,6 +134,31 @@ const getUserDataOfFile = async (current, size) => {
     pageData.size = data.size;
     pageData.total = data.total;
     pageData.records = data.records;
+
+
+    if (pageData.total === 0) {
+      ElMessage({
+        message: '暂无数据',
+        type: 'warning',
+        duration: 1000
+      });
+      //如果没有数据, 先填充示例假数据
+      pageData.records = [
+        {
+          id: 1,
+          name: '示例文件对象: 在对应文件处点击收藏后回来查看',
+          clusterName: '来自示例群组'
+        },
+        {
+          id: 2,
+          name: '示例文件对象2',
+          clusterName: '来自示例群组2 (没啥用) '
+        },
+      ];
+
+      pageData.total = 2;
+    }
+
   } catch (error) {
     ElMessage({
       message: '获取用户数据失败: ' + error.message,
@@ -163,6 +166,8 @@ const getUserDataOfFile = async (current, size) => {
       duration: 1000
     });
   }
+
+
 };
 
 
