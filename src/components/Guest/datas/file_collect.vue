@@ -101,10 +101,9 @@ const pageData = reactive({
 });
 
 //! 查
-
-onMounted(() => {
+onMounted(async () => {
   // 先拉取用户收藏的信息
-  getUserDataOfFile(pageData.current, pageData.size);
+  await getUserDataOfFile(pageData.current, pageData.size);
 
   if (pageData.total === 0) {
     ElMessage({
@@ -128,8 +127,6 @@ onMounted(() => {
 
     pageData.total = 2;
   }
-
-
 });
 
 // 查询按钮点击事件
@@ -145,26 +142,27 @@ const handleCurrentChange = (newPage) => {
 
 
 // 获取用户收藏的文件数据
-const getUserDataOfFile = () => {
-  http({
-    url: http.adornUrl('Guest/datas/collect/data/file'),
-    method: 'get',
-    params: {
-      current: pageData.current,
-      size: pageData.size
-    }
-  }).then(({data}) => {
+const getUserDataOfFile = async (current, size) => {
+  try {
+    const {data} = await http({
+      url: http.adornUrl('Guest/datas/collect/data/file'),
+      method: 'get',
+      params: {
+        current,
+        size
+      }
+    });
     pageData.current = data.current;
     pageData.size = data.size;
     pageData.total = data.total;
     pageData.records = data.records;
-  }).catch((error) => {
+  } catch (error) {
     ElMessage({
       message: '获取用户数据失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
-  });
+  }
 };
 
 
