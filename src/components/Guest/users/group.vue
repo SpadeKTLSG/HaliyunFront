@@ -12,10 +12,10 @@
       <el-col :span="8" class="userfunc-basic">
         <el-descriptions :column="2" border>
 
-          <el-descriptions-item label="创建群组数">{{ userData.createGroupCount }}</el-descriptions-item>
-          <el-descriptions-item label="最大创建数">{{ userData.createGroupMax }}</el-descriptions-item>
-          <el-descriptions-item label="加入群组数">{{ userData.joinGroupCount }}</el-descriptions-item>
-          <el-descriptions-item label="最大加入数">{{ userData.joinGroupMax }}</el-descriptions-item>
+          <el-descriptions-item label="创建群组数">{{ userData.createClusterCount }}</el-descriptions-item>
+          <el-descriptions-item label="最大创建数">{{ userData.createClusterMax }}</el-descriptions-item>
+          <el-descriptions-item label="加入群组数">{{ userData.joinClusterCount }}</el-descriptions-item>
+          <el-descriptions-item label="最大加入数">{{ userData.joinClusterMax }}</el-descriptions-item>
 
         </el-descriptions>
       </el-col>
@@ -62,10 +62,10 @@ const currentPage = inject('currentPage');
 
 //? 用户数据展示表单 (对应子页签分区数据) 复用
 const userData = ref({
-  createGroupCount: '-/-',
-  createGroupMax: '-/-',
-  joinGroupCount: '-/-',
-  joinGroupMax: '-/-'
+  createClusterCount: '-/-',
+  createClusterMax: '-/-',
+  joinClusterCount: '-/-',
+  joinClusterMax: '-/-'
 });
 
 
