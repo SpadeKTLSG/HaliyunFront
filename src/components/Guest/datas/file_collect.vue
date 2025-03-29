@@ -65,7 +65,6 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
-import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -148,8 +147,7 @@ const getUserDataOfFile = (current = 1, size = 10) => {
   http({
     url: http.adornUrl('Guest/datas/collect/data/file'),
     method: 'get',
-    params: UserContext.getUserId(),
-    data: http.adornParamsPageBody({}, current, size)
+    params: http.adornParamsPage(current, size)
   }).then(({data}) => {
     // 处理分页响应数据并展示到页面 : Result<PageResponse<PostVO>>
     pageData.current = data.current;

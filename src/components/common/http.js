@@ -134,7 +134,7 @@ http.adornParams = (params = {}) => {
  * @param {Number} current 当前页码
  * @param {Number} size 每页展示条数
  */
-http.adornParamsPageBody = (params = {}, current = 1, size = 10) => {
+http.adornParamsPage = (params = {}, current = 1, size = 10) => {
     return {
         ...params,
         current,
