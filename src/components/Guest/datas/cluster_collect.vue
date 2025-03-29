@@ -32,8 +32,10 @@
 
       <!--右侧单条折叠操作: 删除-->
       <el-table :data="pageData.records" style="width: 90%">
-        <el-table-column prop="title" label="群组名"></el-table-column>
-        <el-table-column prop="clusterName" label="来自群组"></el-table-column>
+        <el-table-column prop="name" label="群组名"></el-table-column>
+        <el-table-column prop="nickname" label="群组别名"></el-table-column>
+        <el-table-column prop="pic" label="群组图片"></el-table-column>
+        <el-table-column prop="popVolume" label="群组容量"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateTime" label="更新时间"></el-table-column>
         <el-table-column label="操作">
@@ -105,28 +107,6 @@ onMounted(async () => {
   // 先拉取用户收藏的信息
   await getUserDataOfPost(pageData.current, pageData.size);
 
-  if (pageData.total === 0) {
-    ElMessage({
-      message: '暂无数据',
-      type: 'warning',
-      duration: 1000
-    });
-    //如果没有数据, 先填充示例假数据
-    pageData.records = [
-      {
-        id: 1,
-        name: '示例群组对象: 在对应群组处点击收藏后回来查看',
-        clusterName: '来自示例群组'
-      },
-      {
-        id: 2,
-        name: '示例群组对象2',
-        clusterName: '来自示例群组2 (没啥用) '
-      },
-    ];
-
-    pageData.total = 2;
-  }
 });
 
 // 查询按钮点击事件
@@ -145,7 +125,7 @@ const handleCurrentChange = (newPage) => {
 const getUserDataOfPost = async (current, size) => {
   try {
     const {data} = await http({
-      url: http.adornUrl('Guest/datas/collect/data/post'),
+      url: http.adornUrl('Guest/datas/collect/data/cluster'),
       method: 'get',
       params: {
         current,
@@ -156,6 +136,31 @@ const getUserDataOfPost = async (current, size) => {
     pageData.size = data.size;
     pageData.total = data.total;
     pageData.records = data.records;
+
+
+    if (pageData.total === 0) {
+      ElMessage({
+        message: '暂无数据',
+        type: 'warning',
+        duration: 1000
+      });
+      //如果没有数据, 先填充示例假数据
+      pageData.records = [
+        {
+          id: 1,
+          name: '示例群组对象: 在对应群组处点击收藏后回来查看',
+          clusterName: '来自示例群组'
+        },
+        {
+          id: 2,
+          name: '示例群组对象2',
+          clusterName: '来自示例群组2 (没啥用) '
+        },
+      ];
+
+      pageData.total = 2;
+    }
+
   } catch (error) {
     ElMessage({
       message: '获取用户数据失败: ' + error.message,

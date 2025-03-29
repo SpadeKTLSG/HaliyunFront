@@ -102,7 +102,7 @@ const pageData = reactive({
 
 //! 查
 onMounted(async () => {
-  // 先拉取用户收藏的信息
+  // 异步拉取用户收藏的信息
   await getUserDataOfFile(pageData.current, pageData.size);
 
 });
