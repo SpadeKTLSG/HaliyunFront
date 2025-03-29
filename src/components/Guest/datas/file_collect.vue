@@ -31,9 +31,11 @@
       <!--分页查询的展示框, 提供回车查询绑定, 以及指定查询参数功能-->
 
       <!--右侧单条折叠操作: 删除-->
-      <el-table :data="pageData.records" style="width: 100%">
+      <el-table :data="pageData.records" style="width: 90%">
         <el-table-column prop="name" label="文件名"></el-table-column>
-        <el-table-column prop="groupName" label="来自群组"></el-table-column>
+        <el-table-column prop="clusterName" label="来自群组"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间"></el-table-column>
+        <el-table-column prop="updateTime" label="更新时间"></el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
             <el-button
@@ -110,17 +112,17 @@ onMounted(() => {
       type: 'warning',
       duration: 1000
     });
-    //如果没有数据, 先填充几个假数据
+    //如果没有数据, 先填充示例假数据
     pageData.records = [
       {
         id: 1,
         name: '示例文件对象: 在对应文件处点击收藏后回来查看',
-        groupName: '来自示例群组'
+        clusterName: '来自示例群组'
       },
       {
         id: 2,
         name: '示例文件对象2',
-        groupName: '来自示例群组2'
+        clusterName: '来自示例群组2 (没啥用) '
       },
     ];
 
