@@ -143,13 +143,12 @@ const handleCurrentChange = (newPage) => {
 
 
 // 获取用户收藏的文件数据
-const getUserDataOfFile = (current = 1, size = 10) => {
+const getUserDataOfFile = () => {
   http({
     url: http.adornUrl('Guest/datas/collect/data/file'),
     method: 'get',
-    params: http.adornParamsPage(current, size)
+    params: http.adornParamsPage(pageData.current, pageData.size)
   }).then(({data}) => {
-    // 处理分页响应数据并展示到页面 : Result<PageResponse<PostVO>>
     pageData.current = data.current;
     pageData.size = data.size;
     pageData.total = data.total;
