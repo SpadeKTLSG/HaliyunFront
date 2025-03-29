@@ -147,7 +147,10 @@ const getUserDataOfFile = () => {
   http({
     url: http.adornUrl('Guest/datas/collect/data/file'),
     method: 'get',
-    params: http.adornParamsPage(pageData.current, pageData.size)
+    params: {
+      current: pageData.current,
+      size: pageData.size
+    }
   }).then(({data}) => {
     pageData.current = data.current;
     pageData.size = data.size;

@@ -129,7 +129,7 @@ http.adornParams = (params = {}) => {
 
 
 /**
- * 分页请求参数处理
+ * 分页请求参数处理 (废弃, 因为需要手动对应参数, 不然后端会报错)
  * @param {Object} params 其他请求参数
  * @param {Number} current 当前页码
  * @param {Number} size 每页展示条数
