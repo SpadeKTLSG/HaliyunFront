@@ -169,7 +169,7 @@ const getUserDataOfFile = async (current, size) => {
 // 删除文件收藏 todo 后端做好了再来改
 const deleteFileCollect = (row) => {
   http({
-    url: http.adornUrl(`Guest/datas/collect/data/delete/${row.id}`),
+    url: http.adornUrl(`Guest/datas/collect/data/file/delete/${row.id}`),
     method: 'delete'
   }).then(() => {
     ElMessage({
