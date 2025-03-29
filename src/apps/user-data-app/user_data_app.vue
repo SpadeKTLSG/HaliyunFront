@@ -42,7 +42,7 @@ import {provide} from 'vue'
 
 import Collect from "@/components/Guest/datas/collect.vue";
 import File_collect from "@/components/Guest/datas/file_collect.vue";
-import Group_collect from "@/components/Guest/datas/group_collect.vue";
+import Cluster_collect from "@/components/Guest/datas/cluster_collect.vue";
 import Post_collect from "@/components/Guest/datas/post_collect.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
@@ -95,7 +95,7 @@ const handleMenuSelect = (index) => {
   } else if (index === '3') {
     currentPage.value = 'file_collect';
   } else if (index === '4') {
-    currentPage.value = 'group_collect';
+    currentPage.value = 'cluster_collect';
   } else {
     currentPage.value = 'wait';
   }
@@ -111,8 +111,8 @@ const currentView = computed(() => {
       return File_collect;
     case 'post_collect':
       return Post_collect;
-    case 'group_collect':
-      return Group_collect;
+    case 'cluster_collect':
+      return Cluster_collect;
     case 'wait':
       return Tofinish;
     default:

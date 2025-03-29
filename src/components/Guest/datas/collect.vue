@@ -11,7 +11,7 @@
       <el-table :data="[tableData]" style="width: 100%">
         <el-table-column prop="postCount" label="动态收藏数量"></el-table-column>
         <el-table-column prop="fileCount" label="文件收藏数量"></el-table-column>
-        <el-table-column prop="groupCount" label="群组收藏数量"></el-table-column>
+        <el-table-column prop="clusterCount" label="群组收藏数量"></el-table-column>
       </el-table>
 
     </div>
@@ -58,7 +58,7 @@ const currentPage = inject('currentPage');
 const tableData = ref({
   postCount: -1,
   fileCount: -1,
-  groupCount: -1,
+  clusterCount: -1,
 });
 
 

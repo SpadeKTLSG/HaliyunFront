@@ -61,7 +61,7 @@ import {provide} from 'vue'
 import Userfunc from "@/components/Guest/users/userfunc.vue";
 import Userinfo from "@/components/Guest/users/userinfo.vue";
 import Vip from "@/components/Guest/users/vip.vue";
-import Group from "@/components/Guest/users/group.vue";
+import Cluster from "@/components/Guest/users/cluster.vue";
 import Money from "@/components/Guest/users/money.vue";
 import Promote from "@/components/Guest/users/promote.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
@@ -115,7 +115,7 @@ const handleMenuSelect = (index) => {
   } else if (index === '3') {
     currentPage.value = 'vip';
   } else if (index === '4') {
-    currentPage.value = 'group';
+    currentPage.value = 'cluster';
   } else if (index === '5') {
     currentPage.value = 'asset';
   } else if (index === '6') {
@@ -137,8 +137,8 @@ const currentView = computed(() => {
       return Userfunc;
     case 'vip':
       return Vip;
-    case 'group':
-      return Group;
+    case 'cluster':
+      return Cluster;
     case 'asset':
       return Money;
     case 'promotion':
