@@ -8,7 +8,7 @@
       <el-text class="simple_text_red"> 用户收藏类型与数量统计</el-text>
       <!--      todo 后端给我加个缓存啊混蛋这个很吃性能  -->
 
-      <el-table :data="[tableData]" style="width: 100%">
+      <el-table :data="tableData" style="width: 90%">
         <el-table-column prop="postCount" label="动态收藏数量"></el-table-column>
         <el-table-column prop="fileCount" label="文件收藏数量"></el-table-column>
         <el-table-column prop="clusterCount" label="群组收藏数量"></el-table-column>
@@ -31,7 +31,6 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
-import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -55,10 +54,10 @@ const currentPage = inject('currentPage');
 
 
 //? 用户数据展示表单 (对应子页签分区数据) 复用
-const tableData = ref({
+const tableData = reactive({
   postCount: -1,
   fileCount: -1,
-  clusterCount: -1,
+  clusterCount: -1
 });
 
 
@@ -74,11 +73,12 @@ onMounted(() => {
 const getUserDataOfAllCollect = () => {
   http({
     url: http.adornUrl('Guest/datas/collect/count'),
-    method: 'get',
-    params: UserContext.getUserId()
+    method: 'get'
   }).then(({data}) => {
     // 处理响应数据
-    tableData.value = data;
+    tableData.postCount = data.postCount;
+    tableData.fileCount = data.fileCount;
+    tableData.clusterCount = data.clusterCount;
   }).catch((error) => {
     ElMessage({
       message: '获取用户数据失败: ' + error.message,
@@ -116,7 +116,7 @@ const getUserDataOfAllCollect = () => {
 
 
 .simple_text_red {
-  padding: 5px;
+  padding: 15px;
   font-size: 20px;
   font-weight: bold;
   color: #ee0b1a;
