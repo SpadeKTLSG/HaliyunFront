@@ -1,14 +1,12 @@
 # HaliyunFront 蛤蜊云前端
 
-绝密 - 毕设
+玄桃K的网盘毕设
 
 后端见 haliyun
 
-前端技术攻关完成, 页面组织架构完成, 开始前后端联合开发
-
 ### 技术栈
 
-哈哈
+Vue3, Vue-Router, Vuex, Element-Plus, Axios, Vite
 
 ### 项目描述
 
