@@ -57,13 +57,10 @@
       />
     </div>
 
-    <!-- 详情信息对话框 -->
+    <!-- 详情信息对话框 (查全部群组信息)  -->
     <el-dialog :visible.sync="detailsDialogVisible" title="群组详情">
       <el-descriptions :column="1" border>
         <el-descriptions-item label="群组名称">{{ selectedGroup.name }}</el-descriptions-item>
-        <el-descriptions-item label="群组描述">{{ selectedGroup.description }}</el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ selectedGroup.createTime }}</el-descriptions-item>
-        <el-descriptions-item label="更新时间">{{ selectedGroup.updateTime }}</el-descriptions-item>
       </el-descriptions>
       <span slot="footer" class="dialog-footer">
         <el-button @click="detailsDialogVisible = false">关闭</el-button>
@@ -116,8 +113,9 @@ const pageData = reactive({
 });
 
 
-// 选中的群组
+// 选中的群组 (id查)
 const selectedGroup = reactive({
+  id: '',
   name: '',
   description: '',
   createTime: '',
@@ -131,7 +129,7 @@ const joinDialogVisible = ref(false);
 
 // 查看详情
 const viewDetails = (group) => {
-  Object.assign(selectedGroup, group);
+  getOneCluster(group.id);
   detailsDialogVisible.value = true;
 };
 
@@ -159,7 +157,6 @@ const searchClusterCollect = () => {
 /**
  * 分页获取群组数据
  */
-
 const getAllClusterPage = async (current, size) => {
   try {
     const {data} = await http({
@@ -193,6 +190,32 @@ const getAllClusterPage = async (current, size) => {
   }
 
 };
+
+
+/**
+ * id查单个群组详情
+ */
+const getOneCluster = (id) => {
+  http({
+    url: http.adornUrl('Cluster/clusters/hall/one'),
+    method: 'get',
+    params: {
+      id
+    }
+  }).then(({data}) => {
+    selectedGroup.id = data.id;
+    selectedGroup.name = data.name;
+    selectedGroup.description = data.description;
+    selectedGroup.createTime = data.createTime;
+    selectedGroup.updateTime = data.updateTime;
+  }).catch((error) => {
+    ElMessage({
+      message: '获取群组详情失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+}
 
 
 // 确认加入群组
@@ -229,13 +252,13 @@ const confirmJoinGroup = async () => {
   .clusterhall_upper {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
+
+    margin-top: -100px;
+    margin-bottom: 5px;
 
 
     .clusterhall_op-buttons {
-      width: 100% !important;
+      width: 10% !important;
     }
 
   }
