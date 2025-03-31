@@ -3,38 +3,18 @@
   <!--主体-->
   <div class="userlevel">
 
-    <!-- 上部区域: 等级金字塔-->
+    <!-- 上部区域: 操作按钮集合-->
     <div class="userlevel_upper">
-      <div class="level" v-for="level in 8" :key="level">
-        <el-button @click="showLevelinfo( 8-level)"
-                   :class="'level' + (level - 1)"
-                   :round="true"
-                   :size="'large'">
-          {{ 8 - level }}级
-        </el-button>
-      </div>
+
     </div>
 
 
     <el-divider></el-divider>
 
-    <!-- 下部区域: 等级描述-->
+    <!-- 下部区域: 群组展示-->
     <div class="userlevel_lower">
-      <el-table v-if="computedLevelData" :data="[computedLevelData]" style="width: 100%">
-        <el-table-column prop="name" label="等级名称"></el-table-column>
-        <el-table-column prop="cut" label="折扣优惠小数倍率"></el-table-column>
-        <el-table-column prop="grow" label="到下一级需要成长值"></el-table-column>
-        <el-table-column prop="desc" label="等级描述"></el-table-column>
-        <el-table-column prop="remark" label="等级备注"></el-table-column>
-      </el-table>
-      <el-text v-else> 等级数据加载中...</el-text>
-    </div>
 
-    <div>
-      <el-text class="simple_text_red">等级信息</el-text>
     </div>
-    <el-text class="simple_text_red"> 您的等级为 {{ stackLevelData.value }}</el-text>
-    <el-text class="simple_text_red"> 选中的等级为 {{ computedLevelData.floor }}</el-text>
 
 
   </div>
@@ -43,7 +23,6 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
-import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -66,79 +45,77 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
-//? 用户数据展示表单 (对应子页签分区数据) 复用
-const levelData = ref({
-  cut: 1,
-  desc: "就是个寄吧",
-  floor: 0,
-  grow: 50,
-  id: "1894667686932631600",
-  name: "青铜",
-  remark: "新人入职转生"
+// 群组分页数据展示表单
+const pageData = reactive({
+  current: 1,
+  size: 10,
+  total: 0,
+  records: []
 });
 
-// 用户的等级 floor:
-const userLevel = ref(0);
-const level = ref(0);
 
 //! 查
 
 
 onMounted(() => {
-  getUserLevel();
+  getAllClusterPage();
 });
 
 
 /**
- * 获取用户等级数据
+ * 分页获取群组数据
  */
-const getUserLevel = () => {
 
-  http({
-    url: http.adornUrl('Guest/users/userslevel/floor'),
-    method: 'get',
-    params: http.adornParams({
-      id: UserContext.getUserId()
-    })
-  }).then(({data}) => {
-    userLevel.value = data;
-    showLevelinfo(userLevel.value);
-  }).catch((error) => {
+const getAllClusterPage = async (current, size) => {
+  try {
+    const {data} = await http({
+      url: http.adornUrl('Guest/datas/collect/data/file'),
+      method: 'get',
+      params: {
+        current,
+        size
+      }
+    });
+    pageData.current = data.current;
+    pageData.size = data.size;
+    pageData.total = data.total;
+    pageData.records = data.records;
+
+
+    if (pageData.total === 0) {
+      ElMessage({
+        message: '暂无数据',
+        type: 'warning',
+        duration: 1000
+      });
+      //如果没有数据, 先填充示例假数据
+      pageData.records = [
+        {
+          id: 1,
+          name: '示例文件对象: 在对应文件处点击收藏后回来查看',
+          clusterName: '来自示例群组'
+        },
+        {
+          id: 2,
+          name: '示例文件对象2',
+          clusterName: '来自示例群组2 (没啥用) '
+        },
+      ];
+
+      pageData.total = 2;
+    }
+
+  } catch (error) {
     ElMessage({
-      message: '获取用户等级数据失败: ' + error.message,
+      message: '获取用户数据失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
-  });
+  }
 
 
 };
 
-
-/**
- * 展示等级信息
- */
-const showLevelinfo = (level) => {
-  http({
-    url: http.adornUrl('Guest/levels/levelinfo/floor'),
-    method: 'get',
-    params: http.adornParams({
-      floor: level
-    })
-  }).then(({data}) => {
-    levelData.value = data;
-  }).catch((error) => {
-    ElMessage({
-      message: '获取楼层数据失败: ' + error.message,
-      type: 'error',
-      duration: 1000
-    });
-  });
-};
-
-// 监听用户等级变化
-const computedLevelData = computed(() => levelData.value);
-const stackLevelData = computed(() => userLevel);
 
 </script>
 
