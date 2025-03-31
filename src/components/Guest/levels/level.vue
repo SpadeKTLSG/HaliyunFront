@@ -30,6 +30,12 @@
       <el-text v-else> 等级数据加载中...</el-text>
     </div>
 
+    <div>
+      <el-text class="simple_text_red">等级信息</el-text>
+    </div>
+    <el-text class="simple_text_red"> 您的等级为 {{ stackLevelData.value }}</el-text>
+    <el-text class="simple_text_red"> 选中的等级为 {{ computedLevelData.floor }}</el-text>
+
 
   </div>
 </template>
@@ -73,15 +79,13 @@ const levelData = ref({
 
 // 用户的等级 floor:
 const userLevel = ref(0);
+const level = ref(0);
 
 //! 查
 
-onBeforeMount(() => {
-  getUserLevel();
-});
 
 onMounted(() => {
-  showLevelinfo(userLevel.value);
+  getUserLevel();
 });
 
 
@@ -89,6 +93,7 @@ onMounted(() => {
  * 获取用户等级数据
  */
 const getUserLevel = () => {
+
   http({
     url: http.adornUrl('Guest/users/userslevel/floor'),
     method: 'get',
@@ -97,6 +102,7 @@ const getUserLevel = () => {
     })
   }).then(({data}) => {
     userLevel.value = data;
+    showLevelinfo(userLevel.value);
   }).catch((error) => {
     ElMessage({
       message: '获取用户等级数据失败: ' + error.message,
@@ -104,6 +110,8 @@ const getUserLevel = () => {
       duration: 1000
     });
   });
+
+
 };
 
 
@@ -128,8 +136,9 @@ const showLevelinfo = (level) => {
   });
 };
 
+// 监听用户等级变化
 const computedLevelData = computed(() => levelData.value);
-
+const stackLevelData = computed(() => userLevel);
 
 </script>
 
@@ -189,4 +198,10 @@ const computedLevelData = computed(() => levelData.value);
   }
 }
 
+.simple_text_red {
+  padding: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ee0b1a;
+}
 </style>
