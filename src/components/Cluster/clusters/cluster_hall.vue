@@ -1,10 +1,10 @@
 <template>
 
   <!--主体-->
-  <div class="userlevel">
+  <div class="clusterhall">
 
     <!-- 上部区域: 操作按钮集合-->
-    <div class="userlevel_upper">
+    <div class="clusterhall_upper">
       <el-col :span="10">
 
         <!--刷新-获取数据-->
@@ -18,19 +18,22 @@
     <el-divider></el-divider>
 
     <!-- 下部区域: 群组展示-->
-    <div class="userlevel_lower">
+    <div class="clusterhall_lower">
 
       <el-table :data="pageData.records" style="width: 90%">
         <el-table-column prop="name" label="群组名称"></el-table-column>
         <el-table-column prop="description" label="群组描述"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateTime" label="更新时间"></el-table-column>
+
+
         <el-table-column label="操作">
           <template #default="scope">
             <el-button @click="viewDetails(scope.row)" type="primary">查看详情</el-button>
             <el-button @click="joinGroup(scope.row)" type="success">加入群组</el-button>
           </template>
         </el-table-column>
+
       </el-table>
 
       <el-pagination
@@ -211,9 +214,9 @@ const confirmJoinGroup = async () => {
 
 <style lang="scss" scoped>
 
-.userlevel {
+.clusterhall {
 
-  .userlevel_upper {
+  .clusterhall_upper {
     display: flex;
     flex-direction: column;
     align-items: center;
