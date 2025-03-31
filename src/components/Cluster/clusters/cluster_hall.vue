@@ -5,7 +5,13 @@
 
     <!-- 上部区域: 操作按钮集合-->
     <div class="userlevel_upper">
+      <el-col :span="10">
 
+        <!--刷新-获取数据-->
+        <el-button @click="getData()" class="userinfo_op-buttons">刷新</el-button>
+
+        <!-- 行操作:  加入群组, 查看详细信息, 弹出表单即可-->
+      </el-col>
     </div>
 
 
