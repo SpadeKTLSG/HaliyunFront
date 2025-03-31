@@ -292,10 +292,7 @@ const closeApp = () => {
 
 
 // ?初始化逻辑
-// bootstrap处理
-onBeforeMount(() => {
 
-});
 
 // 页面初始化
 onMounted(() => {
@@ -324,7 +321,7 @@ const search = () => {
 };
 
 // 进入App
-const enterWorld = ref(false);
+const enterWorld = ref(true); //todo 小熊二先回去吧
 const enterApp = () => {
   enterWorld.value = true;
 };
