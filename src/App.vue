@@ -184,6 +184,14 @@ import LevelApp from "@/apps/level-app/level_app.vue";
 import UserDataApp from "@/apps/user-data-app/user_data_app.vue";
 import UserMesApp from "@/apps/user-mes-app/user_mes_app.vue";
 import UserRecordApp from "@/apps/user-record-app/user_record_app.vue";
+import ClusterManageApp from "@/apps/cluster-manage-app/cluster_manage_app.vue";
+import ClusterInfoApp from "@/apps/cluster-info-app/cluster_info_app.vue";
+import ClusterPostApp from "@/apps/cluster-post-app/cluster_post_app.vue";
+import ShareApp from "@/apps/share-app/share_app.vue";
+import ClusterFileApp from "@/apps/cluster-file-app/cluster_file_app.vue";
+import AuthLockApp from "@/apps/auth-lock-app/auth_lock_app.vue";
+import ClusterNoticeApp from "@/apps/cluster-notice-app/cluster_notice_app.vue";
+import ClusterLevelApp from "@/apps/cluster-level-app/cluster_level_app.vue";
 
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
@@ -211,14 +219,14 @@ const apps = [
   {name: 'UserDataApp', show: '用户数据'},
   {name: 'UserMesApp', show: '用户消息'},
   {name: 'UserRecordApp', show: '用户记录'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
+  {name: 'ClusterManageApp', show: '群组管理'},
+  {name: 'ClusterInfoApp', show: '群组信息'},
+  {name: 'ClusterPostApp', show: '群组动态'},
+  {name: 'ShareApp', show: '分享管理'},
+  {name: 'ClusterFileApp', show: '群组文件'},
+  {name: 'AuthLockApp', show: '权限与锁'},
+  {name: 'ClusterNoticeApp', show: '群组公告'},
+  {name: 'ClusterLevelApp', show: '群组等级'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
@@ -246,6 +254,23 @@ const currentComponent = computed(() => {
       return UserMesApp;
     case 'UserRecordApp':
       return UserRecordApp;
+    case 'ClusterManageApp':
+      return ClusterManageApp;
+    case 'ClusterInfoApp':
+      return ClusterInfoApp;
+    case 'ClusterPostApp':
+      return ClusterPostApp;
+    case 'ShareApp':
+      return ShareApp;
+    case 'ClusterFileApp':
+      return ClusterFileApp;
+    case 'AuthLockApp':
+      return AuthLockApp;
+    case 'ClusterNoticeApp':
+      return ClusterNoticeApp;
+    case 'ClusterLevelApp':
+      return ClusterLevelApp;
+
     default:
       return null;
   }
