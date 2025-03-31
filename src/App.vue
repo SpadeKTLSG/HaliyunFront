@@ -173,10 +173,25 @@
 <script setup>
 import './App.scss'
 import * as Maven from '@/components/common/maven.js'
-import LoginApp from "@/apps/login-app/login_app.vue";
-import PersonApp from "@/apps/person-app/person_app.vue";
+
 import {ArrowLeft, Avatar, ChatDotRound, Cloudy, Expand, HelpFilled, Search, Setting, Suitcase} from "@element-plus/icons-vue";
 import {UserContext} from "@/components/common/user.js";
+
+//对应应用组件
+import LoginApp from "@/apps/login-app/login_app.vue";
+import PersonApp from "@/apps/person-app/person_app.vue";
+import LevelApp from "@/apps/level-app/level_app.vue";
+import UserDataApp from "@/apps/user-data-app/user_data_app.vue";
+import UserMesApp from "@/apps/user-mes-app/user_mes_app.vue";
+import UserRecordApp from "@/apps/user-record-app/user_record_app.vue";
+import ClusterManageApp from "@/apps/cluster-manage-app/cluster_manage_app.vue";
+import ClusterInfoApp from "@/apps/cluster-info-app/cluster_info_app.vue";
+import ClusterPostApp from "@/apps/cluster-post-app/cluster_post_app.vue";
+import ShareApp from "@/apps/share-app/share_app.vue";
+import ClusterFileApp from "@/apps/cluster-file-app/cluster_file_app.vue";
+import AuthLockApp from "@/apps/auth-lock-app/auth_lock_app.vue";
+import ClusterNoticeApp from "@/apps/cluster-notice-app/cluster_notice_app.vue";
+import ClusterLevelApp from "@/apps/cluster-level-app/cluster_level_app.vue";
 
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
@@ -198,10 +213,20 @@ const currentApp = ref('App');
 
 // 应用集
 const apps = [
-  {name: 'LoginApp', show: '登陆'},
-  {name: 'PersonApp', show: '用户'},
-  {name: 'GroupApp', show: '群组'},
-  {name: 'FileApp', show: '文件'},
+  {name: 'LoginApp', show: '用户登陆'},
+  {name: 'PersonApp', show: '用户信息'},
+  {name: 'LevelApp', show: '用户等级'},
+  {name: 'UserDataApp', show: '用户数据'},
+  {name: 'UserMesApp', show: '用户消息'},
+  {name: 'UserRecordApp', show: '用户记录'},
+  {name: 'ClusterManageApp', show: '群组管理'},
+  {name: 'ClusterInfoApp', show: '群组信息'},
+  {name: 'ClusterPostApp', show: '群组动态'},
+  {name: 'ShareApp', show: '分享管理'},
+  {name: 'ClusterFileApp', show: '群组文件'},
+  {name: 'AuthLockApp', show: '权限与锁'},
+  {name: 'ClusterNoticeApp', show: '群组公告'},
+  {name: 'ClusterLevelApp', show: '群组等级'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
@@ -209,19 +234,9 @@ const apps = [
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
   {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '设置'},
-  {name: 'DonateApp', show: '捐赠'},
-  {name: 'SysApp', show: '系统'},
-  {name: 'MesApp', show: '消息'},
-  {name: 'LoginApp', show: '日志'}
+  {name: 'XXXApp', show: '界面设置'},
+  {name: 'XXXApp', show: '推广捐赠'},
+  {name: 'XXXApp', show: '系统日志'}
 ];
 
 // 计算属性来获取当前显示的组件
@@ -231,6 +246,31 @@ const currentComponent = computed(() => {
       return LoginApp;
     case 'PersonApp':
       return PersonApp;
+    case 'LevelApp':
+      return LevelApp;
+    case 'UserDataApp':
+      return UserDataApp;
+    case 'UserMesApp':
+      return UserMesApp;
+    case 'UserRecordApp':
+      return UserRecordApp;
+    case 'ClusterManageApp':
+      return ClusterManageApp;
+    case 'ClusterInfoApp':
+      return ClusterInfoApp;
+    case 'ClusterPostApp':
+      return ClusterPostApp;
+    case 'ShareApp':
+      return ShareApp;
+    case 'ClusterFileApp':
+      return ClusterFileApp;
+    case 'AuthLockApp':
+      return AuthLockApp;
+    case 'ClusterNoticeApp':
+      return ClusterNoticeApp;
+    case 'ClusterLevelApp':
+      return ClusterLevelApp;
+
     default:
       return null;
   }
@@ -252,10 +292,7 @@ const closeApp = () => {
 
 
 // ?初始化逻辑
-// bootstrap处理
-onBeforeMount(() => {
 
-});
 
 // 页面初始化
 onMounted(() => {
@@ -284,7 +321,7 @@ const search = () => {
 };
 
 // 进入App
-const enterWorld = ref(false);
+const enterWorld = ref(true); //todo 小熊二先回去吧
 const enterApp = () => {
   enterWorld.value = true;
 };

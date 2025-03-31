@@ -1,55 +1,37 @@
 <template>
 
 
-  <div class="person_app">
+  <div class="user-data-app">
 
     <!--应用标识-->
-    <el-text class="base_header">用户信息</el-text>
+    <el-text class="base_header">用户数据</el-text>
 
   </div>
 
   <!--左侧导航区域-->
-  <div class="person_app_left_nav">
+  <div class="user-data-app_left_nav">
 
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
       <el-menu-item index="1">
-        I. 用户详情
+        I. 用户收藏
       </el-menu-item>
       <el-menu-item index="2">
-        I. 用户功能
+        => II. 动态收藏
       </el-menu-item>
-
-      <!--二级菜单-->
       <el-menu-item index="3">
-        - II. 会员
+        => II. 文件收藏
       </el-menu-item>
-
       <el-menu-item index="4">
-        - II. 群组
+        => II. 群组收藏
       </el-menu-item>
 
-      <el-menu-item index="5">
-        - II. 资产
-      </el-menu-item>
-
-      <el-menu-item index="6">
-        - II. 推广
-      </el-menu-item>
-
-      <el-menu-item index="7">
-        - II. 敬请期待
-      </el-menu-item>
-
-      <el-menu-item index="8">
-        I. 敬请期待
-      </el-menu-item>
     </el-menu>
 
   </div>
 
   <!--具体页面-->
-  <component :is="currentView" class="person_app_compo" @close="backAppHome"/>
+  <component :is="currentView" class="user-data-app_compo" @close="backAppHome"/>
 
 </template>
 
@@ -58,12 +40,10 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import Userfunc from "@/components/Guest/users/userfunc.vue";
-import Userinfo from "@/components/Guest/users/userinfo.vue";
-import Vip from "@/components/Guest/users/vip.vue";
-import Cluster from "@/components/Guest/users/cluster.vue";
-import Money from "@/components/Guest/users/money.vue";
-import Promote from "@/components/Guest/users/promote.vue";
+import Collect from "@/components/Guest/datas/collect.vue";
+import File_collect from "@/components/Guest/datas/file_collect.vue";
+import Cluster_collect from "@/components/Guest/datas/cluster_collect.vue";
+import Post_collect from "@/components/Guest/datas/post_collect.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -102,26 +82,20 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('userinfo');
+const currentPage = ref('userlevel');
 provide('currentPage', currentPage);
 
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {
   if (index === '1') {
-    currentPage.value = 'userinfo';
+    currentPage.value = 'collect';
   } else if (index === '2') {
-    currentPage.value = 'userfunc';
+    currentPage.value = 'post_collect';
   } else if (index === '3') {
-    currentPage.value = 'vip';
+    currentPage.value = 'file_collect';
   } else if (index === '4') {
-    currentPage.value = 'cluster';
-  } else if (index === '5') {
-    currentPage.value = 'asset';
-  } else if (index === '6') {
-    currentPage.value = 'promotion';
-  } else if (index === '7') {
-    currentPage.value = 'wait';
+    currentPage.value = 'cluster_collect';
   } else {
     currentPage.value = 'wait';
   }
@@ -131,22 +105,18 @@ const handleMenuSelect = (index) => {
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   switch (currentPage.value) {
-    case 'userinfo':
-      return Userinfo;
-    case 'userfunc':
-      return Userfunc;
-    case 'vip':
-      return Vip;
-    case 'cluster':
-      return Cluster;
-    case 'asset':
-      return Money;
-    case 'promotion':
-      return Promote;
+    case 'collect':
+      return Collect;
+    case 'file_collect':
+      return File_collect;
+    case 'post_collect':
+      return Post_collect;
+    case 'cluster_collect':
+      return Cluster_collect;
     case 'wait':
       return Tofinish;
     default:
-      return Userinfo;
+      return Collect;
   }
 });
 
@@ -160,7 +130,7 @@ const backAppHome = () => {
 <style lang="scss" scoped>
 
 
-.person_app {
+.user-data-app {
   display: flex;
   margin-top: -10px;
   flex-direction: row;
@@ -183,7 +153,7 @@ const backAppHome = () => {
 
 }
 
-.person_app_left_nav {
+.user-data-app_left_nav {
   width: 10%;
   margin-left: -150px;
   display: flex;
@@ -197,7 +167,7 @@ const backAppHome = () => {
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
-.person_app_compo {
+.user-data-app_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
   display: flex;
   flex-direction: column;

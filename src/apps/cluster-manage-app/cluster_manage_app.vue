@@ -1,55 +1,30 @@
 <template>
 
 
-  <div class="person_app">
+  <div class="cluster_manage_app">
 
     <!--应用标识-->
-    <el-text class="base_header">用户信息</el-text>
+    <el-text class="base_header">群组管理</el-text>
 
   </div>
 
   <!--左侧导航区域-->
-  <div class="person_app_left_nav">
+  <div class="cluster_manage_app_left_nav">
 
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
       <el-menu-item index="1">
-        I. 用户详情
+        I. 群组大厅
       </el-menu-item>
       <el-menu-item index="2">
-        I. 用户功能
-      </el-menu-item>
-
-      <!--二级菜单-->
-      <el-menu-item index="3">
-        - II. 会员
-      </el-menu-item>
-
-      <el-menu-item index="4">
-        - II. 群组
-      </el-menu-item>
-
-      <el-menu-item index="5">
-        - II. 资产
-      </el-menu-item>
-
-      <el-menu-item index="6">
-        - II. 推广
-      </el-menu-item>
-
-      <el-menu-item index="7">
-        - II. 敬请期待
-      </el-menu-item>
-
-      <el-menu-item index="8">
-        I. 敬请期待
+        II. 群组小院
       </el-menu-item>
     </el-menu>
 
   </div>
 
   <!--具体页面-->
-  <component :is="currentView" class="person_app_compo" @close="backAppHome"/>
+  <component :is="currentView" class="cluster_manage_app_compo" @close="backAppHome"/>
 
 </template>
 
@@ -58,12 +33,8 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import Userfunc from "@/components/Guest/users/userfunc.vue";
-import Userinfo from "@/components/Guest/users/userinfo.vue";
-import Vip from "@/components/Guest/users/vip.vue";
-import Cluster from "@/components/Guest/users/cluster.vue";
-import Money from "@/components/Guest/users/money.vue";
-import Promote from "@/components/Guest/users/promote.vue";
+import ClusterHall from "@/components/Cluster/clusters/cluster_hall.vue";
+import ClusterYard from "@/components/Cluster/clusters/cluster_yard.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -102,26 +73,16 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('userinfo');
+const currentPage = ref('userlevel');
 provide('currentPage', currentPage);
 
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {
   if (index === '1') {
-    currentPage.value = 'userinfo';
+    currentPage.value = 'ClusterHall';
   } else if (index === '2') {
-    currentPage.value = 'userfunc';
-  } else if (index === '3') {
-    currentPage.value = 'vip';
-  } else if (index === '4') {
-    currentPage.value = 'cluster';
-  } else if (index === '5') {
-    currentPage.value = 'asset';
-  } else if (index === '6') {
-    currentPage.value = 'promotion';
-  } else if (index === '7') {
-    currentPage.value = 'wait';
+    currentPage.value = 'ClusterYard';
   } else {
     currentPage.value = 'wait';
   }
@@ -131,22 +92,14 @@ const handleMenuSelect = (index) => {
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   switch (currentPage.value) {
-    case 'userinfo':
-      return Userinfo;
-    case 'userfunc':
-      return Userfunc;
-    case 'vip':
-      return Vip;
-    case 'cluster':
-      return Cluster;
-    case 'asset':
-      return Money;
-    case 'promotion':
-      return Promote;
+    case 'ClusterHall':
+      return ClusterHall;
+    case 'ClusterYard':
+      return ClusterYard;
     case 'wait':
       return Tofinish;
     default:
-      return Userinfo;
+      return ClusterHall;
   }
 });
 
@@ -160,7 +113,7 @@ const backAppHome = () => {
 <style lang="scss" scoped>
 
 
-.person_app {
+.cluster_manage_app {
   display: flex;
   margin-top: -10px;
   flex-direction: row;
@@ -183,7 +136,7 @@ const backAppHome = () => {
 
 }
 
-.person_app_left_nav {
+.cluster_manage_app_left_nav {
   width: 10%;
   margin-left: -150px;
   display: flex;
@@ -197,7 +150,7 @@ const backAppHome = () => {
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
-.person_app_compo {
+.cluster_manage_app_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
   display: flex;
   flex-direction: column;
