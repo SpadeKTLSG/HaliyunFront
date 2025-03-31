@@ -69,7 +69,7 @@ onMounted(() => {
 const getAllClusterPage = async (current, size) => {
   try {
     const {data} = await http({
-      url: http.adornUrl('Guest/datas/collect/data/file'),
+      url: http.adornUrl('Cluster/clusters/hall/all'),
       method: 'get',
       params: {
         current,
@@ -88,26 +88,11 @@ const getAllClusterPage = async (current, size) => {
         type: 'warning',
         duration: 1000
       });
-      //如果没有数据, 先填充示例假数据
-      pageData.records = [
-        {
-          id: 1,
-          name: '示例文件对象: 在对应文件处点击收藏后回来查看',
-          clusterName: '来自示例群组'
-        },
-        {
-          id: 2,
-          name: '示例文件对象2',
-          clusterName: '来自示例群组2 (没啥用) '
-        },
-      ];
-
-      pageData.total = 2;
     }
 
   } catch (error) {
     ElMessage({
-      message: '获取用户数据失败: ' + error.message,
+      message: '获取群组大厅数据失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
