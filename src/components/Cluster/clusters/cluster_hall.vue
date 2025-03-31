@@ -8,9 +8,8 @@
       <el-col :span="10">
 
         <!--刷新-获取数据-->
-        <el-button @click="getAllClusterPage()" class="userinfo_op-buttons">刷新</el-button>
+        <el-button @click="searchClusterCollect()" class="clusterhall_op-buttons">刷新</el-button>
 
-        <!-- 行操作:  加入群组, 查看详细信息, 弹出表单即可-->
       </el-col>
     </div>
 
@@ -21,29 +20,41 @@
     <div class="clusterhall_lower">
 
       <el-table :data="pageData.records" style="width: 90%">
+        <el-table-column prop="pic" label="封面"></el-table-column>
         <el-table-column prop="name" label="群组名称"></el-table-column>
-        <el-table-column prop="description" label="群组描述"></el-table-column>
+        <el-table-column prop="nickname" label="群组别名"></el-table-column>
+        <el-table-column prop="popVolume" label="容量"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateTime" label="更新时间"></el-table-column>
 
 
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button @click="viewDetails(scope.row)" type="primary">查看详情</el-button>
-            <el-button @click="joinGroup(scope.row)" type="success">加入群组</el-button>
+            <el-button @click="viewDetails(scope.row)"
+                       type="primary"
+                       style="width: 40px"
+            >
+              详情
+            </el-button>
+            <el-button @click="joinGroup(scope.row)"
+                       type="success"
+                       style="width: 40px"
+            >
+              加入
+            </el-button>
           </template>
         </el-table-column>
 
       </el-table>
 
+      <!--之后统一用这种双向绑定的-->
       <el-pagination
-          v-model:current-page="pageData.current"
-          v-model:page-size="pageData.size"
-          :total="pageData.total"
           layout="total, prev, pager, next"
+          v-model:current-page="pageData.current"
+          :page-size="pageData.size"
+          :total="pageData.total"
           style="margin-top: 20px;"
-      ></el-pagination>
-
+      />
     </div>
 
     <!-- 详情信息对话框 -->
@@ -134,23 +145,29 @@ const joinGroup = (group) => {
 //! 查
 
 
-onMounted(() => {
-  getAllClusterPage();
+onMounted(async () => {
+  await getAllClusterPage(pageData.current, pageData.size);
 });
+
+
+// 查询按钮点击事件
+const searchClusterCollect = () => {
+  getAllClusterPage(pageData.current, pageData.size);
+};
 
 
 /**
  * 分页获取群组数据
  */
 
-const getAllClusterPage = async () => {
+const getAllClusterPage = async (current, size) => {
   try {
     const {data} = await http({
       url: http.adornUrl('Cluster/clusters/hall/all'),
       method: 'get',
       params: {
-        current: pageData.current,
-        size: pageData.size
+        current,
+        size
       }
     });
     pageData.current = data.current;
@@ -178,13 +195,6 @@ const getAllClusterPage = async () => {
 };
 
 
-// 分页组件页码改变事件
-const handleCurrentChange = (newPage) => {
-  pageData.current = newPage;
-  getAllClusterPage();
-};
-
-
 // 确认加入群组
 const confirmJoinGroup = async () => {
   try {
@@ -198,7 +208,7 @@ const confirmJoinGroup = async () => {
       duration: 1000
     });
     joinDialogVisible.value = false;
-    getAllClusterPage();
+    await getAllClusterPage();
   } catch (error) {
     ElMessage({
       message: '加入群组失败: ' + error.message,
@@ -223,47 +233,19 @@ const confirmJoinGroup = async () => {
     margin-top: 10px;
     margin-bottom: 20px;
 
-    .level {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
 
-      el-button {
-        width: 100% !important;
-      }
+    .clusterhall_op-buttons {
+      width: 100% !important;
     }
 
-    .level0 {
-      width: 30px !important;
-    }
+  }
 
-    .level1 {
-      width: 50px !important;
-    }
-
-    .level2 {
-      width: 70px !important;
-    }
-
-    .level3 {
-      width: 90px !important;
-    }
-
-    .level4 {
-      width: 110px !important;
-    }
-
-    .level5 {
-      width: 130px !important;
-    }
-
-    .level6 {
-      width: 150px !important;
-    }
-
-    .level7 {
-      width: 170px !important;
-    }
+  .clusterhall_lower {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 }
 
