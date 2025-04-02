@@ -63,12 +63,64 @@
         title="群组详情"
     >
 
-      <el-descriptions :column="1" border>
+      <div>
+        <img alt="Image" src="@/../static/img/ClusterShowPic.png" style="width:10%; height: auto; padding-left: 80px">
+      </div>
+
+      <el-text class="simple_text_red">群组基础信息</el-text>
+
+      <el-descriptions :column="2" border size="small">
         <el-descriptions-item label="群组名称">{{ selectedGroup.name }}</el-descriptions-item>
+        <el-descriptions-item label="群组昵称">{{ selectedGroup.nickname }}</el-descriptions-item>
+        <el-descriptions-item label="容量">{{ selectedGroup.pop_volume }}</el-descriptions-item>
+        <el-descriptions-item label="使用空间大小">{{ selectedGroup.used_space }}</el-descriptions-item>
+        <el-descriptions-item label="总空间大小">{{ selectedGroup.total_space }}</el-descriptions-item>
+        <el-descriptions-item label="创建人账号">{{ selectedGroup.user_account }}</el-descriptions-item>
+        <el-descriptions-item label="管理创建">{{ (selectedGroup.user_is_admin) === 0 ? '是' : '否' }}</el-descriptions-item>
+        <el-descriptions-item label="允许加入">{{ (selectedGroup.allow_invite) === 0 ? '是' : '否' }}</el-descriptions-item>
+        <el-descriptions-item label="创建时间">{{ selectedGroup.create_time }}</el-descriptions-item>
+        <el-descriptions-item label="修改时间">{{ selectedGroup.update_time }}</el-descriptions-item>
+      </el-descriptions>
+
+
+      <el-text class="simple_text_red">相册</el-text>
+      <div>
+        <img alt="Image" src="@/../static/img/ClusterShowPic.png" style="width:10%; height: auto; padding-left: 80px">
+        <img alt="Image" src="@/../static/img/ClusterShowPic.png" style="width:10%; height: auto; padding-left: 80px">
+        <img alt="Image" src="@/../static/img/ClusterShowPic.png" style="width:10%; height: auto; padding-left: 80px">
+        <img alt="Image" src="@/../static/img/ClusterShowPic.png" style="width:10%; height: auto; padding-left: 80px">
+      </div>
+
+
+      <el-text class="simple_text_red">公告</el-text>
+      <el-descriptions :column="1" border size="small">
+        <el-descriptions-item label="公告名称">{{ selectedGroup.notice_name }}</el-descriptions-item>
+        <el-descriptions-item label="公告内容">{{ selectedGroup.notice_content }}</el-descriptions-item>
+      </el-descriptions>
+
+
+      <el-text class="simple_text_red">货币情况</el-text>
+      <div>
+        <img alt="Image" src="@/../static/img/CurrencyShowPic.png" style="width:10%; height: auto; padding-left: 80px">
+      </div>
+      <el-descriptions :column="2" border size="small">
+        <el-descriptions-item label="货币名称">{{ selectedGroup.currency_stock }}</el-descriptions-item>
+        <el-descriptions-item label="货币储量">{{ selectedGroup.currency_stock }}</el-descriptions-item>
+        <el-descriptions-item label="货币硬币转化率">{{ selectedGroup.currency_stock }}</el-descriptions-item>
+        <el-descriptions-item label="硬币储量">{{ selectedGroup.coin_stock }}</el-descriptions-item>
+      </el-descriptions>
+
+      <el-text class="simple_text_red">群组评论</el-text>
+      <el-descriptions :column="2" border size="small">
+        <el-descriptions-item label="大热评">{{ selectedGroup.content[0] }}</el-descriptions-item>
+        <el-descriptions-item label="热评">{{ selectedGroup.content[1] }}</el-descriptions-item>
+        <el-descriptions-item label="评">{{ selectedGroup.content[2] }}</el-descriptions-item>
       </el-descriptions>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="detailsDialogVisible = false">关闭</el-button>
+        <el-button @click="detailsDialogVisible = false"
+                   class="clusterhall_close-button"
+        >关闭</el-button>
       </span>
 
     </el-dialog>
@@ -127,11 +179,48 @@ const pageData = reactive({
 
 // 选中的群组 (id查)
 const selectedGroup = reactive({
-  id: 0n, // 使用 BigInt 类型
+
+  // Cluster
+  id: 0n,
   name: '',
-  description: '',
-  createTime: '',
-  updateTime: ''
+  nickname: '',
+  pic: '',
+  pop_volume: 32,
+
+
+  // ClusterDetail
+  share_link: '',
+  album: '',
+  used_space: 0n,
+  total_space: 0n,
+  create_time: '',
+  update_time: '',
+
+
+  // ClusterFunc
+  allow_invite: 0,
+  currency_stock: 0n,
+  coin_stock: 0n,
+
+
+  // Creator
+  user_account: '',
+  user_is_admin: 0,
+
+
+  // Notice
+  notice_name: '',
+  notice_content: '',
+
+
+  //Currency
+  currency_name: '',
+  currency_exchange_rate: '',
+  currency_pic: '',
+
+  //Remarks
+  content: [],
+
 });
 
 // 对话框可见性
@@ -291,9 +380,19 @@ const confirmJoinGroup = async () => {
 }
 
 .simple_text_red {
+  margin: 5px;
   padding: 25px;
   font-size: 20px;
   font-weight: bold;
   color: #ee0b1a;
+}
+
+
+.clusterhall_close-button {
+  display: flex;
+  width: 15%;
+  justify-content: center;
+  margin-left: 30%;
+  margin-top: 20px;
 }
 </style>
