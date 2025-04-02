@@ -115,7 +115,7 @@ const pageData = reactive({
 
 // 选中的群组 (id查)
 const selectedGroup = reactive({
-  id: '',
+  id: 0n, // 使用 BigInt 类型
   name: '',
   description: '',
   createTime: '',
@@ -170,7 +170,12 @@ const getAllClusterPage = async (current, size) => {
     pageData.current = data.current;
     pageData.size = data.size;
     pageData.total = data.total;
-    pageData.records = data.records;
+    pageData.records = data.records.map(record => {
+      return {
+        ...record,
+        id: BigInt(record.id) // 将 id 转换为 BigInt 类型
+      };
+    });
 
 
     if (pageData.total === 0) {
@@ -201,6 +206,7 @@ const getOneCluster = (id) => {
     method: 'get',
     params: {
       id
+      //id: id.toString() // 将 BigInt 转换为字符串传递给后端
     }
   }).then(({data}) => {
     selectedGroup.id = data.id;
@@ -222,7 +228,7 @@ const getOneCluster = (id) => {
 const confirmJoinGroup = async () => {
   try {
     await http({
-      url: http.adornUrl(`Cluster/clusters/join/${selectedGroup.id}`),
+      url: http.adornUrl(`Cluster/clusters/join`),
       method: 'post'
     });
     ElMessage({
