@@ -72,7 +72,7 @@ const levelData = ref({
   desc: "就是个寄吧",
   floor: 0,
   grow: 50,
-  id: "1894667686932631600",
+  id: 1894667686932631600n,
   name: "青铜",
   remark: "新人入职转生"
 });

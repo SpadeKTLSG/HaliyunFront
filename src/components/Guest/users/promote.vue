@@ -79,7 +79,12 @@ const getData = () => {
       id: UserContext.getUserId(),
     })
   }).then(({data}) => {
-    userData.value = data;
+    userData.value = data.map(record => {
+      return {
+        ...record,
+        levelId: BigInt(record.levelId) // 将 id 转换为 BigInt 类型
+      };
+    });
   }).catch((error) => {
     ElMessage({
       message: '获取用户数据失败: ' + error.message,

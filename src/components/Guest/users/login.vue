@@ -119,13 +119,14 @@ const dataFormRef = ref(null)
  */
 const dataForm = ref({
   account: '',
-  //主要账号:
-  // Admin, 15911451419
-  // Guest, 15911451420
   password: 2333, //调试使用
   phone: '15911451419',
   code: ''
 })
+
+//主要账号: (快速调试用)
+// Admin, 15911451419
+// Guest, 15911451420
 
 
 /**
