@@ -72,14 +72,14 @@
       <el-descriptions :column="2" border size="small">
         <el-descriptions-item label="群组名称">{{ selectedGroup.name }}</el-descriptions-item>
         <el-descriptions-item label="群组昵称">{{ selectedGroup.nickname }}</el-descriptions-item>
-        <el-descriptions-item label="容量">{{ selectedGroup.pop_volume }}</el-descriptions-item>
-        <el-descriptions-item label="使用空间大小">{{ selectedGroup.used_space }}</el-descriptions-item>
-        <el-descriptions-item label="总空间大小">{{ selectedGroup.total_space }}</el-descriptions-item>
-        <el-descriptions-item label="创建人账号">{{ selectedGroup.user_account }}</el-descriptions-item>
-        <el-descriptions-item label="管理创建">{{ (selectedGroup.user_is_admin) === 0 ? '是' : '否' }}</el-descriptions-item>
-        <el-descriptions-item label="允许加入">{{ (selectedGroup.allow_invite) === 0 ? '是' : '否' }}</el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ selectedGroup.create_time }}</el-descriptions-item>
-        <el-descriptions-item label="修改时间">{{ selectedGroup.update_time }}</el-descriptions-item>
+        <el-descriptions-item label="容量">{{ selectedGroup.popVolume }}</el-descriptions-item>
+        <el-descriptions-item label="使用空间大小">{{ selectedGroup.usedSpace }}</el-descriptions-item>
+        <el-descriptions-item label="总空间大小">{{ selectedGroup.totalSpace }}</el-descriptions-item>
+        <el-descriptions-item label="创建人账号">{{ selectedGroup.userAccount }}</el-descriptions-item>
+        <el-descriptions-item label="管理创建">{{ (selectedGroup.userIsAdmin) === 0 ? '是' : '否' }}</el-descriptions-item>
+        <el-descriptions-item label="允许加入">{{ (selectedGroup.allowInvite) === 0 ? '是' : '否' }}</el-descriptions-item>
+        <el-descriptions-item label="创建时间">{{ selectedGroup.createTime }}</el-descriptions-item>
+        <el-descriptions-item label="修改时间">{{ selectedGroup.updateTime }}</el-descriptions-item>
       </el-descriptions>
 
 
@@ -94,8 +94,8 @@
 
       <el-text class="simple_text_red">公告</el-text>
       <el-descriptions :column="1" border size="small">
-        <el-descriptions-item label="公告名称">{{ selectedGroup.notice_name }}</el-descriptions-item>
-        <el-descriptions-item label="公告内容">{{ selectedGroup.notice_content }}</el-descriptions-item>
+        <el-descriptions-item label="公告名称">{{ selectedGroup.noticeName }}</el-descriptions-item>
+        <el-descriptions-item label="公告内容">{{ selectedGroup.noticeContent }}</el-descriptions-item>
       </el-descriptions>
 
 
@@ -104,10 +104,10 @@
         <img alt="Image" src="@/../static/img/CurrencyShowPic.png" style="width:10%; height: auto; padding-left: 80px">
       </div>
       <el-descriptions :column="2" border size="small">
-        <el-descriptions-item label="货币名称">{{ selectedGroup.currency_stock }}</el-descriptions-item>
-        <el-descriptions-item label="货币储量">{{ selectedGroup.currency_stock }}</el-descriptions-item>
-        <el-descriptions-item label="货币硬币转化率">{{ selectedGroup.currency_stock }}</el-descriptions-item>
-        <el-descriptions-item label="硬币储量">{{ selectedGroup.coin_stock }}</el-descriptions-item>
+        <el-descriptions-item label="货币名称">{{ selectedGroup.currencyName }}</el-descriptions-item>
+        <el-descriptions-item label="货币储量">{{ selectedGroup.currencyStock }}</el-descriptions-item>
+        <el-descriptions-item label="货币硬币转化率">{{ selectedGroup.currencyExchangeRate }}</el-descriptions-item>
+        <el-descriptions-item label="硬币储量">{{ selectedGroup.coinStock }}</el-descriptions-item>
       </el-descriptions>
 
       <el-text class="simple_text_red">群组评论</el-text>
@@ -178,45 +178,45 @@ const pageData = reactive({
 
 
 // 选中的群组 (id查)
-const selectedGroup = reactive({
+const selectedGroup = ref({
 
   // Cluster
   id: 0n,
   name: '',
   nickname: '',
   pic: '',
-  pop_volume: 32,
+  popVolume: 0,
 
 
   // ClusterDetail
-  share_link: '',
+  shareLink: '',
   album: '',
-  used_space: 0n,
-  total_space: 0n,
-  create_time: '',
-  update_time: '',
+  usedSpace: 0n,
+  totalSpace: 0n,
+  createTime: '',
+  updateTime: '',
 
 
   // ClusterFunc
-  allow_invite: 0,
-  currency_stock: 0n,
-  coin_stock: 0n,
+  allowInvite: 0,
+  currencyStock: 0n,
+  coinStock: 0n,
 
 
   // Creator
-  user_account: '',
-  user_is_admin: 0,
+  userAccount: '',
+  userIsAdmin: 0,
 
 
   // Notice
-  notice_name: '',
-  notice_content: '',
+  noticeName: '',
+  noticeContent: '',
 
 
   //Currency
-  currency_name: '',
-  currency_exchange_rate: '',
-  currency_pic: '',
+  currencyName: '',
+  currencyExchangeRate: '',
+  currencyPic: '',
 
   //Remarks
   content: [],
@@ -310,11 +310,7 @@ const getOneCluster = (id) => {
       //id: id.toString() // 将 BigInt 转换为字符串传递给后端
     }
   }).then(({data}) => {
-    selectedGroup.id = data.id;
-    selectedGroup.name = data.name;
-    selectedGroup.description = data.description;
-    selectedGroup.createTime = data.createTime;
-    selectedGroup.updateTime = data.updateTime;
+    selectedGroup.value = data
   }).catch((error) => {
     ElMessage({
       message: '获取群组详情失败: ' + error.message,
