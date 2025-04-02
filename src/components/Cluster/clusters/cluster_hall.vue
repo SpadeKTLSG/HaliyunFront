@@ -58,18 +58,30 @@
     </div>
 
     <!-- 详情信息对话框 (查全部群组信息)  -->
-    <el-dialog :visible.sync="detailsDialogVisible" title="群组详情">
+    <el-dialog
+        v-model="detailsDialogVisible"
+        title="群组详情"
+    >
+
       <el-descriptions :column="1" border>
         <el-descriptions-item label="群组名称">{{ selectedGroup.name }}</el-descriptions-item>
       </el-descriptions>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="detailsDialogVisible = false">关闭</el-button>
       </span>
+
     </el-dialog>
 
     <!-- 加入群组对话框 -->
-    <el-dialog :visible.sync="joinDialogVisible" title="加入群组">
+    <el-dialog
+        v-model="joinDialogVisible"
+        title="加入群组"
+    >
+
       <p>确认加入群组: {{ selectedGroup.name }}?</p>
+
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="joinDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="confirmJoinGroup">确认</el-button>
