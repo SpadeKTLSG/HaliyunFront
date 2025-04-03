@@ -43,7 +43,7 @@
                        type="success"
                        style="width: 40px"
             >
-              加入
+              解散
             </el-button>
           </template>
         </el-table-column>
@@ -140,7 +140,7 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmDeleteGroup">确认</el-button>
+        <el-button type="primary" @click="confirmDeleteGroup(selectedGroup.id)">确认</el-button>
       </span>
     </el-dialog>
 
@@ -238,9 +238,9 @@ const viewDetails = (group) => {
   detailsDialogVisible.value = true;
 };
 
-// 删除群组
+// 删除群组 (解散)
 const deleteGroup = (group) => {
-  Object.assign(selectedGroup, group);
+  confirmDeleteGroup(group.id);
   deleteDialogVisible.value = true;
 };
 
@@ -310,7 +310,6 @@ const getOneCluster = (id) => {
     method: 'get',
     params: {
       id
-      //id: id.toString() // 将 BigInt 转换为字符串传递给后端
     }
   }).then(({data}) => {
     selectedGroup.value = data
@@ -324,15 +323,18 @@ const getOneCluster = (id) => {
 }
 
 
-// 确认加入群组
-const confirmdeleteGroup = async () => {
+// 确认删除群组
+const confirmDeleteGroup = async (clusterId) => {
   try {
     await http({
-      url: http.adornUrl(`Cluster/clusters/join`),
-      method: 'post'
+      url: http.adornUrl(`Cluster/clusters/delete`),
+      method: 'delete',
+      params: {
+        id: clusterId
+      }
     });
     ElMessage({
-      message: '加入群组成功',
+      message: '解散群组成功',
       type: 'success',
       duration: 1000
     });
@@ -340,7 +342,7 @@ const confirmdeleteGroup = async () => {
     await getAllClusterPage();
   } catch (error) {
     ElMessage({
-      message: '加入群组失败: ' + error.message,
+      message: '解散群组失败, 原因: ' + error.message,
       type: 'error',
       duration: 1000
     });
