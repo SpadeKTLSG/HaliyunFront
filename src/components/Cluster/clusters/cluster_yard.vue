@@ -144,6 +144,28 @@
       </span>
     </el-dialog>
 
+
+    <!-- 新增群组对话框 -->
+    <el-dialog
+        v-model="createDialogVisible"
+        title="新增群组"
+    >
+      <el-form :model="newGroup" ref="createFormRef" :rules="rules">
+        <el-form-item label="群组名称" prop="name" style="width: 50%">
+          <el-input v-model="newGroup.name"></el-input>
+        </el-form-item>
+        <el-form-item label="群组别名" prop="nickname" style="width: 50%">
+          <el-input v-model="newGroup.nickname"></el-input>
+        </el-form-item>
+      </el-form>
+
+
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="createDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="confirmCreateGroup">确认</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -227,10 +249,23 @@ const selectedGroup = ref({
 
 });
 
+
+// 新增群组表单数据
+const newGroup = ref({
+  name: '',
+  nickname: ''
+});
+
 // 对话框可见性
 const detailsDialogVisible = ref(false);
 const deleteDialogVisible = ref(false);
+const createDialogVisible = ref(false);
 
+
+// 新增按钮触发
+const createCluster = () => {
+  createDialogVisible.value = true;
+};
 
 // 查看详情
 const viewDetails = (group) => {
@@ -244,8 +279,6 @@ const deleteGroup = (id) => {
   id2Delete = id;
 };
 let id2Delete = 0n;
-
-//! 查
 
 
 onMounted(async () => {
@@ -349,6 +382,53 @@ const confirmDeleteGroup = (clusterId) => {
   }
 }
 
+
+// 新增群组表单引用
+const createFormRef = ref(null);
+
+// 新增表单验证规则
+const rules = ref({
+  name: [
+    {required: true, message: '请输入群组名称', trigger: 'blur'}
+  ],
+  nickname: [
+    {required: true, message: '请输入群组别名', trigger: 'blur'}
+  ]
+});
+
+
+// 新增群组
+const confirmCreateGroup = async () => {
+
+  try {
+    await createFormRef.value.validate();
+
+    // 发送新增群组请求
+    await http({
+      url: http.adornUrl('Cluster/clusters/create'),
+      method: 'post',
+      data: newGroup.value
+    });
+
+
+    ElMessage({
+      message: '新增群组成功',
+      type: 'success',
+      duration: 3000
+    });
+    createDialogVisible.value = false;
+
+    // 刷新群组列表
+    await getAllClusterPage(pageData.current, pageData.size);
+
+  } catch (error) {
+    ElMessage({
+      message: '新增群组失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+};
 
 </script>
 
