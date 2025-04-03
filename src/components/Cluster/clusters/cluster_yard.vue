@@ -1,14 +1,17 @@
 <template>
 
   <!--主体-->
-  <div class="clusterhall">
+  <div class="clusteryard">
 
     <!-- 上部区域: 操作按钮集合-->
-    <div class="clusterhall_upper">
+    <div class="clusteryard_upper">
       <el-col :span="10">
 
         <!--刷新-获取数据-->
-        <el-button @click="searchClusterCollect()" class="clusterhall_op-buttons">刷新</el-button>
+        <el-button @click="searchClusterCollect()" class="clusteryard_op-buttons">刷新</el-button>
+
+        <!--创建-新增群组-->
+        <el-button @click="createCluster()" class="clusteryard_op-buttons">新增</el-button>
 
       </el-col>
     </div>
@@ -17,7 +20,7 @@
     <el-divider></el-divider>
 
     <!-- 下部区域: 群组展示-->
-    <div class="clusterhall_lower">
+    <div class="clusteryard_lower">
 
       <el-table :data="pageData.records" style="width: 90%">
         <el-table-column prop="pic" label="封面"></el-table-column>
@@ -36,7 +39,7 @@
             >
               详情
             </el-button>
-            <el-button @click="joinGroup(scope.row)"
+            <el-button @click="deleteGroup(scope.row)"
                        type="success"
                        style="width: 40px"
             >
@@ -119,24 +122,25 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="detailsDialogVisible = false"
-                   class="clusterhall_close-button"
+                   class="clusteryard_close-button"
         >关闭</el-button>
       </span>
 
     </el-dialog>
 
-    <!-- 加入群组对话框 -->
+
+    <!-- 删除群组对话框 -->
     <el-dialog
-        v-model="joinDialogVisible"
-        title="加入群组"
+        v-model="deleteDialogVisible"
+        title="删除群组"
     >
 
-      <p>确认加入群组: {{ selectedGroup.name }}?</p>
+      <p>确认删除群组: {{ selectedGroup.name }}?</p>
 
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="joinDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmJoinGroup">确认</el-button>
+        <el-button @click="deleteDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmDeleteGroup">确认</el-button>
       </span>
     </el-dialog>
 
@@ -225,7 +229,7 @@ const selectedGroup = ref({
 
 // 对话框可见性
 const detailsDialogVisible = ref(false);
-const joinDialogVisible = ref(false);
+const deleteDialogVisible = ref(false);
 
 
 // 查看详情
@@ -234,10 +238,10 @@ const viewDetails = (group) => {
   detailsDialogVisible.value = true;
 };
 
-// 加入群组
-const joinGroup = (group) => {
+// 删除群组
+const deleteGroup = (group) => {
   Object.assign(selectedGroup, group);
-  joinDialogVisible.value = true;
+  deleteDialogVisible.value = true;
 };
 
 
@@ -294,7 +298,6 @@ const getAllClusterPage = async (current, size) => {
       duration: 1000
     });
   }
-
 };
 
 
@@ -322,7 +325,7 @@ const getOneCluster = (id) => {
 
 
 // 确认加入群组
-const confirmJoinGroup = async () => {
+const confirmdeleteGroup = async () => {
   try {
     await http({
       url: http.adornUrl(`Cluster/clusters/join`),
@@ -333,7 +336,7 @@ const confirmJoinGroup = async () => {
       type: 'success',
       duration: 1000
     });
-    joinDialogVisible.value = false;
+    deleteDialogVisible.value = false;
     await getAllClusterPage();
   } catch (error) {
     ElMessage({
@@ -350,9 +353,9 @@ const confirmJoinGroup = async () => {
 
 <style lang="scss" scoped>
 
-.clusterhall {
+.clusteryard {
 
-  .clusterhall_upper {
+  .clusteryard_upper {
     display: flex;
     flex-direction: column;
 
@@ -360,13 +363,13 @@ const confirmJoinGroup = async () => {
     margin-bottom: 5px;
 
 
-    .clusterhall_op-buttons {
+    .clusteryard_op-buttons {
       width: 10% !important;
     }
 
   }
 
-  .clusterhall_lower {
+  .clusteryard_lower {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -384,7 +387,7 @@ const confirmJoinGroup = async () => {
 }
 
 
-.clusterhall_close-button {
+.clusteryard_close-button {
   display: flex;
   width: 15%;
   justify-content: center;
