@@ -39,8 +39,8 @@
             >
               详情
             </el-button>
-            <el-button @click="deleteGroup(scope.row)"
-                       type="success"
+            <el-button @click="deleteGroup(scope.row.id)"
+                       type="warning"
                        style="width: 40px"
             >
               解散
@@ -135,12 +135,12 @@
         title="删除群组"
     >
 
-      <p>确认删除群组: {{ selectedGroup.name }}?</p>
+      <p>确认删除群组?</p>
 
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmDeleteGroup(selectedGroup.id)">确认</el-button>
+        <el-button type="primary" @click="confirmDeleteGroup(id2Delete)">确认</el-button>
       </span>
     </el-dialog>
 
@@ -234,16 +234,16 @@ const deleteDialogVisible = ref(false);
 
 // 查看详情
 const viewDetails = (group) => {
-  getOneCluster(group.id);
   detailsDialogVisible.value = true;
+  getOneCluster(group.id);
 };
 
 // 删除群组 (解散)
-const deleteGroup = (group) => {
-  confirmDeleteGroup(group.id);
+const deleteGroup = (id) => {
   deleteDialogVisible.value = true;
+  id2Delete = id;
 };
-
+let id2Delete = 0n;
 
 //! 查
 
@@ -265,7 +265,7 @@ const searchClusterCollect = () => {
 const getAllClusterPage = async (current, size) => {
   try {
     const {data} = await http({
-      url: http.adornUrl('Cluster/clusters/hall/all'),
+      url: http.adornUrl('Cluster/clusters/yard/all'),
       method: 'get',
       params: {
         current,
@@ -324,9 +324,9 @@ const getOneCluster = (id) => {
 
 
 // 确认删除群组
-const confirmDeleteGroup = async (clusterId) => {
+const confirmDeleteGroup = (clusterId) => {
   try {
-    await http({
+    http({
       url: http.adornUrl(`Cluster/clusters/delete`),
       method: 'delete',
       params: {
@@ -336,10 +336,10 @@ const confirmDeleteGroup = async (clusterId) => {
     ElMessage({
       message: '解散群组成功',
       type: 'success',
-      duration: 1000
+      duration: 3000
     });
     deleteDialogVisible.value = false;
-    await getAllClusterPage();
+    getAllClusterPage();
   } catch (error) {
     ElMessage({
       message: '解散群组失败, 原因: ' + error.message,
