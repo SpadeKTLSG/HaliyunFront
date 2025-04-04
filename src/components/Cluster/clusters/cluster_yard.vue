@@ -398,28 +398,23 @@ const rules = ref({
 
 
 // 新增群组
-const confirmCreateGroup = async () => {
+const confirmCreateGroup = () => {
 
   try {
-    await createFormRef.value.validate();
+    createFormRef.value.validate();
 
     // 发送新增群组请求
-    await http({
+    http({
       url: http.adornUrl('Cluster/clusters/create'),
       method: 'post',
       data: newGroup.value
     });
 
-
-    ElMessage({
-      message: '新增群组成功',
-      type: 'success',
-      duration: 3000
-    });
+    // 这里觉得不需要提示消息了. 也是偷偷懒, 避免成功弹窗之后又有异常来就自相矛盾了哈哈
     createDialogVisible.value = false;
 
     // 刷新群组列表
-    await getAllClusterPage(pageData.current, pageData.size);
+    getAllClusterPage(pageData.current, pageData.size);
 
   } catch (error) {
     ElMessage({
