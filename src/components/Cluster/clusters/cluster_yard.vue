@@ -388,7 +388,7 @@ const getOneCluster = (id) => {
 }
 
 
-// 确认删除群组
+// 确认删除(解散)群组
 const confirmDeleteGroup = (clusterId) => {
   try {
     http({
