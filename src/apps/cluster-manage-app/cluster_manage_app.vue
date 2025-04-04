@@ -73,7 +73,7 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('userlevel');
+const currentPage = ref('ClusterHall');
 provide('currentPage', currentPage);
 
 

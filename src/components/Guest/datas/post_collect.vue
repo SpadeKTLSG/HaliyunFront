@@ -90,7 +90,6 @@ const currentPage = inject('currentPage');
 
 
 //? 用户数据展示表单 (对应子页签分区数据) 复用
-// const pageData = ref({});
 
 // 用户数据展示表单 (对应子页签分区数据) 复用
 const pageData = reactive({
@@ -134,7 +133,12 @@ const getUserDataOfPost = async (current, size) => {
     pageData.current = data.current;
     pageData.size = data.size;
     pageData.total = data.total;
-    pageData.records = data.records;
+    pageData.records = data.records.map(record => {
+      return {
+        ...record,
+        id: BigInt(record.id) // 将 id 转换为 BigInt 类型
+      };
+    });
 
     if (pageData.total === 0) {
       ElMessage({

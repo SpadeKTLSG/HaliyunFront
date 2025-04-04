@@ -72,7 +72,7 @@ const levelData = ref({
   desc: "就是个寄吧",
   floor: 0,
   grow: 50,
-  id: "1894667686932631600",
+  id: 1894667686932631600n,
   name: "青铜",
   remark: "新人入职转生"
 });
@@ -126,8 +126,14 @@ const showLevelinfo = (level) => {
       floor: level
     })
   }).then(({data}) => {
-    levelData.value = data;
-  }).catch((error) => {
+
+        levelData.value = {
+          ...data,
+          id: BigInt(data.id) // 将 id 转换为 BigInt 类型
+        }
+
+      }
+  ).catch((error) => {
     ElMessage({
       message: '获取楼层数据失败: ' + error.message,
       type: 'error',

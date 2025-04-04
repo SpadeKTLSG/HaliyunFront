@@ -1,51 +1,33 @@
 <template>
 
   <!--主体-->
-  <div class="clusterhall">
+  <div class="clusterpop">
 
     <!-- 上部区域: 操作按钮集合-->
-    <div class="clusterhall_upper">
-      <el-col :span="10">
-
-        <!--刷新-获取数据-->
-        <el-button @click="searchClusterCollect()" class="clusterhall_op-buttons">刷新</el-button>
-
-      </el-col>
+    <div class="clusterpop_upper">
+      <!-- 搜索输入下拉框 -->
+      <el-select v-model="selectedGroupId" filterable remote :remote-method="searchGroups" placeholder="搜索群组">
+        <el-option v-for="item in groupOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+      </el-select>
+      <!-- 群名称显示 -->
+      <span>{{ selectedGroup.name }}</span>
+      <!-- 群容量 百分比进度条 -->
+      <el-progress :percentage="groupCapacityPercentage"></el-progress>
     </div>
 
 
     <el-divider></el-divider>
 
-    <!-- 下部区域: 群组展示-->
-    <div class="clusterhall_lower">
+    <!-- 下部区域: 群组人员展示 (这个页面之后在管理群的时候会被经常复用简单模式) -->
+    <div class="clusterpop_lower">
 
-      <el-table :data="pageData.records" style="width: 90%">
-        <el-table-column prop="pic" label="封面"></el-table-column>
-        <el-table-column prop="name" label="群组名称"></el-table-column>
-        <el-table-column prop="nickname" label="群组别名"></el-table-column>
-        <el-table-column prop="popVolume" label="容量"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间"></el-table-column>
-
-
-        <el-table-column label="操作">
-          <template #default="scope">
-            <el-button @click="viewDetails(scope.row)"
-                       type="primary"
-                       style="width: 40px"
-            >
-              详情
-            </el-button>
-            <el-button @click="joinGroup(scope.row)"
-                       type="success"
-                       style="width: 40px"
-            >
-              加入
-            </el-button>
-          </template>
-        </el-table-column>
-
-      </el-table>
+      <!-- 头像矩阵排列 -->
+      <div class="avatar-grid">
+        <div v-for="member in pageData.records" :key="member.id" class="avatar-item" @click="viewMemberDetails(member)">
+          <img :src="member.avatar" :class="{ 'admin-avatar': member.isAdmin }"/>
+          <span>{{ member.account }}</span>
+        </div>
+      </div>
 
       <!--之后统一用这种双向绑定的-->
       <el-pagination
@@ -57,7 +39,7 @@
       />
     </div>
 
-    <!-- 详情信息对话框 (查全部群组信息)  -->
+    <!-- 人员信息弹框  -->
     <el-dialog
         v-model="detailsDialogVisible"
         title="群组详情"
@@ -67,7 +49,7 @@
         <img alt="Image" src="@/../static/img/ClusterShowPic.png" style="width:10%; height: auto; padding-left: 80px">
       </div>
 
-      <el-text class="simple_text_red">群组基础信息</el-text>
+      <el-text class="simple_text_red">人员基础信息</el-text>
 
       <el-descriptions :column="2" border size="small">
         <el-descriptions-item label="群组名称">{{ selectedGroup.name }}</el-descriptions-item>
@@ -119,25 +101,38 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="detailsDialogVisible = false"
-                   class="clusterhall_close-button"
+                   class="clusterpop_close-button"
         >关闭</el-button>
       </span>
 
     </el-dialog>
 
-    <!-- 加入群组对话框 -->
+
+    <!-- 踢出群组对话框 -->
     <el-dialog
         v-model="joinDialogVisible"
         title="加入群组"
     >
 
-      <p>确认加入群组: {{ selectedGroup.name }}?</p>
+      <p>确认将这家伙踢出群组 ?</p>
 
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="joinDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="confirmJoinGroup">确认</el-button>
       </span>
+    </el-dialog>
+
+    <!-- 用户信息弹框 -->
+    <el-dialog v-model="memberDialogVisible" title="用户详情">
+      <!-- 用户信息展示 -->
+      <el-descriptions :column="2" border size="small">
+        <el-descriptions-item label="账号">{{ selectedMember.account }}</el-descriptions-item>
+        <el-descriptions-item label="昵称">{{ selectedMember.nickname }}</el-descriptions-item>
+        <!-- ...其他用户信息... -->
+      </el-descriptions>
+      <!-- 操作按钮 -->
+      <el-button type="danger" @click="kickOutMember(selectedMember.id)">踢出群聊</el-button>
     </el-dialog>
 
   </div>
@@ -187,49 +182,23 @@ const selectedGroup = ref({
   pic: '',
   popVolume: 0,
 
-
-  // ClusterDetail
-  shareLink: '',
-  album: '',
-  usedSpace: 0n,
-  totalSpace: 0n,
-  createTime: '',
-  updateTime: '',
-
-
   // ClusterFunc
   allowInvite: 0,
-  currencyStock: 0n,
-  coinStock: 0n,
-
 
   // Creator
   userAccount: '',
   userIsAdmin: 0,
-
-
-  // Notice
-  noticeName: '',
-  noticeContent: '',
-
-
-  //Currency
-  currencyName: '',
-  currencyExchangeRate: '',
-  currencyPic: '',
-
-  //Remarks
-  content: [],
 
 });
 
 // 对话框可见性
 const detailsDialogVisible = ref(false);
 const joinDialogVisible = ref(false);
+const memberDialogVisible = ref(false);
 
 
 // 查看详情
-const viewDetails = (group) => {
+const viewPopDetails = (group) => {
   getOneCluster(group.id);
   detailsDialogVisible.value = true;
 };
@@ -347,29 +316,82 @@ const confirmJoinGroup = async (clusterId) => {
   }
 }
 
+// 搜索群组
+const groupOptions = ref([]);
+const selectedGroupId = ref(null);
+const selectedMember = ref({});
+
+const searchGroups = async (query) => {
+  try {
+    const {data} = await http({
+      url: http.adornUrl('Cluster/clusters/search'),
+      method: 'get',
+      params: {query}
+    });
+    groupOptions.value = data.records;
+  } catch (error) {
+    ElMessage({
+      message: '搜索群组失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+};
+
+const groupCapacityPercentage = computed(() => {
+  return (selectedGroup.value.popVolume / selectedGroup.value.totalSpace) * 100;
+});
+
+const viewMemberDetails = (member) => {
+  selectedMember.value = member;
+  memberDialogVisible.value = true;
+};
+
+const kickOutMember = async (memberId) => {
+  try {
+    await http({
+      url: http.adornUrl('Cluster/clusters/kick'),
+      method: 'post',
+      params: {memberId}
+    });
+    ElMessage({
+      message: '踢出群聊成功',
+      type: 'success',
+      duration: 1000
+    });
+    memberDialogVisible.value = false;
+    await getAllClusterPage(pageData.current, pageData.size);
+  } catch (error) {
+    ElMessage({
+      message: '踢出群聊失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+}
 
 </script>
 
 
 <style lang="scss" scoped>
 
-.clusterhall {
+.clusterpop {
 
-  .clusterhall_upper {
+  .clusterpop_upper {
     display: flex;
     flex-direction: column;
 
-    margin-top: -100px;
+    margin-top: 10px;
     margin-bottom: 5px;
 
 
-    .clusterhall_op-buttons {
+    .clusterpop_op-buttons {
       width: 10% !important;
     }
 
   }
 
-  .clusterhall_lower {
+  .clusterpop_lower {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -387,11 +409,30 @@ const confirmJoinGroup = async (clusterId) => {
 }
 
 
-.clusterhall_close-button {
+.clusterpop_close-button {
   display: flex;
   width: 15%;
   justify-content: center;
   margin-left: 30%;
   margin-top: 20px;
 }
+
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.avatar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.admin-avatar {
+  border: 2px solid red;
+}
+
 </style>
+

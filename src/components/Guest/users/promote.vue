@@ -79,7 +79,7 @@ const getData = () => {
       id: UserContext.getUserId(),
     })
   }).then(({data}) => {
-    userData.value = data;
+
   }).catch((error) => {
     ElMessage({
       message: '获取用户数据失败: ' + error.message,
