@@ -11,7 +11,12 @@
         <el-button @click="searchClusterCollect()" class="clusteryard_op-buttons">刷新</el-button>
 
         <!--创建-新增群组-->
-        <el-button @click="createCluster()" class="clusteryard_op-buttons">新增</el-button>
+        <el-button @click="createCluster()"
+                   type="primary"
+                   class="clusteryard_op-buttons"
+        >
+          新增
+        </el-button>
 
       </el-col>
     </div>
@@ -46,7 +51,7 @@
               退出
             </el-button>
             <el-button @click="deleteGroup(scope.row.id)"
-                       type="warning"
+                       type="danger"
                        style="width: 40px"
             >
               解散
