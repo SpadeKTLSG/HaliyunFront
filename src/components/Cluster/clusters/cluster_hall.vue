@@ -322,11 +322,14 @@ const getOneCluster = (id) => {
 
 
 // 确认加入群组
-const confirmJoinGroup = async () => {
+const confirmJoinGroup = async (clusterId) => {
   try {
     await http({
-      url: http.adornUrl(`Cluster/clusters/join`),
-      method: 'post'
+      url: http.adornUrl('Cluster/clusters//hall/join'),
+      method: 'post',
+      params: {
+        clusterId: selectedGroup.id
+      }
     });
     ElMessage({
       message: '加入群组成功',

@@ -363,7 +363,7 @@ const confirmDeleteGroup = (clusterId) => {
       url: http.adornUrl(`Cluster/clusters/delete`),
       method: 'delete',
       params: {
-        id: clusterId
+        clusterId: clusterId
       }
     });
     ElMessage({
