@@ -390,6 +390,8 @@ const getOneCluster = (id) => {
 
 // 确认删除(解散)群组
 const confirmDeleteGroup = (clusterId) => {
+  deleteDialogVisible.value = false;
+
   try {
     http({
       url: http.adornUrl(`Cluster/clusters/delete`),
@@ -398,13 +400,8 @@ const confirmDeleteGroup = (clusterId) => {
         clusterId: clusterId
       }
     });
-    ElMessage({
-      message: '解散群组成功',
-      type: 'success',
-      duration: 3000
-    });
-    deleteDialogVisible.value = false;
-    getAllClusterPage();
+
+    emit('close'); // 强制刷新 + 去掉表单, 一举两得
   } catch (error) {
     ElMessage({
       message: '解散群组失败, 原因: ' + error.message,
@@ -417,6 +414,8 @@ const confirmDeleteGroup = (clusterId) => {
 
 // 确认退出群组
 const confirmExitGroup = (clusterId) => {
+  deleteDialogVisible.value = false;
+
   try {
     http({
       url: http.adornUrl(`Cluster/clusters/exit`),
@@ -426,14 +425,8 @@ const confirmExitGroup = (clusterId) => {
       }
     });
 
-    ElMessage({
-      message: '退出群组成功',
-      type: 'success',
-      duration: 3000
-    });
 
-    deleteDialogVisible.value = false;
-    getAllClusterPage();
+    emit('close'); // 强制刷新 + 去掉表单, 一举两得
   } catch (error) {
     ElMessage({
       message: '退出群组失败, 原因: ' + error.message,
