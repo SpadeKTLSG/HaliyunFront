@@ -5,13 +5,14 @@
 
     <!-- 上部区域: 操作按钮集合-->
     <div class="clusterpop_upper">
-
-      <!-- 一个有实力的下拉框 -->
-
-      <!-- 群名称 -->
-
+      <!-- 搜索输入下拉框 -->
+      <el-select v-model="selectedGroupId" filterable remote :remote-method="searchGroups" placeholder="搜索群组">
+        <el-option v-for="item in groupOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+      </el-select>
+      <!-- 群名称显示 -->
+      <span>{{ selectedGroup.name }}</span>
       <!-- 群容量 百分比进度条 -->
-
+      <el-progress :percentage="groupCapacityPercentage"></el-progress>
     </div>
 
 
@@ -20,8 +21,13 @@
     <!-- 下部区域: 群组人员展示 (这个页面之后在管理群的时候会被经常复用简单模式) -->
     <div class="clusterpop_lower">
 
-      <!-- 群内分页人员信息 的 头像矩阵排列, 点击将会弹框展示对象详情 -->
-
+      <!-- 头像矩阵排列 -->
+      <div class="avatar-grid">
+        <div v-for="member in pageData.records" :key="member.id" class="avatar-item" @click="viewMemberDetails(member)">
+          <img :src="member.avatar" :class="{ 'admin-avatar': member.isAdmin }"/>
+          <span>{{ member.account }}</span>
+        </div>
+      </div>
 
       <!--之后统一用这种双向绑定的-->
       <el-pagination
@@ -117,6 +123,18 @@
       </span>
     </el-dialog>
 
+    <!-- 用户信息弹框 -->
+    <el-dialog v-model="memberDialogVisible" title="用户详情">
+      <!-- 用户信息展示 -->
+      <el-descriptions :column="2" border size="small">
+        <el-descriptions-item label="账号">{{ selectedMember.account }}</el-descriptions-item>
+        <el-descriptions-item label="昵称">{{ selectedMember.nickname }}</el-descriptions-item>
+        <!-- ...其他用户信息... -->
+      </el-descriptions>
+      <!-- 操作按钮 -->
+      <el-button type="danger" @click="kickOutMember(selectedMember.id)">踢出群聊</el-button>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -176,6 +194,7 @@ const selectedGroup = ref({
 // 对话框可见性
 const detailsDialogVisible = ref(false);
 const joinDialogVisible = ref(false);
+const memberDialogVisible = ref(false);
 
 
 // 查看详情
@@ -297,6 +316,59 @@ const confirmJoinGroup = async (clusterId) => {
   }
 }
 
+// 搜索群组
+const groupOptions = ref([]);
+const selectedGroupId = ref(null);
+const selectedMember = ref({});
+
+const searchGroups = async (query) => {
+  try {
+    const {data} = await http({
+      url: http.adornUrl('Cluster/clusters/search'),
+      method: 'get',
+      params: {query}
+    });
+    groupOptions.value = data.records;
+  } catch (error) {
+    ElMessage({
+      message: '搜索群组失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+};
+
+const groupCapacityPercentage = computed(() => {
+  return (selectedGroup.value.popVolume / selectedGroup.value.totalSpace) * 100;
+});
+
+const viewMemberDetails = (member) => {
+  selectedMember.value = member;
+  memberDialogVisible.value = true;
+};
+
+const kickOutMember = async (memberId) => {
+  try {
+    await http({
+      url: http.adornUrl('Cluster/clusters/kick'),
+      method: 'post',
+      params: {memberId}
+    });
+    ElMessage({
+      message: '踢出群聊成功',
+      type: 'success',
+      duration: 1000
+    });
+    memberDialogVisible.value = false;
+    await getAllClusterPage(pageData.current, pageData.size);
+  } catch (error) {
+    ElMessage({
+      message: '踢出群聊失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+}
 
 </script>
 
@@ -309,7 +381,7 @@ const confirmJoinGroup = async (clusterId) => {
     display: flex;
     flex-direction: column;
 
-    margin-top: -100px;
+    margin-top: 10px;
     margin-bottom: 5px;
 
 
@@ -344,4 +416,23 @@ const confirmJoinGroup = async (clusterId) => {
   margin-left: 30%;
   margin-top: 20px;
 }
+
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.avatar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.admin-avatar {
+  border: 2px solid red;
+}
+
 </style>
+
