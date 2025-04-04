@@ -126,13 +126,14 @@ const showLevelinfo = (level) => {
       floor: level
     })
   }).then(({data}) => {
-    levelData.value = data.map(record => {
-      return {
-        ...record,
-        id: BigInt(record.id) // 将 id 转换为 BigInt 类型
-      };
-    });
-  }).catch((error) => {
+
+        levelData.value = {
+          ...data,
+          id: BigInt(data.id) // 将 id 转换为 BigInt 类型
+        }
+
+      }
+  ).catch((error) => {
     ElMessage({
       message: '获取楼层数据失败: ' + error.message,
       type: 'error',
