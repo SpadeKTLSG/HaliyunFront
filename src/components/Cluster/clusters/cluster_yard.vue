@@ -39,6 +39,12 @@
             >
               详情
             </el-button>
+            <el-button @click="exitGroup(scope.row.id)"
+                       type="warning"
+                       style="width: 40px"
+            >
+              退出
+            </el-button>
             <el-button @click="deleteGroup(scope.row.id)"
                        type="warning"
                        style="width: 40px"
@@ -134,13 +140,25 @@
         v-model="deleteDialogVisible"
         title="删除群组"
     >
-
       <p>确认删除群组?</p>
-
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="confirmDeleteGroup(id2Delete)">确认</el-button>
+      </span>
+    </el-dialog>
+
+
+    <!-- 退出群组对话框 -->
+    <el-dialog
+        v-model="exitDialogVisible"
+        title="退出群组"
+    >
+      <p>确认退出群组?</p>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="exitDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmExitGroup(id2Exit)">确认</el-button>
       </span>
     </el-dialog>
 
@@ -259,6 +277,7 @@ const newGroup = ref({
 // 对话框可见性
 const detailsDialogVisible = ref(false);
 const deleteDialogVisible = ref(false);
+const exitDialogVisible = ref(false);
 const createDialogVisible = ref(false);
 
 
@@ -272,6 +291,14 @@ const viewDetails = (group) => {
   detailsDialogVisible.value = true;
   getOneCluster(group.id);
 };
+
+// 退出群组
+const exitGroup = (id) => {
+  exitDialogVisible.value = true;
+  id2Exit = id;
+};
+let id2Exit = 0n;
+
 
 // 删除群组 (解散)
 const deleteGroup = (id) => {
@@ -328,7 +355,7 @@ const getAllClusterPage = async (current, size) => {
     ElMessage({
       message: '获取群组大厅数据失败: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 3000
     });
   }
 };
@@ -350,7 +377,7 @@ const getOneCluster = (id) => {
     ElMessage({
       message: '获取群组详情失败: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 3000
     });
   });
 }
@@ -377,7 +404,36 @@ const confirmDeleteGroup = (clusterId) => {
     ElMessage({
       message: '解散群组失败, 原因: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 3000
+    });
+  }
+}
+
+
+// 确认退出群组
+const confirmExitGroup = (clusterId) => {
+  try {
+    http({
+      url: http.adornUrl(`Cluster/clusters/exit`),
+      method: 'delete',
+      params: {
+        clusterId: clusterId
+      }
+    });
+
+    ElMessage({
+      message: '退出群组成功',
+      type: 'success',
+      duration: 3000
+    });
+
+    deleteDialogVisible.value = false;
+    getAllClusterPage();
+  } catch (error) {
+    ElMessage({
+      message: '退出群组失败, 原因: ' + error.message,
+      type: 'error',
+      duration: 3000
     });
   }
 }
