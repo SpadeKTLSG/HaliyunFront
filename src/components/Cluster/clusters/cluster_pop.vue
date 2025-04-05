@@ -3,7 +3,7 @@
   <!--主体-->
   <div class="clusterpop">
 
-    <!-- 上部区域: 操作按钮集合-->
+    <!-- 上部区域: 查询引导集合-->
     <div class="clusterpop_upper">
 
 
@@ -148,16 +148,15 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
-// 群组分页数据展示表单
-const pageData = reactive({
-  current: 1,
-  size: 10,
-  total: 0,
-  records: []
-});
+//! 实践: 相邻的业务在一起, 而不是同类型放一起的js写法
 
+//? 上部 搜索输入下拉框
 
-// 选中的群组 (id查)
+// 选中的群组信息
+const selectedGroupId = ref(null); // 选中的群组id
+const groupOptions = ref([]); // 群组列表
+
+// 选中的群组数据 (id查)
 const selectedGroup = ref({
 
   // Cluster
@@ -176,17 +175,52 @@ const selectedGroup = ref({
 
 });
 
+
+onMounted(
+    //初始需要先获取用户加入的群组列表
+    () => {
+      searchGroups();
+    }
+);
+// 查询用户加入的群组列表
+const searchGroups = () => {
+  try {
+    const {data} = http({
+      url: http.adornUrl('Cluster/clusters/search'),
+      method: 'get'
+    });
+    groupOptions.value = data.records; // 回填选择框
+  } catch (error) {
+    ElMessage({
+      message: '获取用户加入群组失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+};
+
+//? 下部 头像矩阵排列
+
+// 人员信息分页数据展示表单
+const pageData = reactive({
+  current: 1,
+  size: 10,
+  total: 0,
+  records: []
+});
+
+
 // 对话框可见性
-const detailsDialogVisible = ref(false);
+
 const joinDialogVisible = ref(false);
-const memberDialogVisible = ref(false);
-
-const groupOptions = ref([]);
 
 
-const selectedGroupId = ref(null);
 const selectedMember = ref({});
 
+
+//? 人员具体信息查询
+
+const memberDialogVisible = ref(false);
 
 const viewMemberDetails = (member) => {
   selectedMember.value = member;
@@ -199,30 +233,8 @@ const groupCapacityPercentage = computed(() => {
   return (selectedGroup.value.popVolume / selectedGroup.value.totalSpace) * 100;
 });
 
+
 //! 查
-
-
-onMounted(async () => {
-  await getAllClusterPage(pageData.current, pageData.size);
-});
-
-
-const searchGroups = async (query) => {
-  try {
-    const {data} = await http({
-      url: http.adornUrl('Cluster/clusters/search'),
-      method: 'get',
-      params: {query}
-    });
-    groupOptions.value = data.records;
-  } catch (error) {
-    ElMessage({
-      message: '搜索群组失败: ' + error.message,
-      type: 'error',
-      duration: 1000
-    });
-  }
-};
 
 
 const kickOutMember = async (memberId) => {
