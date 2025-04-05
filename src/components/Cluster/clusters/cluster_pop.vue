@@ -175,7 +175,7 @@ const searchGroups = async () => {
 
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       groupOptions.value = data.map(group => ({
-        id: String(group.id),
+        id: BigInt(group.id),
         name: group.name,
         popVolume: group.popVolume
       }));
@@ -247,12 +247,6 @@ const viewMemberDetails = (member) => {
   selectedMember.value = member;
   memberDialogVisible.value = true;
 };
-
-
-// 群组容量百分比
-const groupCapacityPercentage = computed(() => {
-  return (selectedGroup.value.popVolume / selectedGroup.value.totalSpace) * 100;
-});
 
 
 //? 踢出人员操作
