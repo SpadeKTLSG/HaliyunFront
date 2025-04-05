@@ -5,14 +5,32 @@
 
     <!-- 上部区域: 操作按钮集合-->
     <div class="clusterpop_upper">
+
+
       <!-- 搜索输入下拉框 -->
-      <el-select v-model="selectedGroupId" filterable remote :remote-method="searchGroups" placeholder="搜索群组">
-        <el-option v-for="item in groupOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+      <el-select v-model="selectedGroupId"
+                 filterable
+                 remote
+                 :remote-method="searchGroups"
+                 placeholder="搜索或选择群组"
+                 class="clusterpop_selector"
+      >
+
+        <el-option v-for="item in groupOptions"
+                   :key="item.id"
+                   :label="item.name"
+                   :value="item.id">
+        </el-option>
+
       </el-select>
+
+
       <!-- 群名称显示 -->
-      <span>{{ selectedGroup.name }}</span>
+      <span class="clusterpop_name">{{ selectedGroup.name }}</span>
+
       <!-- 群容量 百分比进度条 -->
-      <el-progress :percentage="groupCapacityPercentage"></el-progress>
+      <el-progress :percentage="groupCapacityPercentage" class="clusterpop_upper_progress"></el-progress>
+
     </div>
 
 
@@ -379,15 +397,26 @@ const kickOutMember = async (memberId) => {
 
   .clusterpop_upper {
     display: flex;
-    flex-direction: column;
-
-    margin-top: 10px;
+    align-items: center;
+    margin-top: -30px;
     margin-bottom: 5px;
 
-
-    .clusterpop_op-buttons {
-      width: 10% !important;
+    .clusterpop_selector {
+      width: 80%;
+      margin-left: 10%;
+      margin-top: 5px;
     }
+
+    .clusterpop_name {
+      margin-right: 10px;
+    }
+
+    .clusterpop_upper_progress {
+      width: 80%;
+      margin-left: 10%;
+      margin-top: 5px;
+    }
+
 
   }
 
@@ -432,6 +461,10 @@ const kickOutMember = async (memberId) => {
 
 .admin-avatar {
   border: 2px solid red;
+}
+
+.clusterpop_op-buttons {
+  width: 10% !important;
 }
 
 </style>
