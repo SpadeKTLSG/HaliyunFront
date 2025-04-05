@@ -99,7 +99,7 @@
         <!-- ...其他用户信息... -->
       </el-descriptions>
       <!-- 操作按钮 -->
-      <el-button type="danger" @click="kickOutMember(selectedMember.id)">踢出群聊</el-button>
+      <el-button type="danger" @click="showKickoutDialog()">将其踢出群聊</el-button>
     </el-dialog>
 
 
@@ -109,12 +109,11 @@
         title="加入群组"
     >
 
-      <p>确认将这家伙踢出群组 ?</p>
-
+      <p>确认将这家伙 {{ selectedMember.account }} 踢出群组 ?</p>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="joinDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmKickout">确认</el-button>
+        <el-button @click="kickoutDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmKickout()">确认</el-button>
       </span>
 
     </el-dialog>
@@ -148,7 +147,8 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
-//! 实践: 相邻的业务在一起, 而不是同类型放一起的js写法
+//! 首次实践: 相邻的业务在一起, 而不是同类型放一起的js写法
+
 
 //? 上部 搜索输入下拉框
 
@@ -199,7 +199,13 @@ const searchGroups = () => {
   }
 };
 
+
 //? 下部 头像矩阵排列
+
+const selectedMember = ref({
+  id: 0n,
+
+}); // 选中的成员信息存储
 
 // 人员信息分页数据展示表单
 const pageData = reactive({
@@ -210,18 +216,11 @@ const pageData = reactive({
 });
 
 
-// 对话框可见性
-
-const joinDialogVisible = ref(false);
-
-
-const selectedMember = ref({});
-
-
 //? 人员具体信息查询
 
 const memberDialogVisible = ref(false);
 
+// 显示成员详情对话框
 const viewMemberDetails = (member) => {
   selectedMember.value = member;
   memberDialogVisible.value = true;
@@ -234,24 +233,33 @@ const groupCapacityPercentage = computed(() => {
 });
 
 
-//! 查
+//? 踢出人员操作
+
+const kickoutDialogVisible = ref(false);
+
+// 显示踢出对话框
+const showKickoutDialog = () => {
+  // 由于已经打开了成员详情对话框, 直接继续打开即可, 使用已经选择的对象信息
+  kickoutDialogVisible.value = true;
+};
 
 
-const kickOutMember = async (memberId) => {
+// 确认踢出操作
+const confirmKickout = () => {
+  kickOutMember(selectedMember.value.id);
+  kickoutDialogVisible.value = false;
+};
+
+// 踢出成员
+const kickOutMember = (memberId) => {
   try {
-    await http({
+    http({
       url: http.adornUrl('Cluster/clusters/kick'),
       method: 'post',
       params: {memberId}
     });
-    ElMessage({
-      message: '踢出群聊成功',
-      type: 'success',
-      duration: 1000
-    });
+
     memberDialogVisible.value = false;
-
-
   } catch (error) {
     ElMessage({
       message: '踢出群聊失败: ' + error.message,
