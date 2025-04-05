@@ -85,8 +85,6 @@
       <!-- 用户信息展示 -->
       <el-descriptions :column="2" border size="small">
         <el-descriptions-item label="账号">{{ selectedMember.account }}</el-descriptions-item>
-        <el-descriptions-item label="昵称">{{ selectedMember.nickname }}</el-descriptions-item>
-        <!-- ...其他用户信息... -->
       </el-descriptions>
       <!-- 操作按钮 -->
       <el-button type="danger" @click="showKickoutDialog()">将其踢出群聊</el-button>
@@ -96,7 +94,7 @@
     <!-- 踢出群组确认对话框 -->
     <el-dialog
         v-model="kickoutDialogVisible"
-        title="加入群组"
+        title="放逐!"
     >
 
       <p>确认将这家伙 {{ selectedMember.account }} 踢出群组 ?</p>
@@ -271,8 +269,11 @@ const kickOutMember = (memberId) => {
   try {
     http({
       url: http.adornUrl('Cluster/clusters/kick'),
-      method: 'post',
-      params: {memberId}
+      method: 'delete',
+      params: {
+        clusterId: BigInt(selectedGroupId.value),
+        targetUserId: BigInt(memberId)
+      }
     });
 
     memberDialogVisible.value = false;
