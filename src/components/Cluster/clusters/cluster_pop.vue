@@ -50,32 +50,30 @@
     <div class="clusterpop_lower">
 
       <!-- 头像矩阵排列 -->
-      <div class="clusterpop_lower">
 
-        <el-card class="avatar-card" shadow="hover">
+      <el-card class="avatar-card" shadow="hover">
 
-          <!-- 头像矩阵排列对象 -->
-          <div class="avatar-grid">
+        <!-- 头像矩阵排列对象 -->
+        <div class="avatar-grid">
 
-            <div v-for="member in pageData.records"
-                 :key="member.id"
-                 class="avatar-item"
-                 @click="viewMemberDetails(member)"
-            >
+          <div v-for="member in pageData.records"
+               :key="member.id"
+               class="avatar-item"
+               @click="viewMemberDetails(member)"
+          >
 
-              <!--<el-image :src="member.avatar" alt=""/>-->
-              <!--经费原因, 先用统一的用户图片-->
-              <img src="@/../static/img/PopAvatarPic.png" alt="用户头像" style="width: 100px; height: 100px; border-radius: 50%;"/>
+            <!--<el-image :src="member.avatar" alt=""/>-->
+            <!--经费原因, 先用统一的用户图片-->
+            <img src="@/../static/img/PopAvatarPic.png" alt="用户头像" style="width: 100px; height: 100px; border-radius: 50%;"/>
 
-              <span>{{ member.account }}</span>
-
-            </div>
+            <span>{{ member.account }}</span>
 
           </div>
 
-        </el-card>
+        </div>
 
-      </div>
+      </el-card>
+
 
       <!-- 分页器 -->
       <el-pagination
@@ -186,10 +184,10 @@ onMounted(
 const searchGroups = () => {
   try {
     const {data} = http({
-      url: http.adornUrl('Cluster/clusters/search'),
+      url: http.adornUrl('Cluster/clusters/clusterEzOfMe'),
       method: 'get'
     });
-    groupOptions.value = data.records; // 回填选择框
+    groupOptions.value = data; // 回填选择框
   } catch (error) {
     ElMessage({
       message: '获取用户加入群组失败: ' + error.message,
