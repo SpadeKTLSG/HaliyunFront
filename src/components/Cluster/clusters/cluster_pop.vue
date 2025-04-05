@@ -51,18 +51,33 @@
 
       <!-- 头像矩阵排列 -->
       <div class="clusterpop_lower">
+
         <el-card class="avatar-card" shadow="hover">
-          <!-- 头像矩阵排列 -->
+
+          <!-- 头像矩阵排列对象 -->
           <div class="avatar-grid">
-            <div v-for="member in pageData.records" :key="member.id" class="avatar-item" @click="viewMemberDetails(member)">
-              <img :src="member.avatar" :class="{ 'admin-avatar': member.isAdmin }"/>
+
+            <div v-for="member in pageData.records"
+                 :key="member.id"
+                 class="avatar-item"
+                 @click="viewMemberDetails(member)"
+            >
+
+              <!--<el-image :src="member.avatar" alt=""/>-->
+              <!--经费原因, 先用统一的用户图片-->
+              <img src="@/../static/img/PopAvatarPic.png" alt="用户头像" style="width: 100px; height: 100px; border-radius: 50%;"/>
+
               <span>{{ member.account }}</span>
+
             </div>
+
           </div>
+
         </el-card>
+
       </div>
 
-      <!--之后统一用这种双向绑定的-->
+      <!-- 分页器 -->
       <el-pagination
           layout="total, prev, pager, next"
           v-model:current-page="pageData.current"
