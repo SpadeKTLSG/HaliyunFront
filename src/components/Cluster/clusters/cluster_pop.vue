@@ -268,11 +268,11 @@ const confirmKickout = () => {
 const kickOutMember = (memberId) => {
   try {
     http({
-      url: http.adornUrl('Cluster/clusters/kick'),
+      url: http.adornUrl('Cluster/clusters/kick_cluster'),
       method: 'delete',
       params: {
         clusterId: BigInt(selectedGroupId.value),
-        targetUserId: BigInt(memberId)
+        userId: BigInt(memberId)
       }
     });
 
