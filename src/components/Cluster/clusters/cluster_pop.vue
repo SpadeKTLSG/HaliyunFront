@@ -56,7 +56,7 @@
         <!-- 头像矩阵排列对象 -->
         <div class="avatar-grid">
 
-          <div v-for="member in pageData.records"
+          <div v-for="member in usersData"
                :key="member.id"
                class="avatar-item"
                @click="viewMemberDetails(member)"
@@ -75,14 +75,6 @@
       </el-card>
 
 
-      <!-- 分页器 -->
-      <el-pagination
-          layout="total, prev, pager, next"
-          v-model:current-page="pageData.current"
-          :page-size="pageData.size"
-          :total="pageData.total"
-          style="margin-top: 20px;"
-      />
     </div>
 
 
@@ -183,7 +175,7 @@ const searchGroups = async () => {
 
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       groupOptions.value = data.map(group => ({
-        id: group.id,
+        id: String(group.id),
         name: group.name,
         popVolume: group.popVolume
       }));
@@ -206,12 +198,7 @@ const selectedMember = ref({
 }); // 选中的成员信息存储
 
 // 人员信息分页数据展示表单
-const pageData = reactive({
-  current: 1,
-  size: 10,
-  total: 0,
-  records: []
-});
+const usersData = ref([]); // 群组成员信息列表
 
 
 // 选择了对应的群组, 通过群组 id 进行人员信息查询
@@ -223,18 +210,23 @@ watch(selectedGroupId, async (newVal) => {
   }
 });
 
-// 查询群组成员信息
 
-const fetchMembers = async (groupId) => {
+// 查询群组成员信息, 偷懒直接不分页了
+const fetchMembers = async (clusterId) => {
   try {
     await http({
-      url: http.adornUrl('Cluster/clusters/members'),
+      url: http.adornUrl('Guest/users/cluster/user_list'),
       method: 'get',
-      params: {groupId, page: pageData.current, size: pageData.size}
+      params: {
+        clusterId: BigInt(clusterId)
+      }
     }).then(({data}) => {
       // 数据处理和后端对齐
-      pageData.records = data.records;
-      pageData.total = data.total;
+      //? 后端 清单 Array => 前端 ref([]) 的传递方法
+      usersData.value = data.map(member => ({
+        id: member.id,
+        account: member.account
+      }));
     });
 
   } catch (error) {
