@@ -12,6 +12,7 @@
                  filterable
                  remote
                  :remote-method="searchGroups"
+                 @keyup.enter="searchGroups"
                  placeholder="搜索或选择群组"
                  class="clusterpop_selector"
       >
@@ -26,10 +27,19 @@
 
 
       <!-- 群名称显示 -->
-      <span class="clusterpop_name">{{ selectedGroup.name }}</span>
+      <span class="clusterpop_name">
+        <el-text type="primary" class="simple_text_red">
+          群组名称:
+        {{ (selectedGroup.name !== "") ? selectedGroup.name : "请在左侧选择" }}
+        </el-text>
+      </span>
 
-      <!-- 群容量 百分比进度条 -->
-      <el-progress :percentage="groupCapacityPercentage" class="clusterpop_upper_progress"></el-progress>
+      <!-- 群容量 百分比 -->
+      <span class="clusterpop_name">
+        <el-text type="primary" class="simple_text_red">
+          群组容量: {{ groupCapacityPercentage }}%
+        </el-text>
+      </span>
 
     </div>
 
@@ -40,11 +50,16 @@
     <div class="clusterpop_lower">
 
       <!-- 头像矩阵排列 -->
-      <div class="avatar-grid">
-        <div v-for="member in pageData.records" :key="member.id" class="avatar-item" @click="viewMemberDetails(member)">
-          <img :src="member.avatar" :class="{ 'admin-avatar': member.isAdmin }"/>
-          <span>{{ member.account }}</span>
-        </div>
+      <div class="clusterpop_lower">
+        <el-card class="avatar-card" shadow="hover">
+          <!-- 头像矩阵排列 -->
+          <div class="avatar-grid">
+            <div v-for="member in pageData.records" :key="member.id" class="avatar-item" @click="viewMemberDetails(member)">
+              <img :src="member.avatar" :class="{ 'admin-avatar': member.isAdmin }"/>
+              <span>{{ member.account }}</span>
+            </div>
+          </div>
+        </el-card>
       </div>
 
       <!--之后统一用这种双向绑定的-->
@@ -402,19 +417,18 @@ const kickOutMember = async (memberId) => {
     margin-bottom: 5px;
 
     .clusterpop_selector {
-      width: 80%;
-      margin-left: 10%;
-      margin-top: 5px;
+      width: 20%;
+      margin-right: 10px;
+      margin-left: 20px;
     }
 
     .clusterpop_name {
-      margin-right: 10px;
+      width: 30%;
     }
 
     .clusterpop_upper_progress {
-      width: 80%;
-      margin-left: 10%;
-      margin-top: 5px;
+      width: 70%;
+      margin-left: 5px;
     }
 
 
@@ -426,13 +440,41 @@ const kickOutMember = async (memberId) => {
     align-items: center;
     margin-top: 10px;
     margin-bottom: 20px;
+
+
+    .avatar-card {
+      width: 1200px;
+      height: 500px;
+      padding: 20px;
+      border: 1px solid var(--el-border-color);
+      border-radius: 10px;
+    }
+
+    .avatar-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .avatar-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .admin-avatar {
+      border: 2px solid red;
+    }
+
+
   }
 }
 
 .simple_text_red {
   margin: 5px;
   padding: 25px;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
   color: #ee0b1a;
 }
