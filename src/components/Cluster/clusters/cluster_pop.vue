@@ -13,7 +13,7 @@
                  remote
                  :remote-method="searchGroups"
                  @keyup.enter="searchGroups"
-                 placeholder="搜索或选择群组"
+                 placeholder="选择群组"
                  class="clusterpop_selector"
       >
 
@@ -37,7 +37,7 @@
       <!-- 群容量 -->
       <span class="clusterpop_name">
         <el-text type="primary" class="simple_text_red">
-          群组容量: {{ groupCapacityPercentage }}
+          群组容量: {{ selectedGroup.popVolume }}
         </el-text>
       </span>
 
@@ -151,8 +151,8 @@ const currentPage = inject('currentPage');
 //? 上部 搜索输入下拉框
 
 // 选中的群组信息
-const selectedGroupId = ref(null); // 选中的群组id
 const groupOptions = ref([]); // 群组列表
+
 
 // 选中的群组数据 (id查)
 const selectedGroup = ref({
@@ -161,6 +161,7 @@ const selectedGroup = ref({
   name: '',
   popVolume: 0
 });
+const selectedGroupId = ref(null); // 选中的群组id
 
 
 onMounted(
@@ -169,6 +170,7 @@ onMounted(
       searchGroups();
     }
 );
+
 // 查询用户加入的群组列表
 const searchGroups = async () => {
   try {
@@ -181,11 +183,10 @@ const searchGroups = async () => {
 
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       groupOptions.value = data.map(group => ({
-        id: BigInt(group.id),
+        id: group.id,
         name: group.name,
         popVolume: group.popVolume
       }));
-
     });
 
   } catch (error) {
@@ -212,6 +213,38 @@ const pageData = reactive({
   records: []
 });
 
+
+// 选择了对应的群组, 通过群组 id 进行人员信息查询
+
+watch(selectedGroupId, async (newVal) => {
+  if (newVal) {
+    selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
+    await fetchMembers(newVal);
+  }
+});
+
+// 查询群组成员信息
+
+const fetchMembers = async (groupId) => {
+  try {
+    await http({
+      url: http.adornUrl('Cluster/clusters/members'),
+      method: 'get',
+      params: {groupId, page: pageData.current, size: pageData.size}
+    }).then(({data}) => {
+      // 数据处理和后端对齐
+      pageData.records = data.records;
+      pageData.total = data.total;
+    });
+
+  } catch (error) {
+    ElMessage({
+      message: '获取群组成员失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+};
 
 //? 人员具体信息查询
 
