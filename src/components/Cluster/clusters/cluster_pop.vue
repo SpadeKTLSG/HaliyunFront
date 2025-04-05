@@ -34,10 +34,10 @@
         </el-text>
       </span>
 
-      <!-- 群容量 百分比 -->
+      <!-- 群容量 -->
       <span class="clusterpop_name">
         <el-text type="primary" class="simple_text_red">
-          群组容量: {{ groupCapacityPercentage }}%
+          群组容量: {{ groupCapacityPercentage }}
         </el-text>
       </span>
 
@@ -156,21 +156,10 @@ const groupOptions = ref([]); // 群组列表
 
 // 选中的群组数据 (id查)
 const selectedGroup = ref({
-
-  // Cluster
   id: 0n,
+  creatorUserId: 0n,
   name: '',
-  nickname: '',
-  pic: '',
-  popVolume: 0,
-
-  // ClusterFunc
-  allowInvite: 0,
-
-  // Creator
-  userAccount: '',
-  userIsAdmin: 0,
-
+  popVolume: 0
 });
 
 
@@ -181,13 +170,24 @@ onMounted(
     }
 );
 // 查询用户加入的群组列表
-const searchGroups = () => {
+const searchGroups = async () => {
   try {
-    const {data} = http({
+
+    await http({
       url: http.adornUrl('Cluster/clusters/clusterEzOfMe'),
       method: 'get'
+    }).then(({data}) => {
+      // 数据处理和后端对齐
+
+      //? 后端 清单 Array => 前端 ref([]) 的传递方法
+      groupOptions.value = data.map(group => ({
+        id: BigInt(group.id),
+        name: group.name,
+        popVolume: group.popVolume
+      }));
+
     });
-    groupOptions.value = data; // 回填选择框
+
   } catch (error) {
     ElMessage({
       message: '获取用户加入群组失败: ' + error.message,
@@ -196,7 +196,6 @@ const searchGroups = () => {
     });
   }
 };
-
 
 //? 下部 头像矩阵排列
 
