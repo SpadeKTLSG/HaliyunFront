@@ -4,7 +4,7 @@
   <div class="level_app">
 
     <!--应用标识-->
-    <el-text class="base_header">用户等级</el-text>
+    <el-text class="base_header">群组公告</el-text>
 
   </div>
 
