@@ -14,7 +14,7 @@
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
       <el-menu-item index="1">
-        I. 用户等级
+        I. 公告管理
       </el-menu-item>
     </el-menu>
 
