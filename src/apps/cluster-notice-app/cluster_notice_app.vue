@@ -1,7 +1,7 @@
 <template>
 
 
-  <div class="level_app">
+  <div class="cluster_notice_app">
 
     <!--应用标识-->
     <el-text class="base_header">群组公告</el-text>
@@ -9,7 +9,7 @@
   </div>
 
   <!--左侧导航区域-->
-  <div class="level_app_left_nav">
+  <div class="cluster_notice_app_left_nav">
 
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
@@ -21,7 +21,7 @@
   </div>
 
   <!--具体页面-->
-  <component :is="currentView" class="level_app_compo" @close="backAppHome"/>
+  <component :is="currentView" class="cluster_notice_app_compo" @close="backAppHome"/>
 
 </template>
 
@@ -30,7 +30,7 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import Userlevel from "@/components/Guest/levels/level.vue";
+import NoticeManage from "@/components/Cluster/functions/notice_manage.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -69,14 +69,14 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('userlevel');
+const currentPage = ref('notice_manage');
 provide('currentPage', currentPage);
 
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {
   if (index === '1') {
-    currentPage.value = 'userlevel';
+    currentPage.value = 'notice_manage';
   } else {
     currentPage.value = 'wait';
   }
@@ -86,12 +86,12 @@ const handleMenuSelect = (index) => {
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   switch (currentPage.value) {
-    case 'userlevel':
-      return Userlevel;
+    case 'notice_manage':
+      return NoticeManage;
     case 'wait':
       return Tofinish;
     default:
-      return Userlevel;
+      return NoticeManage;
   }
 });
 
@@ -105,7 +105,7 @@ const backAppHome = () => {
 <style lang="scss" scoped>
 
 
-.level_app {
+.cluster_notice_app {
   display: flex;
   margin-top: -10px;
   flex-direction: row;
@@ -128,7 +128,7 @@ const backAppHome = () => {
 
 }
 
-.level_app_left_nav {
+.cluster_notice_app_left_nav {
   width: 10%;
   margin-left: -150px;
   display: flex;
@@ -142,7 +142,7 @@ const backAppHome = () => {
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
-.level_app_compo {
+.cluster_notice_app_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
   display: flex;
   flex-direction: column;
