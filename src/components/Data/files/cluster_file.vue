@@ -230,50 +230,61 @@ const pageData = reactive({
 });
 
 
-// 选中的文件信息存储
-const selectedFileInfo = ref({
-  id: 0n,
-  //todo
-});
-
-// 人员信息分页数据展示表单
-const usersData = ref([]); // 群组成员信息列表
-
-
 // 选择了对应的群组, 通过群组 id 进行文件信息查询
 watch(selectedGroupId, async (newVal) => {
   if (newVal) {
     selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
-    await fetchFile(newVal);
+    await fetchFile(newVal, pageData.current, pageData.size);
   }
 });
 
+// 分页组件页码改变事件
+const handleCurrentChange = (newPage) => {
+  pageData.current = newPage;
+  fetchFile(selectedGroup.value.id, newPage, pageData.size);
+};
 
 // 分页查询群组的文件列表
-const fetchFile = async (clusterId) => {
+const fetchFile = async (clusterId, current, size) => {
   try {
     await http({
-      url: http.adornUrl('Data/users/cluster/user_list'),
+      url: http.adornUrl('Data/files/file/group_files'),
       method: 'get',
       params: {
-        clusterId: BigInt(clusterId)
+        clusterId: BigInt(clusterId),
+        current,
+        size
       }
     }).then(({data}) => {
+      pageData.current = data.current;
+      pageData.size = data.size;
+      pageData.total = data.total;
+      pageData.records = data.records.map(record => {
+        return {
+          ...record,
+          id: BigInt(record.id) // 将 id 转换为 BigInt 类型
+        };
+      });
       // 数据处理和后端对齐
-      //? 后端 清单 Array => 前端 ref([]) 的传递方法
-      usersData.value = data.map(member => ({
-        // id: member.id,
-        // account: member.account
-      }));
     });
+
+
+    if (pageData.total === 0) {
+      ElMessage({
+        message: '暂无数据',
+        type: 'warning',
+        duration: 3000
+      });
+    }
 
   } catch (error) {
     ElMessage({
-      message: '获取群组成员失败: ' + error.message,
+      message: '获取群组文件信息失败: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 3000
     });
   }
+
 };
 
 
@@ -281,51 +292,19 @@ const fetchFile = async (clusterId) => {
 
 const memberDialogVisible = ref(false);
 
+
+// 选中的文件信息存储
+const selectedFileInfo = ref({
+  id: 0n,
+  //todo
+});
+
 // 显示成员详情对话框
-const viewMemberDetails = (member) => {
-  selectedMember.value = member;
+const detailMainFunc = (file) => {
+  selectedFileInfo.value = file;
   memberDialogVisible.value = true;
 };
 
-
-//? 踢出人员操作
-
-const kickoutDialogVisible = ref(false);
-
-// 显示踢出对话框
-const showKickoutDialog = () => {
-  // 由于已经打开了成员详情对话框, 直接继续打开即可, 使用已经选择的对象信息
-  kickoutDialogVisible.value = true;
-};
-
-
-// 确认踢出操作
-const confirmKickout = () => {
-  kickOutMember(selectedMember.value.id);
-  kickoutDialogVisible.value = false;
-};
-
-// 踢出成员
-const kickOutMember = (memberId) => {
-  try {
-    http({
-      url: http.adornUrl('Cluster/clusters/kick_cluster'),
-      method: 'delete',
-      params: {
-        clusterId: BigInt(selectedGroupId.value),
-        userId: BigInt(memberId)
-      }
-    });
-
-    memberDialogVisible.value = false;
-  } catch (error) {
-    ElMessage({
-      message: '踢出群聊失败: ' + error.message,
-      type: 'error',
-      duration: 1000
-    });
-  }
-}
 
 </script>
 
@@ -352,8 +331,8 @@ const kickOutMember = (memberId) => {
     }
 
     .clusterfile_upbotton {
-      width: 70%;
-      margin-left: 5px;
+      width: 10%;
+      margin-left: 500px;
     }
 
 
