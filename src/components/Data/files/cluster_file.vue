@@ -39,22 +39,26 @@
       <el-upload
           ref="upload"
           class="upload-demo"
-          action="http://localhost:10000/Data/api/upload/file"
+          action="http://localhost:10000/Data/tasks/upload/file"
           :limit="1"
           :on-exceed="handleExceed"
           :auto-upload="false"
           :before-upload="beforeUpload"
           v-model:file-list="fileList"
       >
+
+        <el-button type="success" class="ml-3" @click="submitUpload">上传文件</el-button>
+
+        <template #tip>
+          <div class="simple_text_red">
+            上传1个<500 MB 文件
+          </div>
+        </template>
+
         <template #trigger>
           <el-button type="primary" class="clusterfile_upbotton">选择文件</el-button>
         </template>
-        <el-button type="success" class="ml-3" @click="submitUpload">上传文件</el-button>
-        <template #tip>
-          <div class="el-upload__tip text-red">
-            限制上传 1 个文件，文件格式须为 JPG/PNG 且大小不超过 500KB，自动替换上一个文件
-          </div>
-        </template>
+
       </el-upload>
 
     </div>
@@ -364,8 +368,41 @@ const doDelFile = async () => {
 
 
 //? 上传
+// 适配 EL 上传组件
 
-//todo
+
+const upload = ref(null)
+const fileList = ref([])
+
+
+const maxSize = 500 * 1024 * 1024  // AKA 500MB
+
+// 前置上传钩子
+const beforeUpload = (file) => {
+  if (file.size > maxSize) {
+    ElMessage.error('上传文件大小不能超过 500MB')
+    return false
+  }
+  return true
+}
+
+// 执行上传钩子
+const handleExceed = (files) => {
+  // 清空已有的文件列表后，再自动添加新选中的文件
+  upload.value.clearFiles()
+  const file = files[0]
+
+  // 使用 Element Plus 内部方法开始上传（此处 uid 自动生成也可通过 genFileId 生成）
+  upload.value.handleStart(file)
+}
+
+
+// 提交上传请求
+const submitUpload = () => {
+  upload.value.submit()
+  // 不做提示了
+}
+
 
 //? 下载
 
@@ -394,12 +431,6 @@ const doDelFile = async () => {
     .clusterfile_name {
       width: 30%;
     }
-
-    .clusterfile_upbotton {
-      width: 10%;
-      margin-left: 500px;
-    }
-
 
   }
 
