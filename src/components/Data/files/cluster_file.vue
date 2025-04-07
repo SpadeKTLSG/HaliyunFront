@@ -35,8 +35,27 @@
       </span>
 
 
-      <!-- 特写的上传按钮 -->
-      <el-button class="clusterfile_upbotton" type="primary" @click="uploadMainFunc()">上传文件</el-button>
+      <!-- 特写的上传按钮 - EL 实现 -->
+      <el-upload
+          ref="upload"
+          class="upload-demo"
+          action="http://localhost:10000/Data/api/upload/file"
+          :limit="1"
+          :on-exceed="handleExceed"
+          :auto-upload="false"
+          :before-upload="beforeUpload"
+          v-model:file-list="fileList"
+      >
+        <template #trigger>
+          <el-button type="primary" class="clusterfile_upbotton">选择文件</el-button>
+        </template>
+        <el-button type="success" class="ml-3" @click="submitUpload">上传文件</el-button>
+        <template #tip>
+          <div class="el-upload__tip text-red">
+            限制上传 1 个文件，文件格式须为 JPG/PNG 且大小不超过 500KB，自动替换上一个文件
+          </div>
+        </template>
+      </el-upload>
 
     </div>
 
