@@ -135,6 +135,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
+import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -284,8 +285,28 @@ watch(selectedGroupId, async (newVal) => {
   }
 });
 
+// 鉴权操作
+
+const checkIsMaster = () => {
+  if (UserContext.getUserId() !== selectedGroup.value.creatorUserId) {
+    ElMessage({
+      message: '操作: ' + '你不是群组的主人!',
+      type: 'error',
+      duration: 3000
+    });
+    return false;
+  }
+  return true;
+
+}
+
+// CRUD 方法
 
 const addNotice = async () => {
+  if (!checkIsMaster) {
+    return
+  }
+
   try {
     await http({
       url: http.adornUrl(`Cluster/functions/notice/${selectedGroupId.value}`),
@@ -296,7 +317,7 @@ const addNotice = async () => {
     ElMessage({
       message: '新增公告成功',
       type: 'success',
-      duration: 1000
+      duration: 3000
     });
 
     addDialogVisible.value = false;
@@ -306,12 +327,18 @@ const addNotice = async () => {
     ElMessage({
       message: '新增公告失败: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 3000
     });
   }
 };
 
+
 const updateNotice = async () => {
+
+  if (!checkIsMaster) {
+    return
+  }
+
   try {
 
     await http({
@@ -323,7 +350,7 @@ const updateNotice = async () => {
     ElMessage({
       message: '更新公告成功',
       type: 'success',
-      duration: 1000
+      duration: 3000
     });
 
     updateDialogVisible.value = false;
@@ -333,12 +360,17 @@ const updateNotice = async () => {
     ElMessage({
       message: '更新公告失败: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 3000
     });
   }
 };
 
 const deleteNotice = async () => {
+
+  if (!checkIsMaster) {
+    return
+  }
+
   try {
     await http({
       url: http.adornUrl(`Cluster/functions/notice/${selectedGroupId.value}`),
@@ -348,7 +380,7 @@ const deleteNotice = async () => {
     ElMessage({
       message: '删除公告成功',
       type: 'success',
-      duration: 1000
+      duration: 3000
     });
     delDialogVisible.value = false;
     await fetchNotice(selectedGroupId.value);
@@ -356,7 +388,7 @@ const deleteNotice = async () => {
     ElMessage({
       message: '删除公告失败: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 3000
     });
   }
 };
