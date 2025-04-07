@@ -54,7 +54,7 @@
       </el-text>
 
       <el-text class="simple_text_red">
-        公告标题: {{ notice.title }}
+        公告标题: {{ notice.name }}
       </el-text>
 
       <el-text class="simple_text_red">
@@ -76,7 +76,7 @@
 
       <el-form :model="newNotice">
         <el-form-item label="公告标题">
-          <el-input v-model="newNotice.title"></el-input>
+          <el-input v-model="newNotice.name"></el-input>
         </el-form-item>
         <el-form-item label="公告内容">
           <el-input type="textarea" v-model="newNotice.content"></el-input>
@@ -98,7 +98,7 @@
 
       <el-form :model="notice">
         <el-form-item label="公告标题">
-          <el-input v-model="notice.title"></el-input>
+          <el-input v-model="notice.name"></el-input>
         </el-form-item>
         <el-form-item label="公告内容">
           <el-input type="textarea" v-model="notice.content"></el-input>
@@ -217,7 +217,7 @@ const searchGroups = async () => {
 // 人员信息分页数据展示表单
 
 const notice = ref({
-  title: '',
+  name: '',
   content: '',
   readCount: 0
 });
