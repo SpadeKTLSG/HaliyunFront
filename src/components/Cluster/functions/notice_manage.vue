@@ -35,6 +35,9 @@
       </span>
 
       <!-- 操作按钮 -->
+      <el-button type="primary" @click="showAddDialog">新增公告</el-button>
+      <el-button type="primary" @click="showUpdateDialog">修改公告</el-button>
+      <el-button type="danger" @click="showDeleteDialog">删除公告</el-button>
 
 
     </div>
@@ -51,20 +54,15 @@
       </el-text>
 
       <el-text class="simple_text_red">
-        公告标题:
-        <div>
-          <el-text class="simple_text_red">
-            {{ (selectedGroup.name !== "") ? selectedGroup.name : "请在左侧选择" }}
-          </el-text>
-        </div>
+        公告标题: {{ notice.title }}
       </el-text>
 
       <el-text class="simple_text_red">
-        公告内容:
+        公告内容: {{ notice.content }}
       </el-text>
 
       <el-text class="simple_text_red">
-        阅读数:
+        阅读数: {{ notice.readCount }}
       </el-text>
 
 
@@ -76,11 +74,20 @@
         v-model="addDialogVisible"
         title="新增群组公告">
 
-      <!--公告信息输入框-->
+      <el-form :model="newNotice">
+        <el-form-item label="公告标题">
+          <el-input v-model="newNotice.title"></el-input>
+        </el-form-item>
+        <el-form-item label="公告内容">
+          <el-input type="textarea" v-model="newNotice.content"></el-input>
+        </el-form-item>
+      </el-form>
 
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="addNotice">新增</el-button>
+      </span>
 
-      <!-- 操作按钮 -->
-      <el-button type="danger" @click="addNotice()">新增</el-button>
     </el-dialog>
 
 
@@ -89,11 +96,20 @@
         v-model="updateDialogVisible"
         title="更新群组公告">
 
-      <!--公告信息输入框, 回显对应原有数据-->
+      <el-form :model="notice">
+        <el-form-item label="公告标题">
+          <el-input v-model="notice.title"></el-input>
+        </el-form-item>
+        <el-form-item label="公告内容">
+          <el-input type="textarea" v-model="notice.content"></el-input>
+        </el-form-item>
+      </el-form>
 
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="updateDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="updateNotice">更新</el-button>
+      </span>
 
-      <!-- 操作按钮 -->
-      <el-button type="danger" @click="addNotice()">新增</el-button>
     </el-dialog>
 
 
@@ -107,7 +123,7 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="delDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="delNotice()">确认</el-button>
+        <el-button type="primary" @click="deleteNotice()">确认</el-button>
       </span>
 
     </el-dialog>
@@ -153,7 +169,7 @@ const groupOptions = ref([]); // 群组列表
 // 选中的群组数据 (id查)
 const selectedGroup = ref({
   id: 0n,
-  creatorUserId: 0n,
+  creatorUserId: 0n, // 任何修改编辑都需要判断 UserHolder.getUI == creatorUserId (非创建人无法修改)
   name: '',
   popVolume: 0
 });
@@ -197,101 +213,153 @@ const searchGroups = async () => {
 
 //? 下部 公告信息排列
 
-const selectedMember = ref({
-  id: 0n,
-
-}); // 选中的成员信息存储
 
 // 人员信息分页数据展示表单
-const usersData = ref([]); // 群组成员信息列表
 
+const notice = ref({
+  title: '',
+  content: '',
+  readCount: 0
+});
 
-// 选择了对应的群组, 通过群组 id 进行人员信息查询
+const newNotice = ref({
+  title: '',
+  content: ''
+});
+
 
 watch(selectedGroupId, async (newVal) => {
   if (newVal) {
     selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
-    await fetchMembers(newVal);
+    await fetchNotice(newVal);
   }
 });
 
 
-// 查询群组成员信息, 偷懒直接不分页了
-const fetchMembers = async (clusterId) => {
+const fetchNotice = async (clusterId) => {
   try {
-    await http({
-      url: http.adornUrl('Guest/users/cluster/user_list'),
+    const response = await http({
+      url: http.adornUrl('Cluster/functions/notice'),
       method: 'get',
-      params: {
-        clusterId: BigInt(clusterId)
-      }
-    }).then(({data}) => {
-      // 数据处理和后端对齐
-      //? 后端 清单 Array => 前端 ref([]) 的传递方法
-      usersData.value = data.map(member => ({
-        id: member.id,
-        account: member.account
-      }));
+      params: {clusterId: BigInt(clusterId)}
     });
 
+    if (response.data) {
+      notice.value = response.data;
+    }
   } catch (error) {
     ElMessage({
-      message: '获取群组成员失败: ' + error.message,
+      message: '获取群组公告失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
   }
 };
 
-//? 人员具体信息查询
+
+//? 表单相关
 
 const addDialogVisible = ref(false);
+const updateDialogVisible = ref(false);
+const delDialogVisible = ref(false);
 
-// 显示成员详情对话框
-const viewMemberDetails = (member) => {
-  selectedMember.value = member;
+const showAddDialog = () => {
+  newNotice.value = {title: '', content: ''}; //  清空
   addDialogVisible.value = true;
 };
 
+const showUpdateDialog = () => {
+  updateDialogVisible.value = true;
+};
 
-//? 踢出人员操作
-
-const delDialogVisible = ref(false);
-
-// 显示踢出对话框
-const showKickoutDialog = () => {
-  // 由于已经打开了成员详情对话框, 直接继续打开即可, 使用已经选择的对象信息
+const showDeleteDialog = () => {
   delDialogVisible.value = true;
 };
 
 
-// 确认踢出操作
-const confirmKickout = () => {
-  kickOutMember(selectedMember.value.id);
-  delDialogVisible.value = false;
-};
+watch(selectedGroupId, async (newVal) => {
+  if (newVal) {
+    selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
+    await fetchNotice(newVal);
+  }
+});
 
-// 踢出成员
-const kickOutMember = (memberId) => {
+
+const addNotice = async () => {
   try {
-    http({
-      url: http.adornUrl('Cluster/clusters/kick_cluster'),
-      method: 'delete',
-      params: {
-        clusterId: BigInt(selectedGroupId.value),
-        userId: BigInt(memberId)
-      }
+    await http({
+      url: http.adornUrl(`Cluster/functions/notice/${selectedGroupId.value}`),
+      method: 'post',
+      data: newNotice.value
+    });
+
+    ElMessage({
+      message: '新增公告成功',
+      type: 'success',
+      duration: 1000
     });
 
     addDialogVisible.value = false;
+    await fetchNotice(selectedGroupId.value);
+
   } catch (error) {
     ElMessage({
-      message: '踢出群聊失败: ' + error.message,
+      message: '新增公告失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
   }
-}
+};
+
+const updateNotice = async () => {
+  try {
+
+    await http({
+      url: http.adornUrl('Cluster/functions/notice'),
+      method: 'put',
+      data: notice.value
+    });
+
+    ElMessage({
+      message: '更新公告成功',
+      type: 'success',
+      duration: 1000
+    });
+
+    updateDialogVisible.value = false;
+    await fetchNotice(selectedGroupId.value);
+
+  } catch (error) {
+    ElMessage({
+      message: '更新公告失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+};
+
+const deleteNotice = async () => {
+  try {
+    await http({
+      url: http.adornUrl(`Cluster/functions/notice/${selectedGroupId.value}`),
+      method: 'delete',
+      params: {noticeId: notice.value.id}
+    });
+    ElMessage({
+      message: '删除公告成功',
+      type: 'success',
+      duration: 1000
+    });
+    delDialogVisible.value = false;
+    await fetchNotice(selectedGroupId.value);
+  } catch (error) {
+    ElMessage({
+      message: '删除公告失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+};
 
 </script>
 
