@@ -35,9 +35,8 @@
       </span>
 
 
-      <!-- 操作按钮 -->
+      <!-- 特写的上传按钮 -->
       <el-button type="primary" @click="uploadMainFunc()">上传文件</el-button>
-      <el-button type="primary" @click="downloadMainFunc()">下载文件</el-button>
 
     </div>
 
@@ -46,6 +45,50 @@
 
     <!-- 下部区域 -->
     <div class="clusterfile_lower">
+
+      <!--对应群组的分页文件表格展示-->
+      <el-table :data="pageData.records" style="width: 90%">
+
+        <el-table-column prop="name" label="文件名"></el-table-column>
+        <!-- todo 填充列-->
+        <el-table-column prop="createTime" label="创建时间"></el-table-column>
+        <el-table-column prop="updateTime" label="更新时间"></el-table-column>
+
+
+        <el-table-column label="操作">
+
+          <template #default="scope">
+
+            <el-button
+                type="danger"
+                icon="el-icon-delete"
+                @click="deleteMainFunc(scope.row)"
+            >删除
+            </el-button>
+
+            <el-button
+                type="danger"
+                icon="el-icon-delete"
+                @click="downloadMainFunc(scope.row)"
+            >下载
+            </el-button>
+
+          </template>
+
+
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+          layout="total, prev, pager, next"
+          @current-change="handleCurrentChange"
+          :current-page="pageData.current"
+          :page-size="pageData.size"
+          :total="pageData.total"
+          type="primary"
+          style="margin-top: 20px;"
+      >
+      </el-pagination>
 
 
     </div>
@@ -116,16 +159,13 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
-//! 首次实践: 相邻的业务在一起, 而不是同类型放一起的js写法
-
-
 //? 上部 搜索输入下拉框
 
-// 选中的群组信息
+// 复用...
+
+
 const groupOptions = ref([]); // 群组列表
 
-
-// 选中的群组数据 (id查)
 const selectedGroup = ref({
   id: 0n,
   creatorUserId: 0n,
@@ -169,7 +209,8 @@ const searchGroups = async () => {
   }
 };
 
-//? 下部 头像矩阵排列
+
+//? 下部 文件列表展示
 
 const selectedMember = ref({
   id: 0n,
