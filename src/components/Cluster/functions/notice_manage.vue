@@ -416,11 +416,6 @@ const deleteNotice = async () => {
       width: 30%;
     }
 
-    .notice_manage_upper_progress {
-      width: 70%;
-      margin-left: 5px;
-    }
-
 
   }
 

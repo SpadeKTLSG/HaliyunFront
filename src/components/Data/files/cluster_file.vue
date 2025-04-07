@@ -36,7 +36,7 @@
 
 
       <!-- 特写的上传按钮 -->
-      <el-button type="primary" @click="uploadMainFunc()">上传文件</el-button>
+      <el-button class="clusterfile_upbotton" type="primary" @click="uploadMainFunc()">上传文件</el-button>
 
     </div>
 
@@ -60,18 +60,26 @@
           <template #default="scope">
 
             <el-button
+                type="info"
+                icon="el-icon-edit"
+                @click="detailMainFunc(scope.row)"
+            >详情
+            </el-button>
+
+            <el-button
+                type="warning"
+                icon="el-icon-download"
+                @click="downloadMainFunc(scope.row)"
+            >下载
+            </el-button>
+
+            <el-button
                 type="danger"
                 icon="el-icon-delete"
                 @click="deleteMainFunc(scope.row)"
             >删除
             </el-button>
 
-            <el-button
-                type="danger"
-                icon="el-icon-delete"
-                @click="downloadMainFunc(scope.row)"
-            >下载
-            </el-button>
 
           </template>
 
@@ -212,30 +220,40 @@ const searchGroups = async () => {
 
 //? 下部 文件列表展示
 
-const selectedMember = ref({
-  id: 0n,
 
-}); // 选中的成员信息存储
+// 分页表单
+const pageData = reactive({
+  current: 1,
+  size: 10,
+  total: 0,
+  records: []
+});
+
+
+// 选中的文件信息存储
+const selectedFileInfo = ref({
+  id: 0n,
+  //todo
+});
 
 // 人员信息分页数据展示表单
 const usersData = ref([]); // 群组成员信息列表
 
 
-// 选择了对应的群组, 通过群组 id 进行人员信息查询
-
+// 选择了对应的群组, 通过群组 id 进行文件信息查询
 watch(selectedGroupId, async (newVal) => {
   if (newVal) {
     selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
-    await fetchMembers(newVal);
+    await fetchFile(newVal);
   }
 });
 
 
-// 查询群组成员信息, 偷懒直接不分页了
-const fetchMembers = async (clusterId) => {
+// 分页查询群组的文件列表
+const fetchFile = async (clusterId) => {
   try {
     await http({
-      url: http.adornUrl('Guest/users/cluster/user_list'),
+      url: http.adornUrl('Data/users/cluster/user_list'),
       method: 'get',
       params: {
         clusterId: BigInt(clusterId)
@@ -244,8 +262,8 @@ const fetchMembers = async (clusterId) => {
       // 数据处理和后端对齐
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       usersData.value = data.map(member => ({
-        id: member.id,
-        account: member.account
+        // id: member.id,
+        // account: member.account
       }));
     });
 
@@ -258,7 +276,8 @@ const fetchMembers = async (clusterId) => {
   }
 };
 
-//? 人员具体信息查询
+
+//? 文件具体信息查询
 
 const memberDialogVisible = ref(false);
 
@@ -332,13 +351,14 @@ const kickOutMember = (memberId) => {
       width: 30%;
     }
 
-    .clusterfile_upper_progress {
+    .clusterfile_upbotton {
       width: 70%;
       margin-left: 5px;
     }
 
 
   }
+
 
   .clusterfile_lower {
     display: flex;
@@ -349,6 +369,7 @@ const kickOutMember = (memberId) => {
 
 
   }
+
 }
 
 .simple_text_red {

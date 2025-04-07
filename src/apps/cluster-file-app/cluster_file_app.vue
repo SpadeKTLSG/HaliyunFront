@@ -30,7 +30,7 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import Userlevel from "@/components/Guest/levels/level.vue";
+import ClusterFile from "@/components/Data/files/cluster_file.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -69,14 +69,14 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('userlevel');
+const currentPage = ref('clusterfile');
 provide('currentPage', currentPage);
 
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {
   if (index === '1') {
-    currentPage.value = 'userlevel';
+    currentPage.value = 'clusterfile';
   } else {
     currentPage.value = 'wait';
   }
@@ -86,12 +86,12 @@ const handleMenuSelect = (index) => {
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   switch (currentPage.value) {
-    case 'userlevel':
-      return Userlevel;
+    case 'clusterfile':
+      return ClusterFile;
     case 'wait':
       return Tofinish;
     default:
-      return Userlevel;
+      return ClusterFile;
   }
 });
 
