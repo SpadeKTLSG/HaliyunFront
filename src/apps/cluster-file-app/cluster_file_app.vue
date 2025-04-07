@@ -1,27 +1,27 @@
 <template>
 
 
-  <div class="level_app">
+  <div class="cluster_file_app">
 
     <!--应用标识-->
-    <el-text class="base_header">用户等级</el-text>
+    <el-text class="base_header">群组文件</el-text>
 
   </div>
 
   <!--左侧导航区域-->
-  <div class="level_app_left_nav">
+  <div class="cluster_file_app_left_nav">
 
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
       <el-menu-item index="1">
-        I. 用户等级
+        I. 文件管理
       </el-menu-item>
     </el-menu>
 
   </div>
 
   <!--具体页面-->
-  <component :is="currentView" class="level_app_compo" @close="backAppHome"/>
+  <component :is="currentView" class="cluster_file_app_compo" @close="backAppHome"/>
 
 </template>
 
@@ -105,7 +105,7 @@ const backAppHome = () => {
 <style lang="scss" scoped>
 
 
-.level_app {
+.cluster_file_app {
   display: flex;
   margin-top: -10px;
   flex-direction: row;
@@ -128,7 +128,7 @@ const backAppHome = () => {
 
 }
 
-.level_app_left_nav {
+.cluster_file_app_left_nav {
   width: 10%;
   margin-left: -150px;
   display: flex;
@@ -142,7 +142,7 @@ const backAppHome = () => {
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
-.level_app_compo {
+.cluster_file_app_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
   display: flex;
   flex-direction: column;
