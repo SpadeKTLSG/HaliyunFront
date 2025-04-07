@@ -1,10 +1,10 @@
 <template>
 
   <!--主体-->
-  <div class="clusterpop">
+  <div class="notice_manage">
 
     <!-- 上部区域: 引导集合 + 发布公告 / 修改公告 / 删除公告 -->
-    <div class="clusterpop_upper">
+    <div class="notice_manage_upper">
 
 
       <!-- 搜索输入下拉框 -->
@@ -14,7 +14,7 @@
                  :remote-method="searchGroups"
                  @keyup.enter="searchGroups"
                  placeholder="选择群组"
-                 class="clusterpop_selector"
+                 class="notice_manage_selector"
       >
 
         <el-option v-for="item in groupOptions"
@@ -27,7 +27,7 @@
 
 
       <!-- 群名称显示 -->
-      <span class="clusterpop_name">
+      <span class="notice_manage_name">
         <el-text type="primary" class="simple_text_red">
           群组名称:
         {{ (selectedGroup.name !== "") ? selectedGroup.name : "请在左侧选择" }}
@@ -42,8 +42,30 @@
 
     <el-divider></el-divider>
 
-    <!-- 下部区域: 当前公告情况-->
-    <div class="clusterpop_lower">
+    <!-- 下部区域: 当前群组信息-->
+    <div class="notice_manage_lower">
+
+      <!--当前公告信息展示-->
+      <el-text class="simple_text_red">
+        当前公告信息:
+      </el-text>
+
+      <el-text class="simple_text_red">
+        公告标题:
+        <div>
+          <el-text class="simple_text_red">
+            {{ (selectedGroup.name !== "") ? selectedGroup.name : "请在左侧选择" }}
+          </el-text>
+        </div>
+      </el-text>
+
+      <el-text class="simple_text_red">
+        公告内容:
+      </el-text>
+
+      <el-text class="simple_text_red">
+        阅读数:
+      </el-text>
 
 
     </div>
@@ -51,31 +73,41 @@
 
     <!-- 公告新增弹框 -->
     <el-dialog
-        v-model="memberDialogVisible"
-        title="用户详情">
-      <!-- 用户信息展示 -->
-      <el-descriptions :column="2" border size="small">
-        <el-descriptions-item label="账号">{{ selectedMember.account }}</el-descriptions-item>
-      </el-descriptions>
+        v-model="addDialogVisible"
+        title="新增群组公告">
+
+      <!--公告信息输入框-->
+
+
       <!-- 操作按钮 -->
-      <el-button type="danger" @click="showKickoutDialog()">将其踢出群聊</el-button>
+      <el-button type="danger" @click="addNotice()">新增</el-button>
     </el-dialog>
 
 
     <!-- 公告修改弹框 -->
+    <el-dialog
+        v-model="updateDialogVisible"
+        title="更新群组公告">
+
+      <!--公告信息输入框, 回显对应原有数据-->
+
+
+      <!-- 操作按钮 -->
+      <el-button type="danger" @click="addNotice()">新增</el-button>
+    </el-dialog>
 
 
     <!-- 删除公告确认对话框 -->
     <el-dialog
-        v-model="kickoutDialogVisible"
-        title="放逐!"
+        v-model="delDialogVisible"
+        title="删除群组公告"
     >
 
-      <p>确认将这家伙 {{ selectedMember.account }} 踢出群组 ?</p>
+      <p> 确认删除该公告 ?</p>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="kickoutDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmKickout()">确认</el-button>
+        <el-button @click="delDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="delNotice()">确认</el-button>
       </span>
 
     </el-dialog>
@@ -162,7 +194,8 @@ const searchGroups = async () => {
   }
 };
 
-//? 下部 头像矩阵排列
+
+//? 下部 公告信息排列
 
 const selectedMember = ref({
   id: 0n,
@@ -212,30 +245,30 @@ const fetchMembers = async (clusterId) => {
 
 //? 人员具体信息查询
 
-const memberDialogVisible = ref(false);
+const addDialogVisible = ref(false);
 
 // 显示成员详情对话框
 const viewMemberDetails = (member) => {
   selectedMember.value = member;
-  memberDialogVisible.value = true;
+  addDialogVisible.value = true;
 };
 
 
 //? 踢出人员操作
 
-const kickoutDialogVisible = ref(false);
+const delDialogVisible = ref(false);
 
 // 显示踢出对话框
 const showKickoutDialog = () => {
   // 由于已经打开了成员详情对话框, 直接继续打开即可, 使用已经选择的对象信息
-  kickoutDialogVisible.value = true;
+  delDialogVisible.value = true;
 };
 
 
 // 确认踢出操作
 const confirmKickout = () => {
   kickOutMember(selectedMember.value.id);
-  kickoutDialogVisible.value = false;
+  delDialogVisible.value = false;
 };
 
 // 踢出成员
@@ -250,7 +283,7 @@ const kickOutMember = (memberId) => {
       }
     });
 
-    memberDialogVisible.value = false;
+    addDialogVisible.value = false;
   } catch (error) {
     ElMessage({
       message: '踢出群聊失败: ' + error.message,
@@ -265,25 +298,25 @@ const kickOutMember = (memberId) => {
 
 <style lang="scss" scoped>
 
-.clusterpop {
+.notice_manage {
 
-  .clusterpop_upper {
+  .notice_manage_upper {
     display: flex;
     align-items: center;
     margin-top: -30px;
     margin-bottom: 5px;
 
-    .clusterpop_selector {
+    .notice_manage_selector {
       width: 20%;
       margin-right: 10px;
       margin-left: 20px;
     }
 
-    .clusterpop_name {
+    .notice_manage_name {
       width: 30%;
     }
 
-    .clusterpop_upper_progress {
+    .notice_manage_upper_progress {
       width: 70%;
       margin-left: 5px;
     }
@@ -291,7 +324,7 @@ const kickOutMember = (memberId) => {
 
   }
 
-  .clusterpop_lower {
+  .notice_manage_lower {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -337,7 +370,7 @@ const kickOutMember = (memberId) => {
 }
 
 
-.clusterpop_close-button {
+.notice_manage_close-button {
   display: flex;
   width: 15%;
   justify-content: center;
@@ -362,7 +395,7 @@ const kickOutMember = (memberId) => {
   border: 2px solid red;
 }
 
-.clusterpop_op-buttons {
+.notice_manage_op-buttons {
   width: 10% !important;
 }
 
