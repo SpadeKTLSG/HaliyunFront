@@ -111,7 +111,7 @@
 
       <!-- 文件基础信息展示 -->
       <el-descriptions :column="2" border size="small">
-        <el-descriptions-item label="文件名">{{ selectedFile.name }}</el-descriptions-item>
+        <el-descriptions-item label="文件名">{{ selectedFileInfo.value.name }}</el-descriptions-item>
         <!--todo-->
       </el-descriptions>
 
@@ -128,7 +128,7 @@
         title="删除文件"
     >
 
-      <p> 确认删除 {{ selectedFile.name }} ? 未来会采用回收站 </p>
+      <p> 确认删除 {{ selectedFileInfo.value.name }} ? 未来会采用回收站 </p>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="kickoutDialogVisible = false">取消</el-button>
@@ -182,13 +182,10 @@ const selectedGroup = ref({
 });
 const selectedGroupId = ref(null); // 选中的群组id
 
+onMounted(() => {
+  searchGroups();
+});
 
-onMounted(
-    //初始需要先获取用户加入的群组列表
-    () => {
-      searchGroups();
-    }
-);
 
 // 查询用户加入的群组列表
 const searchGroups = async () => {
@@ -212,7 +209,7 @@ const searchGroups = async () => {
     ElMessage({
       message: '获取用户加入群组失败: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 3000
     });
   }
 };
@@ -290,21 +287,70 @@ const fetchFile = async (clusterId, current, size) => {
 
 //? 文件具体信息查询
 
-const memberDialogVisible = ref(false);
+const fileDetailDialogVisible = ref(false);
 
 
 // 选中的文件信息存储
 const selectedFileInfo = ref({
   id: 0n,
   //todo
+  name: '',
+  createTime: '',
+  updateTime: ''
 });
 
 // 显示成员详情对话框
 const detailMainFunc = (file) => {
   selectedFileInfo.value = file;
-  memberDialogVisible.value = true;
+  fileDetailDialogVisible.value = true;
 };
 
+
+//? 删除文件操作
+const kickoutDialogVisible = ref(false);
+
+// 显示删除对话框
+const deleteMainFunc = (file) => {
+  selectedFileInfo.value = file;
+  kickoutDialogVisible.value = true;
+};
+
+
+// 删除文件
+const doDelFile = async () => {
+  // 安全起见, 校验用户的删除权限放后端执行
+  try {
+    await http({
+      url: http.adornUrl('Data/files/file/delete'),
+      method: 'delete',
+      params: {
+        fileId: selectedFileInfo.value.id
+      }
+    });
+    ElMessage({
+      message: '删除文件成功',
+      type: 'success',
+      duration: 1000
+    });
+    kickoutDialogVisible.value = false;
+    await fetchFile(selectedGroup.value.id, pageData.current, pageData.size);
+  } catch (error) {
+    ElMessage({
+      message: '删除文件失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  }
+};
+
+
+//? 上传
+
+//todo
+
+//? 下载
+
+//todo
 
 </script>
 
