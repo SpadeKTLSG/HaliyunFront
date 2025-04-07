@@ -286,6 +286,9 @@ watch(selectedGroupId, async (newVal) => {
 
 // 鉴权操作处理
 const checkIsMaster = () => {
+  console.log('群组创建者: ' + selectedGroup.value.creatorUserId);
+  console.log('当前用户: ' + UserContext.getUserId());
+
   if (UserContext.getUserId() !== selectedGroup.value.creatorUserId) {
     ElMessage({
       message: '操作: ' + '你不是群组的主人!',
@@ -301,7 +304,7 @@ const checkIsMaster = () => {
 
 // CRUD 方法
 const addNotice = async () => {
-  if (!checkIsMaster) {
+  if (!checkIsMaster()) {
     return
   }
 
@@ -332,7 +335,7 @@ const addNotice = async () => {
 
 
 const updateNotice = async () => {
-  if (!checkIsMaster) {
+  if (!checkIsMaster()) {
     return
   }
 
@@ -364,7 +367,7 @@ const updateNotice = async () => {
 
 
 const deleteNotice = async () => {
-  if (!checkIsMaster) {
+  if (!checkIsMaster()) {
     return
   }
 
