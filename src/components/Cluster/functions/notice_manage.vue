@@ -158,14 +158,10 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
-//! 首次实践: 相邻的业务在一起, 而不是同类型放一起的js写法
+//? 上部 搜索输入下拉框 + 按钮组件
 
-
-//? 上部 搜索输入下拉框
-
-// 选中的群组信息
-const groupOptions = ref([]); // 群组列表
-
+// 群组信息
+const groupOptions = ref([]);
 
 // 选中的群组数据 (id查)
 const selectedGroup = ref({
@@ -183,6 +179,7 @@ onMounted(
       searchGroups();
     }
 );
+
 
 // 查询用户加入的群组列表
 const searchGroups = async () => {
@@ -215,20 +212,18 @@ const searchGroups = async () => {
 //? 下部 公告信息排列
 
 
-// 人员信息分页数据展示表单
-
+// 数据表单 * 2
 const notice = ref({
   name: '',
   content: '',
   readCount: 0
 });
-
 const newNotice = ref({
   title: '',
   content: ''
 });
 
-
+// 监听用户选择群组变化
 watch(selectedGroupId, async (newVal) => {
   if (newVal) {
     selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
@@ -236,7 +231,7 @@ watch(selectedGroupId, async (newVal) => {
   }
 });
 
-
+// 获取对应公告信息
 const fetchNotice = async (clusterId) => {
   try {
     const response = await http({
@@ -260,12 +255,15 @@ const fetchNotice = async (clusterId) => {
 
 //? 表单相关
 
+
+// 展示控件按钮
 const addDialogVisible = ref(false);
 const updateDialogVisible = ref(false);
 const delDialogVisible = ref(false);
 
+
 const showAddDialog = () => {
-  newNotice.value = {title: '', content: ''}; //  清空
+  newNotice.value = {title: '', content: ''}; //  清空新增表单
   addDialogVisible.value = true;
 };
 
@@ -277,7 +275,7 @@ const showDeleteDialog = () => {
   delDialogVisible.value = true;
 };
 
-
+// 更新选择群组的信息
 watch(selectedGroupId, async (newVal) => {
   if (newVal) {
     selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
@@ -285,8 +283,8 @@ watch(selectedGroupId, async (newVal) => {
   }
 });
 
-// 鉴权操作
 
+// 鉴权操作处理
 const checkIsMaster = () => {
   if (UserContext.getUserId() !== selectedGroup.value.creatorUserId) {
     ElMessage({
@@ -300,8 +298,8 @@ const checkIsMaster = () => {
 
 }
 
-// CRUD 方法
 
+// CRUD 方法
 const addNotice = async () => {
   if (!checkIsMaster) {
     return
@@ -334,7 +332,6 @@ const addNotice = async () => {
 
 
 const updateNotice = async () => {
-
   if (!checkIsMaster) {
     return
   }
@@ -365,8 +362,8 @@ const updateNotice = async () => {
   }
 };
 
-const deleteNotice = async () => {
 
+const deleteNotice = async () => {
   if (!checkIsMaster) {
     return
   }
