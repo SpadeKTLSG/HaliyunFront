@@ -169,6 +169,7 @@
 <script setup>
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
+import {UserContext} from "@/components/common/user.js";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -207,7 +208,11 @@ const selectedGroup = ref({
 const selectedGroupId = ref(null); // 选中的群组id
 
 onMounted(() => {
+
+  //? 由于涉及到请求后端的文件模块, 因此需要先发送一个请求进行 UserContext 的预热.
+
   searchGroups();
+  hotData4Backend();
 });
 
 
@@ -237,6 +242,17 @@ const searchGroups = async () => {
     });
   }
 };
+
+
+// 数据模块 UserContext 预热
+const hotData4Backend = async () => {
+
+  await http({
+    url: http.adornUrl('Data/files/hotting'),
+    method: 'post'
+  })
+
+}
 
 
 //? 下部 文件列表展示
@@ -401,6 +417,7 @@ const handleExceed = (files) => {
 // 上传时需要额外传递的参数
 const uploadExtraData = ref({
   clusterId: selectedGroupId.value || 0,
+  userId: UserContext.getUserId(),
   pid: 0   // 默认父目录ID, 本来应该支持上传到指定目录位置. (先直接简单分页并排展示 成本问题不设计对应的树形结构处理工具)
   //?note 具体请参考个人笔记, 关于这里的废案实现
 });
