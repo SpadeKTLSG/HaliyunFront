@@ -401,7 +401,8 @@ const handleExceed = (files) => {
 // 上传时需要额外传递的参数
 const uploadExtraData = ref({
   clusterId: selectedGroupId.value || 0,
-  pid: 0   // 默认父目录ID, 未来应该支持上传到指定目录位置. (先并排展示, 之后设计对应的树形结构处理工具) //todo
+  pid: 0   // 默认父目录ID, 本来应该支持上传到指定目录位置. (先直接简单分页并排展示 成本问题不设计对应的树形结构处理工具)
+  //?note 具体请参考个人笔记, 关于这里的废案实现
 });
 
 
