@@ -44,6 +44,7 @@
           :on-exceed="handleExceed"
           :auto-upload="false"
           :before-upload="beforeUpload"
+          :data="uploadExtraData"
           v-model:file-list="fileList"
       >
 
@@ -395,6 +396,19 @@ const handleExceed = (files) => {
   // 使用 Element Plus 内部方法开始上传（此处 uid 自动生成也可通过 genFileId 生成）
   upload.value.handleStart(file)
 }
+
+
+// 上传时需要额外传递的参数
+const uploadExtraData = ref({
+  clusterId: selectedGroupId.value || 0,
+  pid: 0   // 默认父目录ID, 未来应该支持上传到指定目录位置. (先并排展示, 之后设计对应的树形结构处理工具) //todo
+});
+
+
+// 选中群组时同步更新 clusterId 参数
+watch(selectedGroupId, (newVal) => {
+  uploadExtraData.value.clusterId = newVal;
+});
 
 
 // 提交上传请求
