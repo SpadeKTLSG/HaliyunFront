@@ -299,7 +299,8 @@ const fetchFile = async (clusterId, current, size) => {
       pageData.records = data.records.map(record => {
         return {
           ...record,
-          id: BigInt(record.id) // 将 id 转换为 BigInt 类型
+          id: BigInt(record.id),
+          pid: BigInt(record.pid),
         };
       });
       // 数据处理和后端对齐
