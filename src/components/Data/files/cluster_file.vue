@@ -74,7 +74,12 @@
       <el-table :data="pageData.records" style="width: 90%">
 
         <el-table-column prop="name" label="文件名"></el-table-column>
-        <!-- todo 填充列-->
+        <el-table-column prop="type" label="文件类型"></el-table-column>
+        <el-table-column prop="dscr" label="描述"></el-table-column>
+        <el-table-column prop="downloadTime" label="下载次数"></el-table-column>
+        <el-table-column prop="size" label="文件大小"></el-table-column>
+        <el-table-column prop="status" label="状态"></el-table-column>
+
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateTime" label="更新时间"></el-table-column>
 
