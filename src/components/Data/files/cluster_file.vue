@@ -275,7 +275,16 @@ const pageData = reactive({
 // 选择了对应的群组, 通过群组 id 进行文件信息查询
 watch(selectedGroupId, async (newVal) => {
   if (newVal) {
+    // 清空当前页面Page数据
+    pageData.current = 1;
+    pageData.size = 10;
+    pageData.total = 0;
+    pageData.records = [];
+    
+    // 选中群组变化
     selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
+
+    // 重新查询文件列表
     await fetchFile(newVal, pageData.current, pageData.size);
   }
 });
