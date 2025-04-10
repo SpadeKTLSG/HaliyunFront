@@ -451,11 +451,13 @@ const doDelFile = async () => {
         fileId: selectedFileInfo.value.id
       }
     });
+
     ElMessage({
       message: '删除文件成功',
       type: 'success',
       duration: 1000
     });
+
     kickoutDialogVisible.value = false;
     await fetchFile(selectedGroup.value.id, pageData.current, pageData.size);
   } catch (error) {
