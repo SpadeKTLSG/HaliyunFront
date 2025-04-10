@@ -24,7 +24,7 @@
         <el-table-column prop="name" label="等级名称"></el-table-column>
         <el-table-column prop="cut" label="折扣优惠小数倍率"></el-table-column>
         <el-table-column prop="grow" label="到下一级需要成长值"></el-table-column>
-        <el-table-column prop="desc" label="等级描述"></el-table-column>
+        <el-table-column prop="dscr" label="等级描述"></el-table-column>
         <el-table-column prop="remark" label="等级备注"></el-table-column>
       </el-table>
       <el-text v-else> 等级数据加载中...</el-text>
@@ -69,7 +69,7 @@ const currentPage = inject('currentPage');
 //? 用户数据展示表单 (对应子页签分区数据) 复用
 const levelData = ref({
   cut: 1,
-  desc: "就是个寄吧",
+  dscr: "就是个寄吧",
   floor: 0,
   grow: 50,
   id: 1894667686932631600n,

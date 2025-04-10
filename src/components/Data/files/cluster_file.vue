@@ -162,17 +162,23 @@
     <!-- 文件详细信息弹框 -->
     <el-dialog
         v-model="fileDetailDialogVisible"
-        title="用户详情">
+        title="文件详情">
 
       <!-- 文件基础信息展示 -->
       <el-descriptions :column="2" border size="small">
+
         <el-descriptions-item label="文件名">{{ selectedFileInfo.value.name }}</el-descriptions-item>
-        <!--todo-->
+        <el-descriptions-item label="描述">{{ selectedFileInfo.dscr }}</el-descriptions-item>
+        <el-descriptions-item label="文件大小">{{ selectedFileInfo.size }} B</el-descriptions-item>
+        <el-descriptions-item label="状态">{{ selectedFileInfo.status }}</el-descriptions-item>
+        <el-descriptions-item label="创建时间">{{ selectedFileInfo.createTime }}</el-descriptions-item>
+        <el-descriptions-item label="更新时间">{{ selectedFileInfo.updateTime }}</el-descriptions-item>
+
       </el-descriptions>
 
       <!-- 操作按钮 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="fileDetailDialogVisible = false">关闭</el-button>
+        <el-button @click="fileDetailDialogVisible.value= false">关闭</el-button>
       </span>
     </el-dialog>
 
@@ -371,16 +377,23 @@ const fetchFile = async (clusterId, current, size) => {
 const fileDetailDialogVisible = ref(false);
 
 
-// 选中的文件信息存储
+// 选中的文件信息存储 (来自分页)
 const selectedFileInfo = ref({
   id: 0n,
-  pid: 0n,
-  clusterId: 0n,
+
   userId: 0n,
+  clusterId: 0n,
+  name: '',
+  type: '',
+
   dscr: '',
   downloadTime: 0,
-  size: 0,
-  status: '',
+  size: 0n,
+  path: '',
+  diskPath: '',
+
+  tag: 0n,
+  fileLock: 0n,
   createTime: '',
   updateTime: ''
 });
