@@ -522,7 +522,26 @@ const submitUpload = () => {
 
 //? 下载
 
-//todo
+// 下载文件 (依赖浏览器的下载功能)
+const downloadMainFunc = (file) => {
+  const url = http.adornUrl('Data/tasks/download/file');
+  const params = {
+    id: file.id,
+    userId: file.userId,
+    clusterId: file.clusterId
+  };
+
+  // 拼接下载链接
+  const downloadUrl = `${url}?${new URLSearchParams(params).toString()}`;
+
+  // 使用隐藏 a 标签触发下载
+  const link = document.createElement('a');
+  link.href = downloadUrl;
+  link.download = file.name || 'downloaded_file';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 </script>
 
