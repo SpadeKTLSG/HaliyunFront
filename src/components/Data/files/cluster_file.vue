@@ -71,7 +71,7 @@
     <div class="clusterfile_lower">
 
       <!--对应群组的分页文件表格展示-->
-      <el-table :data="pageData.records" style="width: 90%">
+      <el-table :data="pageData.records" style="width: 90%; height: 80%">
 
         <el-table-column prop="name" label="文件名"></el-table-column>
         <el-table-column prop="type" label="文件类型"></el-table-column>
@@ -84,9 +84,10 @@
         <el-table-column prop="updateTime" label="更新时间"></el-table-column>
 
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" class="clusterfile_lower_buttons">
 
           <template #default="scope">
+
 
             <el-button
                 type="info"
@@ -94,6 +95,7 @@
                 @click="detailMainFunc(scope.row)"
             >详情
             </el-button>
+
 
             <el-button
                 type="warning"
@@ -280,7 +282,7 @@ watch(selectedGroupId, async (newVal) => {
     pageData.size = 10;
     pageData.total = 0;
     pageData.records = [];
-    
+
     // 选中群组变化
     selectedGroup.value = groupOptions.value.find(group => group.id === newVal);
 
@@ -489,6 +491,12 @@ const submitUpload = () => {
     margin-top: 10px;
     margin-bottom: 20px;
 
+    .clusterfile_lower_buttons {
+      // 并排按钮
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
 
   }
 
