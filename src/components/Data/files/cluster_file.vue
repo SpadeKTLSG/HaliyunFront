@@ -165,20 +165,45 @@
         title="文件详情">
 
       <!-- 文件基础信息展示 -->
+      <el-text type="primary" class="simple_text_red">
+        文件基本信息
+      </el-text>
       <el-descriptions :column="2" border size="small">
 
-        <el-descriptions-item label="文件名">{{ selectedFileInfo.value.name }}</el-descriptions-item>
+        <el-descriptions-item label="文件名">{{ selectedFileInfo.name }}</el-descriptions-item>
         <el-descriptions-item label="描述">{{ selectedFileInfo.dscr }}</el-descriptions-item>
         <el-descriptions-item label="文件大小">{{ selectedFileInfo.size }} B</el-descriptions-item>
-        <el-descriptions-item label="状态">{{ selectedFileInfo.status }}</el-descriptions-item>
+        <el-descriptions-item label="状态">
+          <el-tag type="success" v-if="selectedFileInfo.status === 0">正常</el-tag>
+          <el-tag type="warning" v-else-if="selectedFileInfo.status === 1">暂停</el-tag>
+          <el-tag type="danger" v-else-if="selectedFileInfo.status === 2">冻结</el-tag>
+        </el-descriptions-item>
         <el-descriptions-item label="创建时间">{{ selectedFileInfo.createTime }}</el-descriptions-item>
         <el-descriptions-item label="更新时间">{{ selectedFileInfo.updateTime }}</el-descriptions-item>
 
       </el-descriptions>
 
+      <!-- 文件详细信息展示 -->
+      <el-text type="primary" class="simple_text_red">
+        文件详细信息
+      </el-text>
+
+
+      <el-descriptions :column="2" border size="small">
+
+        <el-descriptions-item label="文件类型">{{ selectedFileInfo.type }}</el-descriptions-item>
+        <el-descriptions-item label="下载次数">{{ selectedFileInfo.downloadTime }}</el-descriptions-item>
+        <el-descriptions-item label="文件路径">{{ selectedFileInfo.path }}</el-descriptions-item>
+        <el-descriptions-item label="磁盘路径">{{ selectedFileInfo.diskPath }}</el-descriptions-item>
+        <el-descriptions-item label="文件锁"> todo {{ selectedFileInfo.fileLock }}</el-descriptions-item>
+        <el-descriptions-item label="标签"> todo {{ selectedFileInfo.tag }}</el-descriptions-item>
+
+
+      </el-descriptions>
+
       <!-- 操作按钮 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="fileDetailDialogVisible.value= false">关闭</el-button>
+        <el-button @click="fileDetailDialogVisible = false">关闭</el-button>
       </span>
     </el-dialog>
 
@@ -552,6 +577,10 @@ const submitUpload = () => {
   color: #ee0b1a;
 }
 
-
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
 </style>
 
