@@ -74,14 +74,38 @@
       <el-table :data="pageData.records" style="width: 90%; height: 80%">
 
         <el-table-column prop="name" label="文件名"></el-table-column>
-        <el-table-column prop="type" label="文件类型"></el-table-column>
+        <el-table-column prop="type" label="文件类型">
+          <template #default="scope">
+            <el-tag>{{ scope.row.type }}</el-tag>
+          </template>
+        </el-table-column>
+
         <el-table-column prop="dscr" label="描述"></el-table-column>
         <el-table-column prop="downloadTime" label="下载次数"></el-table-column>
-        <el-table-column prop="size" label="文件大小"></el-table-column>
-        <el-table-column prop="status" label="状态"></el-table-column>
+        <el-table-column prop="size" label="文件大小">
+          <template #default="scope">
+            <!-- 这里的文件大小单位是字节, 可以转换成 MB -->
+            <el-tag>{{ scope.row.size }} B</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.status === 0">正常</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.status === 1">暂停</el-tag>
+            <el-tag type="danger" v-else-if="scope.row.status === 2">冻结</el-tag>
+          </template>
+        </el-table-column>
 
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间">
+          <template #default="scope">
+            <el-tag>{{ scope.row.createTime }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="updateTime" label="更新时间">
+          <template #default="scope">
+            <el-tag>{{ scope.row.updateTime }}</el-tag>
+          </template>
+        </el-table-column>
 
 
         <el-table-column label="操作" class="clusterfile_lower_buttons">
@@ -350,8 +374,13 @@ const fileDetailDialogVisible = ref(false);
 // 选中的文件信息存储
 const selectedFileInfo = ref({
   id: 0n,
-  //todo
-  name: '',
+  pid: 0n,
+  clusterId: 0n,
+  userId: 0n,
+  dscr: '',
+  downloadTime: 0,
+  size: 0,
+  status: '',
   createTime: '',
   updateTime: ''
 });
