@@ -372,6 +372,8 @@ const fetchFile = async (clusterId, current, size) => {
           ...record,
           id: BigInt(record.id),
           pid: BigInt(record.pid),
+          userId: BigInt(record.userId),
+          clusterId: BigInt(record.clusterId),
         };
       });
       // 数据处理和后端对齐
