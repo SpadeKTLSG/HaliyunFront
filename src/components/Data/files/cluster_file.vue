@@ -36,6 +36,14 @@
 
       <!--刷新页面数据按钮-->
 
+      <el-button
+          type="primary"
+          class="refresh_button"
+          @click="fetchFile(selectedGroup.id, pageData.current, pageData.size)"
+      >
+        刷新
+      </el-button>
+
 
       <!-- 特写的上传按钮 - EL 实现 -->
       <el-upload
