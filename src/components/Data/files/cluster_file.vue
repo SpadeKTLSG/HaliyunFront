@@ -34,11 +34,13 @@
         </el-text>
       </span>
 
+      <!--刷新页面数据按钮-->
+
 
       <!-- 特写的上传按钮 - EL 实现 -->
       <el-upload
           ref="upload"
-          class="upload-demo"
+          class="upload_compo"
           action="http://localhost:10000/Data/tasks/upload/file"
           :limit="1"
           :on-exceed="handleExceed"
@@ -48,7 +50,7 @@
           v-model:file-list="fileList"
       >
 
-        <el-button type="success" class="ml-3" @click="submitUpload">上传文件</el-button>
+        <el-button type="success" @click="submitUpload">上传文件</el-button>
 
         <template #tip>
           <div class="simple_text_red">
@@ -57,7 +59,7 @@
         </template>
 
         <template #trigger>
-          <el-button type="primary" class="clusterfile_upbotton">选择文件</el-button>
+          <el-button type="primary">选择文件</el-button>
         </template>
 
       </el-upload>
@@ -214,7 +216,7 @@
         title="删除文件"
     >
 
-      <p> 确认删除 {{ selectedFileInfo.value.name }} ? 未来会采用回收站 </p>
+      <p> 确认删除 {{ selectedFileInfo.name }} ? 未来会采用回收站 </p>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="kickoutDialogVisible = false">取消</el-button>
@@ -569,6 +571,16 @@ const downloadMainFunc = (file) => {
 
     .clusterfile_name {
       width: 30%;
+    }
+
+    .refresh_button {
+      width: 30px;
+      margin-left: -200px;
+    }
+
+    .upload_compo {
+      width: 30%;
+      margin-left: 35px;
     }
 
   }
