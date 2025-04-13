@@ -16,7 +16,7 @@
               <Suitcase/>
             </el-icon>
 
-            <span class="notification-count">99+</span>
+            <span class="notification-count">{{ mesCount }}</span>
           </div>
 
           <!-- 1.2 头部中间 标题 -->
@@ -321,9 +321,34 @@ const search = () => {
 };
 
 // 进入App
+
+// 控制开屏广告
 const enterWorld = ref(true); //todo 小熊二先回去吧
-const enterApp = () => {
-  enterWorld.value = true;
+enterWorld.value = true;
+
+// 未读消息
+const mesCount = ref(0);
+
+
+const enterApp = async () => {
+  await getUnreadMes();
+};
+
+
+// 拉取用户消息
+const getUnreadMes = async () => {
+  await http({
+    url: http.adornUrl('Guest/messages/unread/count'),
+    method: 'get'
+  }).then(({data}) => {
+    mesCount.value = data;
+  }).catch((error) => {
+    ElMessage({
+      message: '获取用户数据失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
 };
 
 
