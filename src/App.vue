@@ -28,7 +28,6 @@
 
           <!-- 1.3 头部右侧 容量, 时间等组件 -->
           <div class="header-right">
-            <div class="capacity">80%</div>
             <div class="time">{{ currentTime }}</div>
           </div>
         </el-header>
