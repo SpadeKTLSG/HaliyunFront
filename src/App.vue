@@ -333,7 +333,7 @@ const enterApp = () => {
 
 
 // 未读消息
-const mesCount = ref(1);
+const mesCount = ref(0);
 const checkMes = async () => {
   // 立刻获得一次消息情况
   await getUnreadMes();
@@ -344,7 +344,8 @@ const checkMes = async () => {
       ElMessage({
         message: '你有新的消息, 请查看',
         type: 'success',
-        duration: 10000,
+        duration: 5000,
+        size: 'large',
       });
     }
 
@@ -360,7 +361,6 @@ const getUnreadMes = async () => {
     method: 'get'
   }).then(({data}) => {
     mesCount.value = data;
-    mesCount.value = 1;
   }).catch((error) => {
     ElMessage({
       message: '获取用户未读消息数量失败: ' + error.message,
