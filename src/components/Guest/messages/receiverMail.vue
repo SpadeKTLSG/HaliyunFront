@@ -119,6 +119,55 @@ const emit = defineEmits(['close']);
 const currentPage = inject('currentPage');
 
 
+// ! Refresh
+onMounted(() => {
+  listMyMes0();
+});
+
+// ! List
+
+const receiverMailData = ref([]); // 收件箱数据
+
+const listMyMes0 = async () => {
+  http({
+    // 查询详情的接口复用的, 这里需要手动处理一下传递的Map过程
+    url: http.adornUrl('Guest/messages/list'),
+    method: 'get',
+    params: {
+      orderType: 0, // 对应后端实现收件箱发件箱判别
+    }
+  }).then(({data}) => {
+    //? 后端 清单 Array => 前端 ref([]) 的传递方法
+
+    receiverMailData.value = data.map(mail => ({
+      id: BigInt(mail.id),
+      clusterId: BigInt(mail.clusterId),
+      senderId: BigInt(mail.senderId),
+      receiverId: BigInt(mail.receiverId),
+
+      // 状态
+      status: mail.status,
+      droped: mail.droped,
+
+      // 展示标题
+      header: mail.header,
+    }));
+
+  }).catch((error) => {
+    ElMessage({
+      message: '获取用户信件失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+};
+
+
+// ! Delete
+
+// ! Detail
+const detailsDialogVisible = ref(false); // 详情弹框
+
 </script>
 
 <style lang="scss" scoped>

@@ -300,6 +300,8 @@ onMounted(() => {
   setInterval(() => {
     currentTime.value = new Date().toLocaleString();
   }, 1000);
+
+  getUnreadMes();
 });
 
 // ! 页面应用逻辑
@@ -323,15 +325,14 @@ const search = () => {
 
 // 控制开屏广告
 const enterWorld = ref(true); //todo 小熊二先回去吧
-enterWorld.value = true;
+
+const enterApp = () => {
+  enterWorld.value = true;
+};
+
 
 // 未读消息
 const mesCount = ref(0);
-
-
-const enterApp = async () => {
-  await getUnreadMes();
-};
 
 
 // 拉取用户消息
