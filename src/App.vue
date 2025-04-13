@@ -301,7 +301,8 @@ onMounted(() => {
     currentTime.value = new Date().toLocaleString();
   }, 1000);
 
-  getUnreadMes();
+  checkMes();
+
 });
 
 // ! 页面应用逻辑
@@ -332,7 +333,24 @@ const enterApp = () => {
 
 
 // 未读消息
-const mesCount = ref(0);
+const mesCount = ref(1);
+const checkMes = async () => {
+  // 立刻获得一次消息情况
+  await getUnreadMes();
+
+  // 每10秒拉取一次
+  setInterval(() => {
+    if (mesCount.value > 0) {
+      ElMessage({
+        message: '你有新的消息, 请查看',
+        type: 'success',
+        duration: 10000,
+      });
+    }
+
+    getUnreadMes();
+  }, 10000);
+};
 
 
 // 拉取用户消息
@@ -342,9 +360,10 @@ const getUnreadMes = async () => {
     method: 'get'
   }).then(({data}) => {
     mesCount.value = data;
+    mesCount.value = 1;
   }).catch((error) => {
     ElMessage({
-      message: '获取用户数据失败: ' + error.message,
+      message: '获取用户未读消息数量失败: ' + error.message,
       type: 'error',
       duration: 1000
     });
