@@ -27,12 +27,16 @@
 
       <el-table :data="receiverMailData" style="width: 90%">
 
-        <el-table-column prop="pic" label="封面"></el-table-column>
-        <!--        <el-table-column prop="name" label="群组名称"></el-table-column>-->
-        <!--        <el-table-column prop="nickname" label="群组别名"></el-table-column>-->
-        <!--        <el-table-column prop="popVolume" label="容量"></el-table-column>-->
-        <!--        <el-table-column prop="createTime" label="创建时间"></el-table-column>-->
-        <!--        <el-table-column prop="updateTime" label="更新时间"></el-table-column>-->
+        <el-table-column prop="header" label="标题"></el-table-column>
+        <el-table-column prop="receiverName" label="收件者"></el-table-column>
+        <el-table-column prop="senderName" label="发件人"></el-table-column>
+        <el-table-column prop="clusterName" label="来自群组"></el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template #default="scope">
+            <el-tag v-if="scope.row.status === 2" type="danger">已投递未查看</el-tag>
+            <el-tag v-else-if="scope.row.status === 3" type="danger">已查看</el-tag>
+          </template>
+        </el-table-column>
 
 
         <el-table-column label="操作">
@@ -140,10 +144,11 @@ const listMyMes0 = async () => {
     //? 后端 清单 Array => 前端 ref([]) 的传递方法
 
     receiverMailData.value = data.map(mail => ({
-      id: BigInt(mail.id),
-      clusterId: BigInt(mail.clusterId),
-      senderId: BigInt(mail.senderId),
-      receiverId: BigInt(mail.receiverId),
+      // id 后面 传递时候使用 Bigint
+      id: mail.id,
+      clusterId: mail.clusterId,
+      senderId: mail.senderId,
+      receiverId: mail.receiverId,
 
       // 状态
       status: mail.status,
@@ -151,7 +156,14 @@ const listMyMes0 = async () => {
 
       // 展示标题
       header: mail.header,
+
+      // 人员
+      senderName: mail.senderName,
+      receiverName: mail.receiverName,
+      clusterName: mail.clusterName,
+
     }));
+    console.log('收件箱数据:', receiverMailData.value);
 
   }).catch((error) => {
     ElMessage({
