@@ -13,28 +13,53 @@
         <el-button
             type="primary"
             class="refresh_button"
-            @click="queryMyReocrd()"
+            @click="refreshStatistics()"
         >
           刷新
         </el-button>
 
+        <el-text class="simple_text_red">
+         用户记录
+        </el-text>
+
       </span>
 
+      <el-divider></el-divider>
 
     </div>
 
 
-    <el-divider></el-divider>
-
     <!-- 下部区域-->
     <div class="user_record_app_lower">
 
-      <el-table :data="myRecordData" style="width: 90%">
+      <div class="statistics-card">
 
-        <el-table-column prop="header" label="标题"></el-table-column>
+        <el-card class="box-card">
 
+          <div slot="header" class="clearfix">
+            <span>统计信息</span>
+          </div>
 
-      </el-table>
+          <el-row :gutter="20">
+            <el-col :span="30">
+              <p><strong>累计评论次数:</strong> {{ statisticsData.comment }}</p>
+              <p><strong>累计下载次数:</strong> {{ statisticsData.download }}</p>
+              <p><strong>累计上传次数:</strong> {{ statisticsData.upload }}</p>
+              <p><strong>累计活动参加次数:</strong> {{ statisticsData.outlet }}</p>
+              <p><strong>累计发私信次数:</strong> {{ statisticsData.mail }}</p>
+              <p><strong>累计收藏次数:</strong> {{ statisticsData.collect }}</p>
+              <p><strong>累计点赞次数:</strong> {{ statisticsData.likes }}</p>
+              <p><strong>累计干坏事次数:</strong> {{ statisticsData.trick }}</p>
+            </el-col>
+          </el-row>
+
+          <el-divider></el-divider>
+
+          <el-button type="primary" @click="refreshStatistics">刷新</el-button>
+
+        </el-card>
+
+      </div>
 
     </div>
 
@@ -72,14 +97,25 @@ const currentPage = inject('currentPage');
 
 // ! Refresh
 onMounted(() => {
-  queryMyReocrd();
+  refreshStatistics();
 });
 
 // ! List
 
-const myRecordData = ref([]);
+const statisticsData = ref({
+  id: 0n,
+  userId: 0n,
+  comment: 0,
+  download: 0,
+  upload: 0,
+  outlet: 0,
+  mail: 0,
+  collect: 0,
+  likes: 0,
+  trick: 0,
+});
 
-const queryMyReocrd = async () => {
+const refreshStatistics = async () => {
   http({
     // 查询详情的接口复用的, 这里需要手动处理一下传递的Map过程
     url: http.adornUrl('Guest/records/statistic/user_show'),
@@ -90,7 +126,7 @@ const queryMyReocrd = async () => {
   }).then(({data}) => {
 
     // 直接复制
-    myRecordData.value = data;
+    statisticsData.value = data;
 
   }).catch((error) => {
     ElMessage({
@@ -100,7 +136,6 @@ const queryMyReocrd = async () => {
     });
   });
 };
-
 
 </script>
 
@@ -120,6 +155,7 @@ const queryMyReocrd = async () => {
       width: 30px;
     }
 
+
   }
 
   .user_record_app_lower {
@@ -128,6 +164,16 @@ const queryMyReocrd = async () => {
     align-items: center;
     margin-top: 10px;
     margin-bottom: 20px;
+
+    .statistics-card {
+      margin: 20px;
+
+      .box-card {
+        width: 100%;
+      }
+    }
+
+
   }
 }
 
