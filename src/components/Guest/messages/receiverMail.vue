@@ -48,7 +48,7 @@
               详情
             </el-button>
             <el-button @click="deleteMail(scope.row)"
-                       type="success"
+                       type="danger"
                        style="width: 40px"
             >
               焚毁
@@ -80,7 +80,7 @@
       <el-descriptions-item label="群组">{{ selectedMail.clusterName }}</el-descriptions-item>
       <el-descriptions-item label="状态">
         <el-tag v-if="selectedMail.status === 2" type="danger">已投递未查看</el-tag>
-        <el-tag v-else-if="selectedMail.status === 3" type="danger">已查看</el-tag>
+        <el-tag v-else-if="selectedMail.status === 3" type="primary">已查看</el-tag>
       </el-descriptions-item>
       <el-descriptions-item label="投递时间">{{ selectedMail.updateTime }}</el-descriptions-item>
 
@@ -157,7 +157,7 @@ const listMyMes0 = async () => {
 
     receiverMailData.value = data.map(mail => ({
       // id 后面 传递时候使用 Bigint
-      id: mail.id,
+      id: BigInt(mail.id),
       clusterId: mail.clusterId,
       senderId: mail.senderId,
       receiverId: mail.receiverId,
@@ -254,6 +254,26 @@ const queryDetail4Mail0 = (id) => {
 }
 
 // ! Delete
+
+
+const deleteMail = (mail) => {
+  const id = BigInt(mail.id);
+  http({
+    url: http.adornUrl(`Guest/messages/delete/${id}`),
+    method: 'delete',
+  }).then(() => {
+
+    listMyMes0();
+
+  }).catch((error) => {
+    ElMessage({
+      message: '删除失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+
+}
 
 
 </script>
