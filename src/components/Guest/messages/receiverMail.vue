@@ -74,17 +74,29 @@
     <el-text class="simple_text_red">信件详细信息</el-text>
 
     <el-descriptions :column="2" border size="small">
-      <el-descriptions-item label="群组名称">{{ selectedGroup.name }}</el-descriptions-item>
-      <!--      <el-descriptions-item label="群组昵称">{{ selectedGroup.nickname }}</el-descriptions-item>-->
-      <!--      <el-descriptions-item label="容量">{{ selectedGroup.popVolume }}</el-descriptions-item>-->
-      <!--      <el-descriptions-item label="使用空间大小">{{ selectedGroup.usedSpace }}</el-descriptions-item>-->
-      <!--      <el-descriptions-item label="总空间大小">{{ selectedGroup.totalSpace }}</el-descriptions-item>-->
-      <!--      <el-descriptions-item label="创建人账号">{{ selectedGroup.userAccount }}</el-descriptions-item>-->
-      <!--      <el-descriptions-item label="管理创建">{{ (selectedGroup.userIsAdmin) === 0 ? '是' : '否' }}</el-descriptions-item>-->
-      <!--      <el-descriptions-item label="允许加入">{{ (selectedGroup.allowInvite) === 0 ? '是' : '否' }}</el-descriptions-item>-->
-      <!--      <el-descriptions-item label="创建时间">{{ selectedGroup.createTime }}</el-descriptions-item>-->
-      <!--      <el-descriptions-item label="修改时间">{{ selectedGroup.updateTime }}</el-descriptions-item>-->
+      <el-descriptions-item label="标题">{{ selectedMail.header }}</el-descriptions-item>
+      <el-descriptions-item label="发件人">{{ selectedMail.senderName }}</el-descriptions-item>
+      <el-descriptions-item label="收件人">{{ selectedMail.receiverName }}</el-descriptions-item>
+      <el-descriptions-item label="群组">{{ selectedMail.clusterName }}</el-descriptions-item>
+      <el-descriptions-item label="状态">
+        <el-tag v-if="selectedMail.status === 2" type="danger">已投递未查看</el-tag>
+        <el-tag v-else-if="selectedMail.status === 3" type="danger">已查看</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="投递时间">{{ selectedMail.updateTime }}</el-descriptions-item>
+
     </el-descriptions>
+
+    <el-text class="simple_text_red">信件正文</el-text>
+
+    <el-card
+        class="box-card"
+        style="width: 100%; height: 300px; overflow-y: auto"
+        :body-style="{ padding: '0px' }"
+    >
+      <div class="text item" style="padding: 14px">
+        {{ selectedMail.body }}
+      </div>
+    </el-card>
 
 
     <span slot="footer" class="dialog-footer">
@@ -213,21 +225,24 @@ const queryDetail4Mail0 = (id) => {
     url: http.adornUrl('Guest/messages/detail'),
     method: 'get',
     params: {
-      id: id,
+      mesId: BigInt(id),
       orderType: 0, // 对应后端实现收件箱发件箱判别
     }
   }).then(({data}) => {
 
-    selectedMail.value = data.map(mail => ({
-      // id 后面 传递时候使用 Bigint
-      id: BigInt(mail.id),
-      clusterId: BigInt(mail.clusterId),
-      senderId: BigInt(mail.senderId),
-      receiverId: BigInt(mail.receiverId),
-
-      // 下略, 自动映射
-    }));
-
+    selectedMail.value = {
+      id: data.id,
+      clusterId: data.clusterId,
+      senderId: data.senderId,
+      receiverId: data.receiverId,
+      status: data.status,
+      droped: data.droped,
+      header: data.header,
+      senderName: data.senderName,
+      receiverName: data.receiverName,
+      clusterName: data.clusterName,
+      body: data.body,
+    };
 
   }).catch((error) => {
     ElMessage({
