@@ -163,7 +163,6 @@ const listMyMes0 = async () => {
       clusterName: mail.clusterName,
 
     }));
-    console.log('收件箱数据:', receiverMailData.value);
 
   }).catch((error) => {
     ElMessage({
@@ -175,10 +174,72 @@ const listMyMes0 = async () => {
 };
 
 
+// ! Detail
+
+const detailsDialogVisible = ref(false); // 详情弹框
+
+// 选择的信件信息
+const selectedMail = ref({
+
+  id: 0n,
+
+  clusterId: 0n,
+  clusterName: '',
+
+  senderId: 0n,
+  senderName: '',
+
+  receiverId: 0n,
+  receiverName: '',
+
+  status: '',
+  droped: '',
+
+  header: '',
+  body: '',
+
+
+});
+
+const viewDetail = (mail) => {
+  queryDetail4Mail0(mail.id)
+  detailsDialogVisible.value = true;
+}
+
+
+const queryDetail4Mail0 = (id) => {
+  http({
+    // 查询详情的接口复用的, 这里需要手动处理一下传递的Map过程
+    url: http.adornUrl('Guest/messages/detail'),
+    method: 'get',
+    params: {
+      id: id,
+      orderType: 0, // 对应后端实现收件箱发件箱判别
+    }
+  }).then(({data}) => {
+
+    selectedMail.value = data.map(mail => ({
+      // id 后面 传递时候使用 Bigint
+      id: BigInt(mail.id),
+      clusterId: BigInt(mail.clusterId),
+      senderId: BigInt(mail.senderId),
+      receiverId: BigInt(mail.receiverId),
+
+      // 下略, 自动映射
+    }));
+
+
+  }).catch((error) => {
+    ElMessage({
+      message: '获取用户信件失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+}
+
 // ! Delete
 
-// ! Detail
-const detailsDialogVisible = ref(false); // 详情弹框
 
 </script>
 
