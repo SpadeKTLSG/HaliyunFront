@@ -17,7 +17,8 @@
         I. 用户记录
       </el-menu-item>
       <el-menu-item index="2">
-        II. 用户特殊记录 (未开放)
+        II. (未开放)
+        <!--        用户特殊记录-->
       </el-menu-item>
     </el-menu>
 
@@ -33,7 +34,7 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import Statistics from "@/components/Guest/statistics/statistics.vue";
+import Statistics from "@/components/Guest/records/statistics.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
