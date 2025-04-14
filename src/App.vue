@@ -350,7 +350,7 @@ const checkMes = async () => {
     }
 
     getUnreadMes();
-  }, 10000);
+  }, 10000 * 60);
 };
 
 

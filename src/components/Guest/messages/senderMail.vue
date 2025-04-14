@@ -126,20 +126,29 @@
       title="发信"
       width="50%"
   >
-    <el-form :model="sendMailData" label-width="80px">
-      <el-form-item label="标题">
+
+
+    <el-form :model="sendMailData" label-width="150px">
+
+      <el-form-item label="标题内容">
         <el-input v-model="sendMailData.header"></el-input>
       </el-form-item>
 
-      <el-form-item label="正文">
-        <el-input type="textarea" v-model="sendMailData.body"></el-input>
+      <el-form-item label="正文内容">
+        <el-input type="textarea" v-model="sendMailData.body">
+        </el-input>
       </el-form-item>
 
-      <el-form-item label="收件人">
+
+      <el-form-item label="发信人id (默认自己) ">
+        <el-input v-model="sendMailData.senderId"></el-input>
+      </el-form-item>
+
+      <el-form-item label="收信人id">
         <el-input v-model="sendMailData.receiverId"></el-input>
       </el-form-item>
 
-      <el-form-item label="群组">
+      <el-form-item label="希望附加的群组id (可选)">
         <el-input v-model="sendMailData.clusterId"></el-input>
       </el-form-item>
 
@@ -148,9 +157,13 @@
     <span slot="footer" class="dialog-footer">
         <el-button @click="sendMailDialogVisible = false"
                    class="user_mes_app_sender_close-button"
-        >关闭</el-button>
-        <el-button type="primary" @click="sendMailFunc">发信</el-button>
+        >关闭
+        </el-button>
+        <el-button type="primary" @click="sendMailFunc">
+          发信
+        </el-button>
     </span>
+
   </el-dialog>
 
 
@@ -185,11 +198,13 @@ const currentPage = inject('currentPage');
 // ! SendMail
 
 const sendMailDialogVisible = ref(false); // 发信弹框
+
 const sendMailData = reactive({
   header: '',
   body: '',
-  receiverId: 0n,
-  clusterId: 0n,
+  receiverId: 0,
+  senderId: 0,
+  clusterId: 0,
 });
 
 const doSendMail = () => {
@@ -197,14 +212,16 @@ const doSendMail = () => {
 }
 
 const sendMailFunc = () => {
+
   http({
     url: http.adornUrl('Guest/messages/send'),
     method: 'post',
     data: {
-      header: sendMailData.header,
-      body: sendMailData.body,
-      receiverId: BigInt(sendMailData.receiverId),
-      clusterId: BigInt(sendMailData.clusterId),
+      header: sendMailData.header || '',
+      body: sendMailData.body || '',
+      senderId: sendMailData.senderId, // 后端默认处理
+      receiverId: sendMailData.receiverId || null,
+      clusterId: sendMailData.clusterId ? BigInt(sendMailData.clusterId) : null,
     }
   }).then(() => {
 
@@ -215,7 +232,7 @@ const sendMailFunc = () => {
     ElMessage({
       message: '发送失败: ' + error.message,
       type: 'error',
-      duration: 1000
+      duration: 10000
     });
   });
 }
