@@ -2,10 +2,10 @@
 
 
   <!--主体-->
-  <div class="user_mes_app">
+  <div class="user_mes_app_receiver">
 
     <!-- 上部区域: 操作按钮-->
-    <div class="user_mes_app_upper">
+    <div class="user_mes_app_receiver_upper">
 
       <!--刷新-->
       <el-button
@@ -23,7 +23,7 @@
     <el-divider></el-divider>
 
     <!-- 下部区域: 收件箱信件对象展示-->
-    <div class="user_mes_app_lower">
+    <div class="user_mes_app_receiver_lower">
 
       <el-table :data="receiverMailData" style="width: 90%">
 
@@ -101,7 +101,7 @@
 
     <span slot="footer" class="dialog-footer">
         <el-button @click="detailsDialogVisible = false"
-                   class="user_mes_app_close-button"
+                   class="user_mes_app_receiver_close-button"
         >关闭</el-button>
     </span>
 
@@ -280,9 +280,9 @@ const deleteMail = (mail) => {
 
 <style lang="scss" scoped>
 
-.user_mes_app {
+.user_mes_app_receiver {
 
-  .user_mes_app_upper {
+  .user_mes_app_receiver_upper {
     display: flex;
     flex-direction: column;
 
@@ -296,7 +296,7 @@ const deleteMail = (mail) => {
 
   }
 
-  .user_mes_app_lower {
+  .user_mes_app_receiver_lower {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -314,7 +314,7 @@ const deleteMail = (mail) => {
 }
 
 
-.user_mes_app_close-button {
+.user_mes_app_receiver_close-button {
   display: flex;
   width: 15%;
   justify-content: center;
