@@ -409,7 +409,55 @@ const fetchFile = async (clusterId, current, size) => {
 };
 
 // ! 分页查询群组的文件列表, 但是使用文件名作为搜索条件, 模糊最左匹配
+const fetchFileByName = async (clusterId, fileName, current, size) => {
+  try {
+    await http({
+      url: http.adornUrl('Data/files/file/group_files/name'),
+      method: 'get',
+      params: {
+        clusterId: BigInt(clusterId),
+        fileName: fileName,
+        current,
+        size
+      }
+    }).then(({data}) => {
 
+      pageData.current = data.current;
+      pageData.size = data.size;
+      pageData.total = data.total;
+      pageData.records = data.records.map(record => {
+        return {
+          ...record,
+          id: BigInt(record.id),
+          pid: BigInt(record.pid),
+          userId: BigInt(record.userId),
+          clusterId: BigInt(record.clusterId),
+        };
+      });
+
+      //? 采用了直接替换的兼容模式, 这个状态下不可分页 (后面再考虑提供)
+
+
+    });
+
+
+    if (pageData.total === 0) {
+      ElMessage({
+        message: '暂无数据',
+        type: 'warning',
+        duration: 3000
+      });
+    }
+
+  } catch (error) {
+    ElMessage({
+      message: '获取群组文件信息失败: ' + error.message,
+      type: 'error',
+      duration: 3000
+    });
+  }
+
+};
 
 //? 文件具体信息查询
 
