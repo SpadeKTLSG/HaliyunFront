@@ -93,7 +93,9 @@
     <div class="clusterfile_lower">
 
       <!--对应群组的分页文件表格展示-->
-      <el-table :data="pageData.records" style="width: 90%; height: 80%">
+      <el-table :data="pageData.records"
+                style="width: 90%; max-height: 500px; overflow-y: auto;"
+                :row-style="{ height: '20px' }">
 
         <el-table-column prop="name" label="文件名"></el-table-column>
         <el-table-column prop="type" label="文件类型">
@@ -655,9 +657,10 @@ const downloadMainFunc = (file) => {
 
 
     .search-box {
-      width: 30%;
-      height: 40px;
-      margin: 0 auto 3rem auto;
+      width: 10%;
+      height: 30px;
+      margin-top: 20px;
+      margin-left: 25px;
 
       .search-icon {
         cursor: pointer;
