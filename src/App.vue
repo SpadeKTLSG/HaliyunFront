@@ -318,8 +318,22 @@ const currentTime = ref(new Date().toLocaleString());
 // 搜索
 const searchQuery = ref('');
 
+/**
+ * 搜索业务: 直接跳转到对应的应用, 调用对应
+ */
 const search = () => {
-  console.log('Searching for:', searchQuery.value);
+
+  // 用户输入 apps 里面的应用名称, 请对应到对应的应用name 实现跳转
+  const app = apps.find(app => app.show === searchQuery.value);
+  if (app) {
+    openApp(app.name);
+  } else {
+    ElMessage({
+      message: '没有找到对应的应用',
+      type: 'warning',
+      duration: 5000
+    });
+  }
 };
 
 // 进入App
