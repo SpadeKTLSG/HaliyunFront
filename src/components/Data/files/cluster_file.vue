@@ -50,7 +50,7 @@
           v-model="searchQuery"
           :suffix-icon="Search"
           class="search-box"
-          placeholder="随处搜索"
+          placeholder="搜索文件名..."
           @keyup.enter="fetchFileByName(selectedGroup.id, searchQuery, pageData.current, pageData.size)"
       >
         <el-icon slot="suffix" class="search-icon"></el-icon>
