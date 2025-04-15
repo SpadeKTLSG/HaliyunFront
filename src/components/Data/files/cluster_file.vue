@@ -45,6 +45,18 @@
       </el-button>
 
 
+      <!--页面文件模糊查询-->
+      <el-input
+          v-model="searchQuery"
+          :suffix-icon="Search"
+          class="search-box"
+          placeholder="随处搜索"
+          @keyup.enter="fetchFileByName(selectedGroup.id, searchQuery, pageData.current, pageData.size)"
+      >
+        <el-icon slot="suffix" class="search-icon"></el-icon>
+      </el-input>
+
+
       <!-- 特写的上传按钮 - EL 实现 -->
       <el-upload
           ref="upload"
@@ -242,6 +254,7 @@
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
 import {UserContext} from "@/components/common/user.js";
+import {Search} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -407,6 +420,10 @@ const fetchFile = async (clusterId, current, size) => {
   }
 
 };
+
+
+// 对应的查询字段
+const searchQuery = ref('');
 
 // ! 分页查询群组的文件列表, 但是使用文件名作为搜索条件, 模糊最左匹配
 const fetchFileByName = async (clusterId, fileName, current, size) => {
@@ -634,6 +651,17 @@ const downloadMainFunc = (file) => {
     .refresh_button {
       width: 30px;
       margin-left: -200px;
+    }
+
+
+    .search-box {
+      width: 30%;
+      height: 40px;
+      margin: 0 auto 3rem auto;
+
+      .search-icon {
+        cursor: pointer;
+      }
     }
 
     .upload_compo {
