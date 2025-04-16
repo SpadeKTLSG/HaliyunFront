@@ -153,7 +153,7 @@
             </el-button>
 
             <el-button
-                type="warning"
+                type="primary"
                 icon="el-icon-share"
                 @click="shareMainFunc(scope.row)"
             >分享
@@ -632,6 +632,18 @@ const downloadMainFunc = (file) => {
   link.click();
   document.body.removeChild(link);
 };
+
+
+//? 分享
+
+
+const shareMainFunc = (file) => {
+
+  // 分享功能: 先弹框, 框内复用上面的选择群组的下拉框组件, 将选择的群组 + 文件id 发到后端进行文件拷贝到对应群组功能, 自动化执行.
+
+
+}
+
 
 </script>
 
