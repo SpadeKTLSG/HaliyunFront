@@ -713,6 +713,25 @@ const doShare = () => {
 
   }
 
+  http({
+    url: http.adornUrl('Data/tasks/file/share'),
+    method: 'post',
+    params: {
+      fileId: toShareFileInfo.value.id,
+      clusterId: targetGroupId.value
+    }
+  }).then(() => {
+    
+    shareDialogVisible.value = false;
+
+  }).catch((error) => {
+    ElMessage({
+      message: '分享文件失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
+
 
 }
 
