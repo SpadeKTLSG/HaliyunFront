@@ -224,7 +224,7 @@ const apps = [
   // {name: 'AuthLockApp', show: '权限与锁'},
   // {name: 'ClusterLevelApp', show: '群组等级'},
   {name: 'ClusterFileApp', show: '群组文件'},
-  {name: 'ShareApp', show: '分享管理'},
+  // {name: 'ShareApp', show: '分享管理'},
   {name: 'ClusterNoticeApp', show: '群组公告'},
   {name: 'BatchOpApp', show: '批量操作'},
   {name: 'XXXApp', show: '敬请期待'},
