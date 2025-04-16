@@ -331,11 +331,7 @@ const confirmJoinGroup = async (clusterId) => {
         clusterId: selectedGroup.id
       }
     });
-    ElMessage({
-      message: '加入群组成功',
-      type: 'success',
-      duration: 1000
-    });
+
     joinDialogVisible.value = false;
     await getAllClusterPage();
   } catch (error) {
