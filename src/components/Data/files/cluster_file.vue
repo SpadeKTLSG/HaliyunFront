@@ -254,6 +254,40 @@
 
     </el-dialog>
 
+    <!--文件分享弹框-->
+    <el-dialog
+        v-model="shareDialogVisible"
+        title="分享文件到群组"
+    >
+      <p>
+        <el-text> 请选择需要分享到的群组</el-text>
+      </p>
+
+      <!-- 复用输入下拉框 -->
+      <el-select v-model="targetGroupId"
+                 filterable
+                 remote
+                 :remote-method="searchGroups"
+                 @keyup.enter="searchGroups"
+                 placeholder="选择对应群组"
+                 class="clusterfile_selector"
+      >
+
+        <el-option v-for="item in groupOptions"
+                   :key="item.id"
+                   :label="item.name"
+                   :value="item.id">
+        </el-option>
+
+      </el-select>
+
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="shareDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="doShare()">发射!</el-button>
+      </span>
+
+    </el-dialog>
 
   </div>
 </template>
@@ -636,10 +670,48 @@ const downloadMainFunc = (file) => {
 
 //? 分享
 
+const shareDialogVisible = ref(false);
+const targetGroupId = ref(null); // 对象目标群组id
+
+// 选中的文件信息存储 (来自分页)
+const toShareFileInfo = ref({
+  id: 0n,
+
+  userId: 0n,
+  clusterId: 0n,
+  name: '',
+  type: '',
+
+  dscr: '',
+  downloadTime: 0,
+  size: 0n,
+  path: '',
+  diskPath: '',
+
+  tag: 0n,
+  fileLock: 0n,
+  createTime: '',
+  updateTime: ''
+});
 
 const shareMainFunc = (file) => {
 
-  // 分享功能: 先弹框, 框内复用上面的选择群组的下拉框组件, 将选择的群组 + 文件id 发到后端进行文件拷贝到对应群组功能, 自动化执行.
+  // 分享功能: 先弹框, 框内复用上面的选择群组的下拉框组件, 将 选择的群组id + 文件id 发到后端进行文件拷贝到对应群组功能, 自动化执行.
+  shareDialogVisible.value = true;
+  toShareFileInfo.value = file;
+}
+
+const doShare = () => {
+
+  // 鉴权: 不能分享给自己组
+  if (selectedGroup.value.id === targetGroupId.value) {
+    ElMessage({
+      message: '不能分享给自己组',
+      type: 'warning',
+      duration: 1000
+    });
+
+  }
 
 
 }
