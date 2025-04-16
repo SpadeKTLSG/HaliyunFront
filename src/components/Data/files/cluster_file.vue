@@ -714,14 +714,14 @@ const doShare = () => {
   }
 
   http({
-    url: http.adornUrl('Data/tasks/file/share'),
+    url: http.adornUrl('Data/tasks/share/file'),
     method: 'post',
     params: {
       fileId: toShareFileInfo.value.id,
       clusterId: targetGroupId.value
     }
   }).then(() => {
-    
+
     shareDialogVisible.value = false;
 
   }).catch((error) => {
