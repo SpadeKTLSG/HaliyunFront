@@ -229,7 +229,10 @@ const getData = () => {
 
 
 //! 改
+
+// ? note 这个的可靠性太低了, 来个人给他改改......
 const formData = ref({...userData.value});
+
 const formVisible = ref(false);
 // 显示修改表单
 const showForm = () => {
@@ -246,7 +249,7 @@ const showForm = () => {
 //? 用户数据修改表单 : 只有能修改的字段, 需要查询时候也填过来
 // note: 未来方便管理, 于是拆分为了两个表单. 一个是展示表单, 一个是修改表单
 const userData4Update = ref({
-  id: UserContext.getUserId(),
+  id: BigInt(UserContext.getUserId()),
   password: '',
   gender: 2,
   email: '',
@@ -258,7 +261,7 @@ const userData4Update = ref({
 
 // 提交修改表单
 const submitForm = () => {
-  console.log(userData4Update.value)
+
   http({
     url: http.adornUrl('Guest/users/user_info'),
     method: 'put',
