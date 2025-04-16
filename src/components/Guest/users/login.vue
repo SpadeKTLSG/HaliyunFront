@@ -177,9 +177,9 @@ const getCode = () => {
   http({
     url: http.adornUrl('Guest/users/code'),
     method: 'get',
-    params: http.adornParams({
-      phone: sanitizedDataForm.value.phone
-    })
+    params: {
+      phone: dataForm.value.phone,
+    }
   }).then(({data}) => {
     console.log(data + '验证码信息')
     ElMessage({
@@ -188,13 +188,7 @@ const getCode = () => {
       duration: 10000
     });
   })
-      .catch(() => {
-        ElMessage({
-          message: '验证码发送失败',
-          type: 'error',
-          duration: 1000
-        });
-      })
+
 }
 
 
