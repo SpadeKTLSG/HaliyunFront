@@ -191,7 +191,7 @@ import ClusterFileApp from "@/apps/cluster-file-app/cluster_file_app.vue";
 import AuthLockApp from "@/apps/auth-lock-app/auth_lock_app.vue";
 import ClusterNoticeApp from "@/apps/cluster-notice-app/cluster_notice_app.vue";
 import ClusterLevelApp from "@/apps/cluster-level-app/cluster_level_app.vue";
-
+import BatchOpApp from "@/apps/batch-op-app/batch_op_app.vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -226,6 +226,7 @@ const apps = [
   {name: 'ClusterFileApp', show: '群组文件'},
   {name: 'ShareApp', show: '分享管理'},
   {name: 'ClusterNoticeApp', show: '群组公告'},
+  {name: 'BatchOpApp', show: '批量操作'},
   {name: 'XXXApp', show: '敬请期待'},
   // {name: 'XXXApp', show: '-'},
   // {name: 'XXXApp', show: '-'},
@@ -269,7 +270,8 @@ const currentComponent = computed(() => {
       return ClusterNoticeApp;
     case 'ClusterLevelApp':
       return ClusterLevelApp;
-
+    case 'BatchOpApp':
+      return BatchOpApp;
     default:
       return null;
   }
