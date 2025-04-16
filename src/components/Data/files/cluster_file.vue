@@ -153,6 +153,13 @@
             </el-button>
 
             <el-button
+                type="warning"
+                icon="el-icon-share"
+                @click="shareMainFunc(scope.row)"
+            >分享
+            </el-button>
+
+            <el-button
                 type="danger"
                 icon="el-icon-delete"
                 @click="deleteMainFunc(scope.row)"
