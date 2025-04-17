@@ -30,7 +30,7 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import ClusterFile from "@/components/Data/files/cluster_file.vue";
+import BatchFileOp from "@/components/Data/tasks/batch_file_op.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -69,14 +69,14 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('clusterfile');
+const currentPage = ref('batchfileOp');
 provide('currentPage', currentPage);
 
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {
   if (index === '1') {
-    currentPage.value = 'clusterfile';
+    currentPage.value = 'batchfileOp';
   } else {
     currentPage.value = 'wait';
   }
@@ -86,12 +86,12 @@ const handleMenuSelect = (index) => {
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   switch (currentPage.value) {
-    case 'clusterfile':
-      return ClusterFile;
+    case 'batchfileOp':
+      return BatchFileOp;
     case 'wait':
       return Tofinish;
     default:
-      return ClusterFile;
+      return BatchFileOp;
   }
 });
 

@@ -57,29 +57,31 @@
       </el-input>
 
 
-      <!-- 特写的上传按钮 - EL 实现 -->
+      <!-- 特写的上传区域 - EL 实现 -->
       <el-upload
           ref="upload"
           class="upload_compo"
-          action="http://localhost:10000/Data/tasks/upload/file"
-          :limit="1"
-          :on-exceed="handleExceed"
-          :auto-upload="false"
+          drag
+          action="http://localhost:10000/Data/tasks/upload/file/batch"
+          :auto-upload="true"
           :before-upload="beforeUpload"
           :data="uploadExtraData"
+          multiple
           v-model:file-list="fileList"
       >
 
-        <el-button type="success" @click="submitUpload">上传文件</el-button>
+        <el-icon class="el-icon--upload">
+          <upload-filled/>
+        </el-icon>
+
+        <div class="el-upload__text">
+          拖动 或者 <em>点击上传</em>
+        </div>
 
         <template #tip>
-          <div class="simple_text_red">
-            上传1个<500 MB 文件
+          <div class="el-upload__tip">
+            < 500 MB 文件
           </div>
-        </template>
-
-        <template #trigger>
-          <el-button type="primary">选择文件</el-button>
         </template>
 
       </el-upload>
@@ -297,7 +299,7 @@
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
 import {UserContext} from "@/components/common/user.js";
-import {Search} from "@element-plus/icons-vue";
+import {Search, UploadFilled} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -592,7 +594,7 @@ const doDelFile = async () => {
 };
 
 
-//? 上传
+//? 批量上传
 // 适配 EL 上传组件
 
 
@@ -611,16 +613,6 @@ const beforeUpload = (file) => {
   return true
 }
 
-// 执行上传钩子
-const handleExceed = (files) => {
-  // 清空已有的文件列表后，再自动添加新选中的文件
-  upload.value.clearFiles()
-  const file = files[0]
-
-  // 使用 Element Plus 内部方法开始上传（此处 uid 自动生成也可通过 genFileId 生成）
-  upload.value.handleStart(file)
-}
-
 
 // 上传时需要额外传递的参数
 const uploadExtraData = ref({
@@ -635,13 +627,6 @@ const uploadExtraData = ref({
 watch(selectedGroupId, (newVal) => {
   uploadExtraData.value.clusterId = newVal;
 });
-
-
-// 提交上传请求
-const submitUpload = () => {
-  upload.value.submit()
-  // 不做提示了
-}
 
 
 //? 下载
