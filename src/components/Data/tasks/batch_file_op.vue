@@ -86,6 +86,12 @@
 
       </el-upload>
 
+      <el-button type="success"
+                 @click="batchDownloadMainFunc()"
+                 class="batch-download-button">
+        批量下载选中文件
+      </el-button>
+
     </div>
 
 
@@ -96,8 +102,12 @@
 
       <!--对应群组的分页文件表格展示-->
       <el-table :data="pageData.records"
+                @selection-change="handleSelectionChange()"
                 style="width: 90%; max-height: 500px; overflow-y: auto;"
                 :row-style="{ height: '20px' }">
+
+        <!-- 多选列 原生支持 -->
+        <el-table-column type="selection" width="55"></el-table-column>
 
         <el-table-column prop="name" label="文件名"></el-table-column>
         <el-table-column prop="type" label="文件类型">
@@ -653,6 +663,54 @@ const downloadMainFunc = (file) => {
 };
 
 
+//? 批量下载
+
+// 选中的文件列表
+const selectedFiles = ref([]);
+
+
+// 处理多选变化
+const handleSelectionChange = (selection) => {
+  selectedFiles.value = selection;
+};
+
+// 批量下载 : 打包
+// 使用 responseType: 'blob' 获取 zip 二进制后，通过 URL.createObjectURL 创建 URL，并插入隐藏 <a> 触发下载
+const batchDownloadMainFunc = async () => {
+
+  if (selectedFiles.value.length === 0) {
+    ElMessage.warning('请先选中需要批量下载的文件');
+    return;
+  }
+
+  // 提取文件 ID 列表 及 userId clusterId (相同)
+  const ids = selectedFiles.value.map(f => f.id);
+  const userId = selectedFiles.value[0].userId;
+  const clusterId = selectedFiles.value[0].clusterId;
+
+  try {
+    const response = await http({
+      url: http.adornUrl('Data/tasks/download/file/batch'),
+      method: 'get',
+      responseType: 'blob',                 // 关键 告诉 Axios 返回二进制流
+      data: {ids, userId, clusterId}      // JSON 请求体
+    });
+
+    // 创建 Blob URL 并触发下载
+    const blob = new Blob([response.data], {type: 'application/zip'});
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'files.zip';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    ElMessage.error('批量下载失败: ' + err.message);
+  }
+};
+
 //? 分享
 
 const shareDialogVisible = ref(false);
@@ -765,6 +823,10 @@ const doShare = () => {
     .upload_compo {
       width: 30%;
       margin-left: 35px;
+    }
+
+    .batch-download-button {
+      margin-left: 10px;
     }
 
   }
