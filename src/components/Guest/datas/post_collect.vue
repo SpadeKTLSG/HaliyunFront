@@ -133,12 +133,8 @@ const getUserDataOfPost = async (current, size) => {
     pageData.current = data.current;
     pageData.size = data.size;
     pageData.total = data.total;
-    pageData.records = data.records.map(record => {
-      return {
-        ...record,
-        id: BigInt(record.id) // 将 id 转换为 BigInt 类型
-      };
-    });
+    pageData.records = data.records;
+
 
     if (pageData.total === 0) {
       ElMessage({

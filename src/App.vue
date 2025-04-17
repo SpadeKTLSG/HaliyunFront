@@ -16,7 +16,7 @@
               <Suitcase/>
             </el-icon>
 
-            <span class="notification-count">99+</span>
+            <span class="notification-count">{{ mesCount }}</span>
           </div>
 
           <!-- 1.2 头部中间 标题 -->
@@ -28,7 +28,6 @@
 
           <!-- 1.3 头部右侧 容量, 时间等组件 -->
           <div class="header-right">
-            <div class="capacity">80%</div>
             <div class="time">{{ currentTime }}</div>
           </div>
         </el-header>
@@ -192,7 +191,7 @@ import ClusterFileApp from "@/apps/cluster-file-app/cluster_file_app.vue";
 import AuthLockApp from "@/apps/auth-lock-app/auth_lock_app.vue";
 import ClusterNoticeApp from "@/apps/cluster-notice-app/cluster_notice_app.vue";
 import ClusterLevelApp from "@/apps/cluster-level-app/cluster_level_app.vue";
-
+import BatchOpApp from "@/apps/batch-op-app/batch_op_app.vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -221,22 +220,23 @@ const apps = [
   {name: 'UserRecordApp', show: '用户记录'},
   {name: 'ClusterManageApp', show: '群组管理'},
   {name: 'ClusterInfoApp', show: '群组信息'},
-  {name: 'ClusterPostApp', show: '群组动态'},
-  {name: 'ShareApp', show: '分享管理'},
-  {name: 'AuthLockApp', show: '权限与锁'},
-  {name: 'ClusterNoticeApp', show: '群组公告'},
-  {name: 'ClusterLevelApp', show: '群组等级'},
+  // {name: 'ClusterPostApp', show: '群组动态'},
+  // {name: 'AuthLockApp', show: '权限与锁'},
+  // {name: 'ClusterLevelApp', show: '群组等级'},
   {name: 'ClusterFileApp', show: '群组文件'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '-'},
-  {name: 'XXXApp', show: '界面设置'},
-  {name: 'XXXApp', show: '推广捐赠'},
-  {name: 'XXXApp', show: '系统日志'}
+  // {name: 'ShareApp', show: '分享管理'},
+  {name: 'ClusterNoticeApp', show: '群组公告'},
+  {name: 'BatchOpApp', show: '批量操作'},
+  {name: 'XXXApp', show: '敬请期待'},
+  // {name: 'XXXApp', show: '-'},
+  // {name: 'XXXApp', show: '-'},
+  // {name: 'XXXApp', show: '-'},
+  // {name: 'XXXApp', show: '-'},
+  // {name: 'XXXApp', show: '-'},
+  // {name: 'XXXApp', show: '-'},
+  // {name: 'XXXApp', show: '界面设置'},
+  // {name: 'XXXApp', show: '推广捐赠'},
+  // {name: 'XXXApp', show: '系统日志'}
 ];
 
 // 计算属性来获取当前显示的组件
@@ -270,7 +270,8 @@ const currentComponent = computed(() => {
       return ClusterNoticeApp;
     case 'ClusterLevelApp':
       return ClusterLevelApp;
-
+    case 'BatchOpApp':
+      return BatchOpApp;
     default:
       return null;
   }
@@ -301,6 +302,9 @@ onMounted(() => {
   setInterval(() => {
     currentTime.value = new Date().toLocaleString();
   }, 1000);
+
+  checkMes();
+
 });
 
 // ! 页面应用逻辑
@@ -316,14 +320,70 @@ const currentTime = ref(new Date().toLocaleString());
 // 搜索
 const searchQuery = ref('');
 
+/**
+ * 搜索业务: 直接跳转到对应的应用, 调用对应
+ */
 const search = () => {
-  console.log('Searching for:', searchQuery.value);
+
+  // 用户输入 apps 里面的应用名称, 请对应到对应的应用name 实现跳转
+  const app = apps.find(app => app.show === searchQuery.value);
+  if (app) {
+    openApp(app.name);
+  } else {
+    ElMessage({
+      message: '没有找到对应的应用',
+      type: 'warning',
+      duration: 5000
+    });
+  }
 };
 
 // 进入App
+
+// 控制开屏广告
 const enterWorld = ref(true); //todo 小熊二先回去吧
+
 const enterApp = () => {
   enterWorld.value = true;
+};
+
+
+// 未读消息
+const mesCount = ref(0);
+const checkMes = async () => {
+  // 立刻获得一次消息情况
+  await getUnreadMes();
+
+  // 每10秒拉取一次
+  setInterval(() => {
+    if (mesCount.value > 0) {
+      ElMessage({
+        message: '你有新的消息, 请查看',
+        type: 'success',
+        duration: 5000,
+        size: 'large',
+      });
+    }
+
+    getUnreadMes();
+  }, 10000 * 60);
+};
+
+
+// 拉取用户消息
+const getUnreadMes = async () => {
+  await http({
+    url: http.adornUrl('Guest/messages/unread/count'),
+    method: 'get'
+  }).then(({data}) => {
+    mesCount.value = data;
+  }).catch((error) => {
+    ElMessage({
+      message: '获取用户未读消息数量失败: ' + error.message,
+      type: 'error',
+      duration: 1000
+    });
+  });
 };
 
 

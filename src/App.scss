@@ -79,11 +79,6 @@ html, body {
           gap: 0.5rem; // 子元素间隔为0.5rem
           margin-right: -0.5rem; // 右外边距为0.5rem
 
-          .capacity {
-            margin-bottom: 15px;
-            max-width: 600px;
-            height: 5px;
-          }
 
           .time {
             margin-left: 1rem; // 左外边距为1rem
@@ -121,7 +116,7 @@ html, body {
           .search-box {
             //横向居中
             display: flex;
-            width: 50%;
+            width: 30%;
             height: 40px;
             margin: 0 auto 3rem auto;
 

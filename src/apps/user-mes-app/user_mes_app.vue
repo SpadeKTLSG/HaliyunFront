@@ -1,27 +1,30 @@
 <template>
 
 
-  <div class="level_app">
+  <div class="user_mes_app">
 
     <!--应用标识-->
-    <el-text class="base_header">用户等级</el-text>
+    <el-text class="base_header">用户消息</el-text>
 
   </div>
 
   <!--左侧导航区域-->
-  <div class="level_app_left_nav">
+  <div class="user_mes_app_left_nav">
 
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
       <el-menu-item index="1">
-        I. 用户等级
+        I. 收信
+      </el-menu-item>
+      <el-menu-item index="2">
+        II. 发信
       </el-menu-item>
     </el-menu>
 
   </div>
 
   <!--具体页面-->
-  <component :is="currentView" class="level_app_compo" @close="backAppHome"/>
+  <component :is="currentView" class="user_mes_app_compo" @close="backAppHome"/>
 
 </template>
 
@@ -30,7 +33,8 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import Userlevel from "@/components/Guest/levels/level.vue";
+import receiveMail from "@/components/Guest/messages/receiverMail.vue";
+import sendMail from "@/components/Guest/messages/senderMail.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -69,14 +73,17 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('userlevel');
+const currentPage = ref('receiveMail');
 provide('currentPage', currentPage);
 
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {
   if (index === '1') {
-    currentPage.value = 'userlevel';
+    currentPage.value = 'receiveMail';
+  }
+  if (index === '2') {
+    currentPage.value = 'sendMail';
   } else {
     currentPage.value = 'wait';
   }
@@ -86,12 +93,14 @@ const handleMenuSelect = (index) => {
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   switch (currentPage.value) {
-    case 'userlevel':
-      return Userlevel;
+    case 'receiveMail':
+      return receiveMail;
+    case 'sendMail':
+      return sendMail;
     case 'wait':
       return Tofinish;
     default:
-      return Userlevel;
+      return receiveMail;
   }
 });
 
@@ -105,7 +114,7 @@ const backAppHome = () => {
 <style lang="scss" scoped>
 
 
-.level_app {
+.user_mes_app {
   display: flex;
   margin-top: -10px;
   flex-direction: row;
@@ -128,7 +137,7 @@ const backAppHome = () => {
 
 }
 
-.level_app_left_nav {
+.user_mes_app_left_nav {
   width: 10%;
   margin-left: -150px;
   display: flex;
@@ -142,7 +151,7 @@ const backAppHome = () => {
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
-.level_app_compo {
+.user_mes_app_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
   display: flex;
   flex-direction: column;

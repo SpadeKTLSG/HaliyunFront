@@ -1,10 +1,10 @@
 <template>
 
   <!--主体-->
-  <div class="clusterfile">
+  <div class="batchop">
 
     <!-- 上部区域-->
-    <div class="clusterfile_upper">
+    <div class="batchop_upper">
 
 
       <!-- 搜索输入下拉框 -->
@@ -14,7 +14,7 @@
                  :remote-method="searchGroups"
                  @keyup.enter="searchGroups"
                  placeholder="选择群组"
-                 class="clusterfile_selector"
+                 class="batchop_selector"
       >
 
         <el-option v-for="item in groupOptions"
@@ -27,7 +27,7 @@
 
 
       <!-- 群名称显示 -->
-      <span class="clusterfile_name">
+      <span class="batchop_name">
         <el-text type="primary" class="simple_text_red">
           群组名称:
         {{ (selectedGroup.name !== "") ? selectedGroup.name : "请在左侧选择" }}
@@ -57,32 +57,40 @@
       </el-input>
 
 
-      <!-- 特写的上传按钮 - EL 实现 -->
+      <!-- 特写的上传区域 - EL 实现 -->
       <el-upload
           ref="upload"
-          class="upload_compo"
-          action="http://localhost:10000/Data/tasks/upload/file"
-          :limit="1"
-          :on-exceed="handleExceed"
-          :auto-upload="false"
+          class="upload_compo_large"
+          drag
+          action="http://localhost:10000/Data/tasks/upload/file/batch"
+          :auto-upload="true"
           :before-upload="beforeUpload"
           :data="uploadExtraData"
+          multiple
           v-model:file-list="fileList"
       >
 
-        <el-button type="success" @click="submitUpload">上传文件</el-button>
+        <el-icon class="el-icon--upload">
+          <upload-filled/>
+        </el-icon>
+
+        <div class="el-upload__text">
+          拖动 或者 <em>点击上传</em>
+        </div>
 
         <template #tip>
-          <div class="simple_text_red">
-            上传1个<500 MB 文件
+          <div class="el-upload__tip">
+            < 500 MB 文件
           </div>
         </template>
 
-        <template #trigger>
-          <el-button type="primary">选择文件</el-button>
-        </template>
-
       </el-upload>
+
+      <el-button type="success"
+                 @click="batchDownloadMainFunc()"
+                 class="batch-download-button">
+        批量下载选中文件
+      </el-button>
 
     </div>
 
@@ -90,12 +98,16 @@
     <el-divider></el-divider>
 
     <!-- 下部区域 -->
-    <div class="clusterfile_lower">
+    <div class="batchop_lower">
 
       <!--对应群组的分页文件表格展示-->
       <el-table :data="pageData.records"
+                @selection-change="handleSelectionChange"
                 style="width: 90%; max-height: 500px; overflow-y: auto;"
                 :row-style="{ height: '20px' }">
+
+        <!-- 多选列 原生支持 -->
+        <el-table-column type="selection" width="55"></el-table-column>
 
         <el-table-column prop="name" label="文件名"></el-table-column>
         <el-table-column prop="type" label="文件类型">
@@ -132,7 +144,7 @@
         </el-table-column>
 
 
-        <el-table-column label="操作" class="clusterfile_lower_buttons">
+        <el-table-column label="操作" class="batchop_lower_buttons">
 
           <template #default="scope">
 
@@ -270,7 +282,7 @@
                  :remote-method="searchGroups"
                  @keyup.enter="searchGroups"
                  placeholder="选择对应群组"
-                 class="clusterfile_selector"
+                 class="batchop_selector"
       >
 
         <el-option v-for="item in groupOptions"
@@ -297,7 +309,7 @@
 import * as Maven from '@/components/common/maven.js'
 import {inject} from "vue";
 import {UserContext} from "@/components/common/user.js";
-import {Search} from "@element-plus/icons-vue";
+import {Search, UploadFilled} from "@element-plus/icons-vue";
 
 let ElButton, ElCard, ElCascader, ElCol, ElConfigProvider, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElForm, ElFormItem, ElInput, ElInputNumber, ElMenu, ElMenuItem,
     ElMenuItemGroup, ElPopover, ElRadio, ElRadioGroup, ElRow, ElScrollbar, ElSubMenu, ElTable, ElTableColumn, ElTag, ElText, ElTooltip, ElMessage, ref, watch, reactive, onMounted,
@@ -425,7 +437,7 @@ const fetchFile = async (clusterId, current, size) => {
       url: http.adornUrl('Data/files/file/group_files'),
       method: 'get',
       params: {
-        clusterId,
+        clusterId: clusterId,
         current,
         size
       }
@@ -433,9 +445,10 @@ const fetchFile = async (clusterId, current, size) => {
       pageData.current = data.current;
       pageData.size = data.size;
       pageData.total = data.total;
-      pageData.records = data.records;
-    });
+      pageData.records = data.records
 
+    });
+    // 数据处理和后端对齐
 
     if (pageData.total === 0) {
       ElMessage({
@@ -462,6 +475,7 @@ const searchQuery = ref('');
 // ! 分页查询群组的文件列表, 但是使用文件名作为搜索条件, 模糊最左匹配
 const fetchFileByName = async (clusterId, fileName, current, size) => {
   try {
+
     await http({
       url: http.adornUrl('Data/files/file/group_files/name'),
       method: 'get',
@@ -477,12 +491,9 @@ const fetchFileByName = async (clusterId, fileName, current, size) => {
       pageData.size = data.size;
       pageData.total = data.total;
       pageData.records = data.records;
-
-      //? 采用了直接替换的兼容模式, 这个状态下不可分页 (后面再考虑提供)
-
-
     });
 
+    //? 采用了直接替换的兼容模式, 这个状态下不可分页 (后面再考虑提供)
 
     if (pageData.total === 0) {
       ElMessage({
@@ -509,10 +520,10 @@ const fileDetailDialogVisible = ref(false);
 
 // 选中的文件信息存储 (来自分页)
 const selectedFileInfo = ref({
-  id: '',
+  id: '', // ?
 
-  userId: '',
-  clusterId: '',
+  userId: '', // ?
+  clusterId: '', // ?
   name: '',
   type: '',
 
@@ -522,8 +533,8 @@ const selectedFileInfo = ref({
   path: '',
   diskPath: '',
 
-  tag: '',
-  fileLock: '',
+  tag: '', // ?
+  fileLock: '', // ?
   createTime: '',
   updateTime: ''
 });
@@ -553,7 +564,7 @@ const doDelFile = async () => {
       url: http.adornUrl('Data/files/file/delete'),
       method: 'delete',
       params: {
-        fileId: selectedFileInfo.value.id
+        fileId: selectedFileInfo.value.id,
       }
     });
 
@@ -575,7 +586,7 @@ const doDelFile = async () => {
 };
 
 
-//? 上传
+//? 批量上传
 // 适配 EL 上传组件
 
 
@@ -594,16 +605,6 @@ const beforeUpload = (file) => {
   return true
 }
 
-// 执行上传钩子
-const handleExceed = (files) => {
-  // 清空已有的文件列表后，再自动添加新选中的文件
-  upload.value.clearFiles()
-  const file = files[0]
-
-  // 使用 Element Plus 内部方法开始上传（此处 uid 自动生成也可通过 genFileId 生成）
-  upload.value.handleStart(file)
-}
-
 
 // 上传时需要额外传递的参数
 const uploadExtraData = ref({
@@ -620,13 +621,6 @@ watch(selectedGroupId, (newVal) => {
 });
 
 
-// 提交上传请求
-const submitUpload = () => {
-  upload.value.submit()
-  // 不做提示了
-}
-
-
 //? 下载
 
 // 下载文件 (依赖浏览器的下载功能)
@@ -635,7 +629,7 @@ const downloadMainFunc = (file) => {
   const params = {
     id: file.id,
     userId: file.userId,
-    clusterId: file.clusterId
+    clusterId: file.clusterId,
   };
 
   // 拼接下载链接
@@ -651,6 +645,39 @@ const downloadMainFunc = (file) => {
 };
 
 
+//? 批量下载
+
+// 选中的文件列表
+const selectedFiles = ref([]);
+
+
+// 处理多选变化
+const handleSelectionChange = (selection) => {
+  selectedFiles.value = selection;
+};
+
+// 批量下载 : 打包
+// 使用 responseType: 'blob' 获取 zip 二进制后，通过 URL.createObjectURL 创建 URL，并插入隐藏 <a> 触发下载
+async function batchDownloadMainFunc() {
+  if (!selectedFiles.value.length) {
+    return ElMessage.warning('请先选择要下载的文件');
+  }
+  const ids = selectedFiles.value.map(f => f.id);
+  const params = new URLSearchParams();
+  ids.forEach(id => params.append('ids', id));
+  params.append('userId', selectedFiles.value[0].userId);
+  params.append('clusterId', selectedFiles.value[0].clusterId);
+
+  // 触发浏览器下载 GET 请求
+  const url = `${http.adornUrl('Data/tasks/download/file/batch')}?${params.toString()}`;
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = ''; // 由后端 Content-Disposition 决定文件名
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
 //? 分享
 
 const shareDialogVisible = ref(false);
@@ -658,10 +685,10 @@ const targetGroupId = ref(null); // 对象目标群组id
 
 // 选中的文件信息存储 (来自分页)
 const toShareFileInfo = ref({
-  id: '',
+  id: '', // ?
 
-  userId: '',
-  clusterId: '',
+  userId: '', // ?
+  clusterId: '', // ?
   name: '',
   type: '',
 
@@ -671,8 +698,8 @@ const toShareFileInfo = ref({
   path: '',
   diskPath: '',
 
-  tag: '',
-  fileLock: '',
+  tag: '', // ?
+  fileLock: '', // ?
   createTime: '',
   updateTime: ''
 });
@@ -725,21 +752,21 @@ const doShare = () => {
 <style lang="scss" scoped>
 
 
-.clusterfile {
+.batchop {
 
-  .clusterfile_upper {
+  .batchop_upper {
     display: flex;
     align-items: center;
     margin-top: -30px;
     margin-bottom: 5px;
 
-    .clusterfile_selector {
+    .batchop_selector {
       width: 20%;
       margin-right: 10px;
       margin-left: 20px;
     }
 
-    .clusterfile_name {
+    .batchop_name {
       width: 30%;
     }
 
@@ -760,22 +787,27 @@ const doShare = () => {
       }
     }
 
-    .upload_compo {
-      width: 30%;
+    .upload_compo_large {
+      width: 20%;
+      height: 180px;
       margin-left: 35px;
+    }
+
+    .batch-download-button {
+      margin-left: 10px;
     }
 
   }
 
 
-  .clusterfile_lower {
+  .batchop_lower {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 10px;
     margin-bottom: 20px;
 
-    .clusterfile_lower_buttons {
+    .batchop_lower_buttons {
       // 并排按钮
       display: flex;
       flex-direction: row;

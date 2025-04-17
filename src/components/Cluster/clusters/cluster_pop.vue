@@ -146,8 +146,8 @@ const groupOptions = ref([]); // 群组列表
 
 // 选中的群组数据 (id查)
 const selectedGroup = ref({
-  id: 0n,
-  creatorUserId: 0n,
+  id: '',
+  creatorUserId: '',
   name: '',
   popVolume: 0
 });
@@ -173,7 +173,7 @@ const searchGroups = async () => {
 
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       groupOptions.value = data.map(group => ({
-        id: BigInt(group.id),
+        id: group.id,
         name: group.name,
         popVolume: group.popVolume
       }));
@@ -191,7 +191,7 @@ const searchGroups = async () => {
 //? 下部 头像矩阵排列
 
 const selectedMember = ref({
-  id: 0n,
+  id: '',
 
 }); // 选中的成员信息存储
 
@@ -216,7 +216,7 @@ const fetchMembers = async (clusterId) => {
       url: http.adornUrl('Guest/users/cluster/user_list'),
       method: 'get',
       params: {
-        clusterId: BigInt(clusterId)
+        clusterId: clusterId
       }
     }).then(({data}) => {
       // 数据处理和后端对齐
@@ -271,8 +271,8 @@ const kickOutMember = (memberId) => {
       url: http.adornUrl('Cluster/clusters/kick_cluster'),
       method: 'delete',
       params: {
-        clusterId: BigInt(selectedGroupId.value),
-        userId: BigInt(memberId)
+        clusterId: selectedGroupId.value,
+        userId: memberId
       }
     });
 

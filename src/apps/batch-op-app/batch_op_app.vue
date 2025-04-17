@@ -1,31 +1,27 @@
 <template>
 
 
-  <div class="user_record_app">
+  <div class="batch_op_app">
 
     <!--应用标识-->
-    <el-text class="base_header">用户记录</el-text>
+    <el-text class="base_header">批量处理</el-text>
 
   </div>
 
   <!--左侧导航区域-->
-  <div class="user_record_app_left_nav">
+  <div class="batch_op_app_left_nav">
 
     <el-menu default-active="1" class="el-menu-vertical" @select="handleMenuSelect">
       <!--一级菜单-->
       <el-menu-item index="1">
-        I. 用户记录
-      </el-menu-item>
-      <el-menu-item index="2">
-        II. (未开放)
-        <!--        用户特殊记录-->
+        I. 批量文件操作
       </el-menu-item>
     </el-menu>
 
   </div>
 
   <!--具体页面-->
-  <component :is="currentView" class="user_record_app_compo" @close="backAppHome"/>
+  <component :is="currentView" class="batch_op_app_compo" @close="backAppHome"/>
 
 </template>
 
@@ -34,7 +30,7 @@ import * as Maven from '@/components/common/maven.js'
 //引入组件
 import {provide} from 'vue'
 
-import Statistics from "@/components/Guest/records/statistics.vue";
+import BatchFileOp from "@/components/Data/tasks/batch_file_op.vue";
 import Tofinish from "@/components/Pub/fronts/tofinish.vue";
 import {UserContext} from "@/components/common/user.js";
 
@@ -73,15 +69,14 @@ onBeforeMount(() => {
 defineEmits(['close']);
 
 // 应用内跳页器, 暴露出去
-const currentPage = ref('statistics');
+const currentPage = ref('batchfileOp');
 provide('currentPage', currentPage);
 
 
 // 处理左侧导航栏点击事件
 const handleMenuSelect = (index) => {
   if (index === '1') {
-    currentPage.value = 'statistics';
-    // 下面用户特殊记录未开放
+    currentPage.value = 'batchfileOp';
   } else {
     currentPage.value = 'wait';
   }
@@ -91,13 +86,12 @@ const handleMenuSelect = (index) => {
 // 计算属性来获取当前显示的组件
 const currentView = computed(() => {
   switch (currentPage.value) {
-    case 'statistics':
-      return Statistics;
-      // 下面用户特殊记录未开放
+    case 'batchfileOp':
+      return BatchFileOp;
     case 'wait':
       return Tofinish;
     default:
-      return Statistics;
+      return BatchFileOp;
   }
 });
 
@@ -111,7 +105,7 @@ const backAppHome = () => {
 <style lang="scss" scoped>
 
 
-.user_record_app {
+.batch_op_app {
   display: flex;
   margin-top: -10px;
   flex-direction: row;
@@ -134,7 +128,7 @@ const backAppHome = () => {
 
 }
 
-.user_record_app_left_nav {
+.batch_op_app_left_nav {
   width: 10%;
   margin-left: -150px;
   display: flex;
@@ -148,7 +142,7 @@ const backAppHome = () => {
 }
 
 //对应页面组件, 需要占满剩下的全部页面.
-.user_record_app_compo {
+.batch_op_app_compo {
   flex: 1; /* 使 login_compo 占满剩余空间 */
   display: flex;
   flex-direction: column;

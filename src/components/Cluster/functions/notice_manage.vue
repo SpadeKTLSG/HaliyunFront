@@ -165,8 +165,8 @@ const groupOptions = ref([]);
 
 // 选中的群组数据 (id查)
 const selectedGroup = ref({
-  id: 0n,
-  creatorUserId: 0n, // 任何修改编辑都需要判断 UserHolder.getUI == creatorUserId (非创建人无法修改)
+  id: '',
+  creatorUserId: '', // 任何修改编辑都需要判断 UserHolder.getUI == creatorUserId (非创建人无法修改)
   name: '',
   popVolume: 0
 });
@@ -193,7 +193,7 @@ const searchGroups = async () => {
 
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       groupOptions.value = data.map(group => ({
-        id: BigInt(group.id),
+        id: group.id,
         name: group.name,
         popVolume: group.popVolume
       }));
@@ -237,7 +237,9 @@ const fetchNotice = async (clusterId) => {
     const response = await http({
       url: http.adornUrl('Cluster/functions/notice'),
       method: 'get',
-      params: {clusterId: BigInt(clusterId)}
+      params: {
+        clusterId,
+      }
     });
 
     if (response.data) {

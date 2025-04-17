@@ -229,7 +229,10 @@ const getData = () => {
 
 
 //! 改
+
+// ? note 这个的可靠性太低了, 来个人给他改改......
 const formData = ref({...userData.value});
+
 const formVisible = ref(false);
 // 显示修改表单
 const showForm = () => {
@@ -258,7 +261,7 @@ const userData4Update = ref({
 
 // 提交修改表单
 const submitForm = () => {
-  console.log(userData4Update.value)
+
   http({
     url: http.adornUrl('Guest/users/user_info'),
     method: 'put',

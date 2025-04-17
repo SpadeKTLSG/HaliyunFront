@@ -5,8 +5,8 @@
 
     <!-- 上部区域: -->
     <div class="usercollect_upper">
+
       <el-text class="simple_text_red"> 用户收藏类型与数量统计</el-text>
-      <!--      todo 后端给我加个缓存啊混蛋这个很吃性能  -->
 
       <el-table :data="[tableData]" style="width: 90%">
         <el-table-column prop="postCount" label="动态收藏数量"></el-table-column>
