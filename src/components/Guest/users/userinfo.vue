@@ -249,7 +249,7 @@ const showForm = () => {
 //? 用户数据修改表单 : 只有能修改的字段, 需要查询时候也填过来
 // note: 未来方便管理, 于是拆分为了两个表单. 一个是展示表单, 一个是修改表单
 const userData4Update = ref({
-  id: BigInt(UserContext.getUserId()),
+  id: UserContext.getUserId(),
   password: '',
   gender: 2,
   email: '',

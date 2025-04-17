@@ -120,7 +120,7 @@ const dataFormRef = ref(null)
 const dataForm = ref({
   account: '',
   password: 2333, //调试使用
-  phone: '15911451419',
+  phone: '',
   code: ''
 })
 
