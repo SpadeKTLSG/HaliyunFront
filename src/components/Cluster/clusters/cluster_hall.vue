@@ -317,7 +317,7 @@ const getOneCluster = (id) => {
 
 
 // 确认加入群组
-const confirmJoinGroup = async (clusterId) => {
+const confirmJoinGroup = async () => {
   try {
     await http({
       url: http.adornUrl('Cluster/clusters//hall/join'),

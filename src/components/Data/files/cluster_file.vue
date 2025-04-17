@@ -356,7 +356,7 @@ const searchGroups = async () => {
 
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       groupOptions.value = data.map(group => ({
-        id: BigInt(group.id),
+        id: group.id,
         name: group.name,
         popVolume: group.popVolume
       }));
@@ -425,7 +425,7 @@ const fetchFile = async (clusterId, current, size) => {
       url: http.adornUrl('Data/files/file/group_files'),
       method: 'get',
       params: {
-        clusterId: BigInt(clusterId),
+        clusterId,
         current,
         size
       }
@@ -433,16 +433,7 @@ const fetchFile = async (clusterId, current, size) => {
       pageData.current = data.current;
       pageData.size = data.size;
       pageData.total = data.total;
-      pageData.records = data.records.map(record => {
-        return {
-          ...record,
-          id: BigInt(record.id),
-          pid: BigInt(record.pid),
-          userId: BigInt(record.userId),
-          clusterId: BigInt(record.clusterId),
-        };
-      });
-      // 数据处理和后端对齐
+      pageData.records = data.records;
     });
 
 
@@ -475,7 +466,7 @@ const fetchFileByName = async (clusterId, fileName, current, size) => {
       url: http.adornUrl('Data/files/file/group_files/name'),
       method: 'get',
       params: {
-        clusterId: BigInt(clusterId),
+        clusterId: clusterId,
         fileName: fileName,
         current,
         size
@@ -485,15 +476,7 @@ const fetchFileByName = async (clusterId, fileName, current, size) => {
       pageData.current = data.current;
       pageData.size = data.size;
       pageData.total = data.total;
-      pageData.records = data.records.map(record => {
-        return {
-          ...record,
-          id: BigInt(record.id),
-          pid: BigInt(record.pid),
-          userId: BigInt(record.userId),
-          clusterId: BigInt(record.clusterId),
-        };
-      });
+      pageData.records = data.records;
 
       //? 采用了直接替换的兼容模式, 这个状态下不可分页 (后面再考虑提供)
 

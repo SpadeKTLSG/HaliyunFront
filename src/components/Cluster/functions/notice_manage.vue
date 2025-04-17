@@ -193,7 +193,7 @@ const searchGroups = async () => {
 
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       groupOptions.value = data.map(group => ({
-        id: BigInt(group.id),
+        id: group.id,
         name: group.name,
         popVolume: group.popVolume
       }));
@@ -237,7 +237,9 @@ const fetchNotice = async (clusterId) => {
     const response = await http({
       url: http.adornUrl('Cluster/functions/notice'),
       method: 'get',
-      params: {clusterId: BigInt(clusterId)}
+      params: {
+        clusterId: clusterId,
+      }
     });
 
     if (response.data) {
