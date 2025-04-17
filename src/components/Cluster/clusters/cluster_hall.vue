@@ -181,7 +181,7 @@ const pageData = reactive({
 const selectedGroup = ref({
 
   // Cluster
-  id: 0n,
+  id: '',
   name: '',
   nickname: '',
   pic: '',
@@ -191,16 +191,16 @@ const selectedGroup = ref({
   // ClusterDetail
   shareLink: '',
   album: '',
-  usedSpace: 0n,
-  totalSpace: 0n,
+  usedSpace: '',
+  totalSpace: '',
   createTime: '',
   updateTime: '',
 
 
   // ClusterFunc
   allowInvite: 0,
-  currencyStock: 0n,
-  coinStock: 0n,
+  currencyStock: '',
+  coinStock: '',
 
 
   // Creator
@@ -268,15 +268,11 @@ const getAllClusterPage = async (current, size) => {
         size
       }
     });
+
     pageData.current = data.current;
     pageData.size = data.size;
     pageData.total = data.total;
-    pageData.records = data.records.map(record => {
-      return {
-        ...record,
-        id: BigInt(record.id) // 将 id 转换为 BigInt 类型
-      };
-    });
+    pageData.records = data.records;
 
 
     if (pageData.total === 0) {
@@ -306,8 +302,7 @@ const getOneCluster = (id) => {
     url: http.adornUrl('Cluster/clusters/hall/one'),
     method: 'get',
     params: {
-      id
-      //id: id.toString() // 将 BigInt 转换为字符串传递给后端
+      id,
     }
   }).then(({data}) => {
     selectedGroup.value = data

@@ -165,8 +165,8 @@ const groupOptions = ref([]);
 
 // 选中的群组数据 (id查)
 const selectedGroup = ref({
-  id: 0n,
-  creatorUserId: 0n, // 任何修改编辑都需要判断 UserHolder.getUI == creatorUserId (非创建人无法修改)
+  id: '',
+  creatorUserId: '', // 任何修改编辑都需要判断 UserHolder.getUI == creatorUserId (非创建人无法修改)
   name: '',
   popVolume: 0
 });

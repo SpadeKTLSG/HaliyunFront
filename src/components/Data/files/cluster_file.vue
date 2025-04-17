@@ -328,8 +328,8 @@ const currentPage = inject('currentPage');
 const groupOptions = ref([]); // 群组列表
 
 const selectedGroup = ref({
-  id: 0n,
-  creatorUserId: 0n,
+  id: '',
+  creatorUserId: '',
   name: '',
   popVolume: 0
 });
@@ -526,21 +526,21 @@ const fileDetailDialogVisible = ref(false);
 
 // 选中的文件信息存储 (来自分页)
 const selectedFileInfo = ref({
-  id: 0n,
+  id: '',
 
-  userId: 0n,
-  clusterId: 0n,
+  userId: '',
+  clusterId: '',
   name: '',
   type: '',
 
   dscr: '',
   downloadTime: 0,
-  size: 0n,
+  size: '',
   path: '',
   diskPath: '',
 
-  tag: 0n,
-  fileLock: 0n,
+  tag: '',
+  fileLock: '',
   createTime: '',
   updateTime: ''
 });
@@ -675,21 +675,21 @@ const targetGroupId = ref(null); // 对象目标群组id
 
 // 选中的文件信息存储 (来自分页)
 const toShareFileInfo = ref({
-  id: 0n,
+  id: '',
 
-  userId: 0n,
-  clusterId: 0n,
+  userId: '',
+  clusterId: '',
   name: '',
   type: '',
 
   dscr: '',
   downloadTime: 0,
-  size: 0n,
+  size: '',
   path: '',
   diskPath: '',
 
-  tag: 0n,
-  fileLock: 0n,
+  tag: '',
+  fileLock: '',
   createTime: '',
   updateTime: ''
 });

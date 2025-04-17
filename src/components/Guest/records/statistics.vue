@@ -103,8 +103,8 @@ onMounted(() => {
 // ! List
 
 const statisticsData = ref({
-  id: 0n,
-  userId: 0n,
+  id: '',
+  userId: '',
   comment: 0,
   download: 0,
   upload: 0,

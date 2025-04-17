@@ -230,7 +230,7 @@ const pageData = reactive({
 const selectedGroup = ref({
 
   // Cluster
-  id: 0n,
+  id: '',
   name: '',
   nickname: '',
   pic: '',
@@ -240,16 +240,16 @@ const selectedGroup = ref({
   // ClusterDetail
   shareLink: '',
   album: '',
-  usedSpace: 0n,
-  totalSpace: 0n,
+  usedSpace: '',
+  totalSpace: '',
   createTime: '',
   updateTime: '',
 
 
   // ClusterFunc
   allowInvite: 0,
-  currencyStock: 0n,
-  coinStock: 0n,
+  currencyStock: '',
+  coinStock: '',
 
 
   // Creator
@@ -302,7 +302,7 @@ const exitGroup = (id) => {
   exitDialogVisible.value = true;
   id2Exit = id;
 };
-let id2Exit = 0n;
+let id2Exit = '';
 
 
 // 删除群组 (解散)
@@ -310,7 +310,7 @@ const deleteGroup = (id) => {
   deleteDialogVisible.value = true;
   id2Delete = id;
 };
-let id2Delete = 0n;
+let id2Delete = '';
 
 
 onMounted(async () => {

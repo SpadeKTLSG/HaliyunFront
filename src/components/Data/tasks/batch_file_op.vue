@@ -340,8 +340,8 @@ const currentPage = inject('currentPage');
 const groupOptions = ref([]); // 群组列表
 
 const selectedGroup = ref({
-  id: 0n,
-  creatorUserId: 0n,
+  id: '',
+  creatorUserId: '',
   name: '',
   popVolume: 0
 });
@@ -529,7 +529,7 @@ const selectedFileInfo = ref({
 
   dscr: '',
   downloadTime: 0,
-  size: 0n,
+  size: '',
   path: '',
   diskPath: '',
 
@@ -694,7 +694,7 @@ const toShareFileInfo = ref({
 
   dscr: '',
   downloadTime: 0,
-  size: 0n,
+  size: '',
   path: '',
   diskPath: '',
 

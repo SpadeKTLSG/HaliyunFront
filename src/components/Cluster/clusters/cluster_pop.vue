@@ -146,8 +146,8 @@ const groupOptions = ref([]); // 群组列表
 
 // 选中的群组数据 (id查)
 const selectedGroup = ref({
-  id: 0n,
-  creatorUserId: 0n,
+  id: '',
+  creatorUserId: '',
   name: '',
   popVolume: 0
 });
@@ -191,7 +191,7 @@ const searchGroups = async () => {
 //? 下部 头像矩阵排列
 
 const selectedMember = ref({
-  id: 0n,
+  id: '',
 
 }); // 选中的成员信息存储
 

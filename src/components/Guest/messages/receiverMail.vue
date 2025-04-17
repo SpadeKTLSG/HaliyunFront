@@ -193,15 +193,15 @@ const detailsDialogVisible = ref(false); // 详情弹框
 // 选择的信件信息
 const selectedMail = ref({
 
-  id: 0n,
+  id: '',
 
-  clusterId: 0n,
+  clusterId: '',
   clusterName: '',
 
-  senderId: 0n,
+  senderId: '',
   senderName: '',
 
-  receiverId: 0n,
+  receiverId: '',
   receiverName: '',
 
   status: '',
