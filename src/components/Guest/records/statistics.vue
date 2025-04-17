@@ -121,7 +121,7 @@ const refreshStatistics = async () => {
     url: http.adornUrl('Guest/records/statistic/user_show'),
     method: 'get',
     params: {
-      targetUserId: BigInt(UserContext.getUserId()),
+      targetUserId: UserContext.getUserId(),
     }
   }).then(({data}) => {
 

@@ -221,7 +221,7 @@ const sendMailFunc = () => {
       body: sendMailData.body || '',
       senderId: sendMailData.senderId, // 后端默认处理
       receiverId: sendMailData.receiverId || null,
-      clusterId: sendMailData.clusterId ? BigInt(sendMailData.clusterId) : null,
+      clusterId: sendMailData.clusterId || null,
     }
   }).then(() => {
 
@@ -258,8 +258,7 @@ const listMyMes1 = async () => {
     //? 后端 清单 Array => 前端 ref([]) 的传递方法
 
     senderMailData.value = data.map(mail => ({
-      // id 后面 传递时候使用 Bigint
-      id: BigInt(mail.id),
+      id: mail.id,
       clusterId: mail.clusterId,
       senderId: mail.senderId,
       receiverId: mail.receiverId,
@@ -327,7 +326,7 @@ const queryDetail4Mail0 = (id) => {
     url: http.adornUrl('Guest/messages/detail'),
     method: 'get',
     params: {
-      mesId: BigInt(id),
+      mesId: id,
       orderType: 1,
     }
   }).then(({data}) => {
@@ -359,7 +358,7 @@ const queryDetail4Mail0 = (id) => {
 
 
 const deleteMail = (mail) => {
-  const id = BigInt(mail.id);
+  const id = mail.id;
   http({
     url: http.adornUrl(`Guest/messages/delete/${id}`),
     method: 'delete',

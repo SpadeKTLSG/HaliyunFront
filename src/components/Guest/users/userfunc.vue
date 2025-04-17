@@ -161,8 +161,6 @@ const getData = () => {
   }).then(({data}) => {
     userData.value = {
       ...data,
-      id: BigInt(data.id),
-      levelId: BigInt(data.levelId),
     }
   }).catch((error) => {
     ElMessage({

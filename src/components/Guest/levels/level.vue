@@ -128,8 +128,7 @@ const showLevelinfo = (level) => {
   }).then(({data}) => {
 
         levelData.value = {
-          ...data,
-          id: BigInt(data.id) // 将 id 转换为 BigInt 类型
+          ...data
         }
 
       }
