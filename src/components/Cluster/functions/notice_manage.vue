@@ -238,7 +238,7 @@ const fetchNotice = async (clusterId) => {
       url: http.adornUrl('Cluster/functions/notice'),
       method: 'get',
       params: {
-        clusterId: clusterId,
+        clusterId,
       }
     });
 
