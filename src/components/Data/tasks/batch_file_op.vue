@@ -102,7 +102,7 @@
 
       <!--对应群组的分页文件表格展示-->
       <el-table :data="pageData.records"
-                @selection-change="handleSelectionChange()"
+                @selection-change="handleSelectionChange"
                 style="width: 90%; max-height: 500px; overflow-y: auto;"
                 :row-style="{ height: '20px' }">
 
@@ -676,40 +676,25 @@ const handleSelectionChange = (selection) => {
 
 // 批量下载 : 打包
 // 使用 responseType: 'blob' 获取 zip 二进制后，通过 URL.createObjectURL 创建 URL，并插入隐藏 <a> 触发下载
-const batchDownloadMainFunc = async () => {
-
-  if (selectedFiles.value.length === 0) {
-    ElMessage.warning('请先选中需要批量下载的文件');
-    return;
+async function batchDownloadMainFunc() {
+  if (!selectedFiles.value.length) {
+    return ElMessage.warning('请先选择要下载的文件');
   }
-
-  // 提取文件 ID 列表 及 userId clusterId (相同)
   const ids = selectedFiles.value.map(f => f.id);
-  const userId = selectedFiles.value[0].userId;
-  const clusterId = selectedFiles.value[0].clusterId;
+  const params = new URLSearchParams();
+  ids.forEach(id => params.append('ids', id));
+  params.append('userId', selectedFiles.value[0].userId);
+  params.append('clusterId', selectedFiles.value[0].clusterId);
 
-  try {
-    const response = await http({
-      url: http.adornUrl('Data/tasks/download/file/batch'),
-      method: 'get',
-      responseType: 'blob',                 // 关键 告诉 Axios 返回二进制流
-      data: {ids, userId, clusterId}      // JSON 请求体
-    });
-
-    // 创建 Blob URL 并触发下载
-    const blob = new Blob([response.data], {type: 'application/zip'});
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'files.zip';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(url);
-  } catch (err) {
-    ElMessage.error('批量下载失败: ' + err.message);
-  }
-};
+  // 触发浏览器下载 GET 请求
+  const url = `${http.adornUrl('Data/tasks/download/file/batch')}?${params.toString()}`;
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = ''; // 由后端 Content-Disposition 决定文件名
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
 
 //? 分享
 
