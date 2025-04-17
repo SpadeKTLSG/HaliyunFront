@@ -368,7 +368,7 @@ const searchGroups = async () => {
 
       //? 后端 清单 Array => 前端 ref([]) 的传递方法
       groupOptions.value = data.map(group => ({
-        id: BigInt(group.id),
+        id: group.id,
         name: group.name,
         popVolume: group.popVolume
       }));
@@ -437,7 +437,7 @@ const fetchFile = async (clusterId, current, size) => {
       url: http.adornUrl('Data/files/file/group_files'),
       method: 'get',
       params: {
-        clusterId: BigInt(clusterId),
+        clusterId: clusterId,
         current,
         size
       }
@@ -445,18 +445,10 @@ const fetchFile = async (clusterId, current, size) => {
       pageData.current = data.current;
       pageData.size = data.size;
       pageData.total = data.total;
-      pageData.records = data.records.map(record => {
-        return {
-          ...record,
-          id: BigInt(record.id),
-          pid: BigInt(record.pid),
-          userId: BigInt(record.userId),
-          clusterId: BigInt(record.clusterId),
-        };
-      });
-      // 数据处理和后端对齐
-    });
+      pageData.records = data.records
 
+    });
+    // 数据处理和后端对齐
 
     if (pageData.total === 0) {
       ElMessage({
@@ -483,11 +475,12 @@ const searchQuery = ref('');
 // ! 分页查询群组的文件列表, 但是使用文件名作为搜索条件, 模糊最左匹配
 const fetchFileByName = async (clusterId, fileName, current, size) => {
   try {
+
     await http({
       url: http.adornUrl('Data/files/file/group_files/name'),
       method: 'get',
       params: {
-        clusterId: BigInt(clusterId),
+        clusterId: clusterId,
         fileName: fileName,
         current,
         size
@@ -497,21 +490,10 @@ const fetchFileByName = async (clusterId, fileName, current, size) => {
       pageData.current = data.current;
       pageData.size = data.size;
       pageData.total = data.total;
-      pageData.records = data.records.map(record => {
-        return {
-          ...record,
-          id: BigInt(record.id),
-          pid: BigInt(record.pid),
-          userId: BigInt(record.userId),
-          clusterId: BigInt(record.clusterId),
-        };
-      });
-
-      //? 采用了直接替换的兼容模式, 这个状态下不可分页 (后面再考虑提供)
-
-
+      pageData.records = data.records;
     });
 
+    //? 采用了直接替换的兼容模式, 这个状态下不可分页 (后面再考虑提供)
 
     if (pageData.total === 0) {
       ElMessage({
@@ -538,10 +520,10 @@ const fileDetailDialogVisible = ref(false);
 
 // 选中的文件信息存储 (来自分页)
 const selectedFileInfo = ref({
-  id: 0n,
+  id: '', // ?
 
-  userId: 0n,
-  clusterId: 0n,
+  userId: '', // ?
+  clusterId: '', // ?
   name: '',
   type: '',
 
@@ -551,8 +533,8 @@ const selectedFileInfo = ref({
   path: '',
   diskPath: '',
 
-  tag: 0n,
-  fileLock: 0n,
+  tag: '', // ?
+  fileLock: '', // ?
   createTime: '',
   updateTime: ''
 });
@@ -582,7 +564,7 @@ const doDelFile = async () => {
       url: http.adornUrl('Data/files/file/delete'),
       method: 'delete',
       params: {
-        fileId: selectedFileInfo.value.id
+        fileId: selectedFileInfo.value.id,
       }
     });
 
@@ -647,7 +629,7 @@ const downloadMainFunc = (file) => {
   const params = {
     id: file.id,
     userId: file.userId,
-    clusterId: file.clusterId
+    clusterId: file.clusterId,
   };
 
   // 拼接下载链接
@@ -703,10 +685,10 @@ const targetGroupId = ref(null); // 对象目标群组id
 
 // 选中的文件信息存储 (来自分页)
 const toShareFileInfo = ref({
-  id: 0n,
+  id: '', // ?
 
-  userId: 0n,
-  clusterId: 0n,
+  userId: '', // ?
+  clusterId: '', // ?
   name: '',
   type: '',
 
@@ -716,8 +698,8 @@ const toShareFileInfo = ref({
   path: '',
   diskPath: '',
 
-  tag: 0n,
-  fileLock: 0n,
+  tag: '', // ?
+  fileLock: '', // ?
   createTime: '',
   updateTime: ''
 });
