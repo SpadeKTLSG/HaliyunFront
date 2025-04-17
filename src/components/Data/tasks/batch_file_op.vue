@@ -60,7 +60,7 @@
       <!-- 特写的上传区域 - EL 实现 -->
       <el-upload
           ref="upload"
-          class="upload_compo"
+          class="upload_compo_large"
           drag
           action="http://localhost:10000/Data/tasks/upload/file/batch"
           :auto-upload="true"
@@ -787,8 +787,9 @@ const doShare = () => {
       }
     }
 
-    .upload_compo {
-      width: 30%;
+    .upload_compo_large {
+      width: 20%;
+      height: 180px;
       margin-left: 35px;
     }
 
