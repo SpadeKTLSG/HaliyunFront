@@ -341,7 +341,7 @@ const search = () => {
 // 进入App
 
 // 控制开屏广告
-const enterWorld = ref(true); //todo 小熊二先回去吧
+const enterWorld = ref(false); //小熊二出来吧
 
 const enterApp = () => {
   enterWorld.value = true;
